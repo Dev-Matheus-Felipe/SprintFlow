@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
+* {
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+}
+
+@theme {
+  --font-mono: 'Geist Mono', ui-monospace, monospace;
+  --color-primary: #5b5cf6;
+  --color-primary-foreground: #ffffff;
+  --color-sidebar: #fafafa;
+  --color-sidebar-border: #ebebf2;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #0a0a0f;
+  --card: #ffffff;
+  --card-foreground: #0a0a0f;
+  --primary: #5b5cf6;
+  --primary-foreground: #ffffff;
+  --secondary: #f4f4f8;
+  --secondary-foreground: #3d3d52;
+  --muted: #f4f4f8;
+  --muted-foreground: #8585a0;
+  --accent: #ededff;
+  --accent-foreground: #5b5cf6;
+  --border: #e4e4ef;
+  --ring: #5b5cf6;
+  --radius: 0.5rem;
+  --sidebar: #fafafa;
+  --sidebar-border: #ebebf2;
+}
+
+.dark {
+  --background: #0d0d14;
+  --foreground: #f0f0fa;
+  --card: #13131e;
+  --card-foreground: #f0f0fa;
+  --primary: #6d6ef7;
+  --primary-foreground: #ffffff;
+  --secondary: #1c1c2e;
+  --secondary-foreground: #c5c5da;
+  --muted: #18182a;
+  --muted-foreground: #6a6a85;
+  --accent: #1e1e38;
+  --accent-foreground: #8b8cf8;
+  --border: #22223a;
+  --ring: #6d6ef7;
+  --sidebar: #0f0f1a;
+  --sidebar-border: #1e1e30;
+}
+
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  margin: 0;
+  padding: 0;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
