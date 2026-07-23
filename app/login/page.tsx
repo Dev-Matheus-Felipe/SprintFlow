@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const tags: string[] = ["Kanban board", "Sprint planning","Team analytics", "Real-time updates"];
 
-export default function LoginPage(){
+export default async function LoginPage(){
     return (
         <div className="w-full min-h-screen flex">
 
