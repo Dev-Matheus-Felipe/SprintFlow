@@ -8,8 +8,220 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
+enum ProjectColors {
+  AZUL
+  VERDE
+  LARANJA
+  VERMELHO
+  ROXO
+  CIANO
+}
+
+enum ProjectIcons {
+  FOGUETE
+}
+
+enum SprintSituations {
+  PLANEJAMENTO
+  ATRASADO
+  ATIVO
+  CONCLUIDO
+}
+
+enum TaskStatus {
+  AFAZER
+  EMPROGRESSO
+  EMREVISAO
+  CONCLUIDO
+}
+
+enum TaskPriorities {
+  BAIXA
+  MEDIA
+  ALTA
+  CRITICO
+}
+
+enum ProjectRoles {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+
 model User {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  name  String?
-  email String @unique
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  name          String
+  image         String?
+  email         String   @unique
+  mainPosition  String?
+
+  createdAt     DateTime @default(now())
+  emailVerified DateTime?
+
+
+  accounts Account[]
+  sessions Session[]
+
+
+  // Projetos que participa
+  memberships ProjectMember[]
+
+
+  tasks    Task[]
+  comments Comment[]
+}
+
+
+
+model Project {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+
+  name        String
+  description String
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+
+  color ProjectColors
+  icon  ProjectIcons
+
+
+  members ProjectMember[]
+
+  tasks   Task[]
+  sprints Sprint[]
+}
+
+
+
+model ProjectMember {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+
+  role ProjectRoles @default(MEMBER)
+
+
+  userId String @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id])
+
+
+  projectId String @db.ObjectId
+  project   Project @relation(fields: [projectId], references: [id])
+
+
+  @@unique([userId, projectId])
+}
+
+
+
+model Task {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+
+  points      Int
+  description String
+
+  status   TaskStatus
+  priority TaskPriorities
+
+  deadline DateTime
+
+  tags String[]
+
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+
+  userId String @db.ObjectId
+  user   User @relation(fields: [userId], references: [id])
+
+
+  sprintId String @db.ObjectId
+  sprint   Sprint @relation(fields: [sprintId], references: [id])
+
+
+  projectId String @db.ObjectId
+  project   Project @relation(fields: [projectId], references: [id])
+
+
+  comments Comment[]
+}
+
+
+
+model Comment {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+
+  message String
+
+
+  createdAt DateTime @default(now())
+
+
+  taskId String @db.ObjectId
+  task   Task @relation(fields: [taskId], references: [id])
+
+
+  userId String @db.ObjectId
+  user   User @relation(fields: [userId], references: [id])
+}
+
+
+
+model Sprint {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+
+  name      String
+  objective String
+
+
+  situation SprintSituations
+
+
+  startAt DateTime
+  endAt   DateTime
+
+
+  tasks Task[]
+
+
+  projectId String @db.ObjectId
+  project   Project @relation(fields: [projectId], references: [id])
+}
+
+model Account {
+  id                String @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String @db.ObjectId
+
+  type              String
+  provider          String
+  providerAccountId String
+
+  access_token      String?
+  refresh_token     String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken String   @unique
+  userId       String   @db.ObjectId
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

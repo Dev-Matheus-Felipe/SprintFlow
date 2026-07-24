@@ -1,6 +1,7 @@
 "use client"
 
 import { GitBranch, Globe, Link } from "lucide-react";
+import { signIn } from "next-auth/react";
 
 const buttonsClass = `w-full flex text-md items-center justify-center gap-2 h-11.5 rounded-lg bg-(--secondary) 
 cursor-pointer hover:bg-(--primary) duration-200`;
@@ -19,12 +20,16 @@ export default function LoginForm(){
 
                 {/* LOGIN OPTIONS */}
                 <div className="flex flex-col gap-4 ">
-                    <button className={buttonsClass}>
+                    <button className={buttonsClass} onClick={() => signIn("github", {
+                        redirectTo: "/dashboard"
+                    })}>    
                         <GitBranch size={16} />
                         Login with Github
                     </button>
 
-                    <button className={buttonsClass}>
+                    <button className={buttonsClass} onClick={() => signIn("google", {
+                        redirectTo: "/dashboard"
+                    })}>
                         <Globe size={16} />
                         Login with Google
                     </button>
