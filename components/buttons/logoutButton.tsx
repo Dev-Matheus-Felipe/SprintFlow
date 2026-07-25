@@ -11,8 +11,8 @@ export default function LogoutButton(){
                 cursor-hover hover:bg-[rgba(239,68,68,0.08)] hover:text-red-500`}  
                 onClick={() => signOut()}
             >
-                <LogOut size={16} />
-                <p className="text-sm">Log Out</p>
+                <LogOut size={14} />
+                <p className="text-sm">Log out</p>
             </button>
         </div>
     )

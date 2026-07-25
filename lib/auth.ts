@@ -7,4 +7,10 @@ import GitHub from "next-auth/providers/github"
 export const { auth, handlers, signIn, signOut } = NextAuth({
     adapter: PrismaAdapter(prisma),
     providers: [Google, GitHub],
+
+    session: {
+        strategy: "database",
+        maxAge: 30 * 24 * 60 * 60,
+    },
+
 })
