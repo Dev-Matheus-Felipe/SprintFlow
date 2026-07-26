@@ -3,26 +3,22 @@
 import { usePathname } from "next/navigation";
 import GlobalSearch from "./globalSearch";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
-import { Moon, Sun } from "lucide-react";
-import MenuButton from "../buttons/menuButton";
+import React, { Dispatch, useEffect, useState } from "react";
+import { Menu, Moon, Sun } from "lucide-react";
+import { pageTitles } from "@/lib/data/generalData";
 
-const pageTitles: Record<string, string> = {
-  "/dashboard": "Dashboard",
-  "/projects": "Projects",
-  "/myTasks": "My Tasks",
-  "/sprints": "Sprints",
-  "/profile": "Profile",
-};
-
-export default function Topbar(){
+export default function Topbar({
+    setOpen
+} : {
+    setOpen: Dispatch<React.SetStateAction<boolean>>
+}){
     const pathname = usePathname();
 
     const [mounted, setMounted] = useState<boolean>(false);
     const {theme, setTheme} = useTheme();
 
     useEffect(() => {
-        setMounted(true)
+        setMounted(true);
     }, [])
 
     if (!mounted) return null
@@ -45,7 +41,13 @@ export default function Topbar(){
                     <Icon size={18} />
                 </button>
 
-                <MenuButton />
+                <button 
+                    onClick={() => setOpen(prev => !prev)}
+                    className={`cursor-pointer p-2 bg bg-transparent hover:bg-(--muted) rounded text-(--muted-foreground) 
+                    hover:text-(--foreground) md:hidden`}
+                >
+                    <Menu size={18} color="var(--muted-foreground)"/>
+                </button>
             </div>
         </div>
     )

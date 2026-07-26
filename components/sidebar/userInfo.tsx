@@ -8,7 +8,7 @@ export default async function SidebarUserInfo() {
 
     return (
         <div className="w-full flex flex-col border-t border-(--border) pb-3">
-            <div className="flex gap-2 items-center p-5">
+            <div className="flex gap-2 items-center p-5 pb-1">
                 <Image 
                     className="rounded-full"
                     src={session.user.image ?? "/default-avatar.png"} 

@@ -1,15 +1,8 @@
 "use client"
 
-import { Activity, CheckSquare, FolderKanban, LayoutDashboard } from "lucide-react";
+import { mainNav } from "@/lib/data/generalData";
 import Link from "next/link";
 import { usePathname } from "next/navigation"
-
-const mainNav = [
-    {Icon: LayoutDashboard, label: "Dashboard", url: "/dashboard"},
-    {Icon: FolderKanban, label: "Projects", url: "/projects"},
-    {Icon: CheckSquare, label: "My Tasks", url: "/myTasks"},
-    {Icon: Activity, label: "Sprints", url: "/sprints"},
-];
 
 export default function MainNavegation(){
     const pathname = usePathname();
