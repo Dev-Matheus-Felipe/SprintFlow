@@ -10,12 +10,12 @@ datasource db {
 
 
 enum ProjectColors {
-  AZUL
-  VERDE
-  LARANJA
-  VERMELHO
-  ROXO
-  CIANO
+  BLUE
+  GREEN
+  ORANGE
+  RED
+  PURPLE
+  CYAN
 }
 
 enum ProjectIcons {
@@ -31,8 +31,8 @@ enum SprintSituations {
 
 enum TaskStatus {
   AFAZER
-  EMPROGRESSO
-  EMREVISAO
+  EM_PROGRESSO
+  EM_REVISAO
   CONCLUIDO
 }
 
@@ -47,6 +47,13 @@ enum ProjectRoles {
   OWNER
   ADMIN
   MEMBER
+}
+
+enum ProjectStatus  {
+  ATIVO
+  EM_PAUSA
+  FINALIZADO
+  ABORTADO
 }
 
 
@@ -85,6 +92,7 @@ model Project {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  status   ProjectStatus
 
   color ProjectColors
   icon  ProjectIcons

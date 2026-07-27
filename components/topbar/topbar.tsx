@@ -3,28 +3,29 @@
 import { usePathname } from "next/navigation";
 import GlobalSearch from "./globalSearch";
 import { useTheme } from "next-themes";
-import React, { Dispatch, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Menu, Moon, Sun } from "lucide-react";
 import { pageTitles } from "@/lib/data/generalData";
+import { SidebarContext } from "../providers/sidebarProvider";
 
-export default function Topbar({
-    setOpen
-} : {
-    setOpen: Dispatch<React.SetStateAction<boolean>>
-}){
+export default function Topbar(){
     const pathname = usePathname();
 
     const [mounted, setMounted] = useState<boolean>(false);
     const {theme, setTheme} = useTheme();
 
+    const context = useContext(SidebarContext);
+
     useEffect(() => {
         setMounted(true);
     }, [])
 
-    if (!mounted) return null
+    if (!mounted || !context) return null
     
-    const name = pageTitles[pathname];
     const Icon = theme == "dark" ? Sun : Moon;
+    const name = pageTitles[pathname];
+
+    const {setOpen} = context;
 
     return (
         <div className="w-full border-b border-(--border) h-16 flex items-center justify-between px-5">

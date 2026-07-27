@@ -12,7 +12,7 @@ export default function ProjectsNavegation({projects} : {projects: Project[]}){
             <button 
                 onClick={() => setShow(prev => !prev)}
                 className="flex gap-2 items-center justify-between w-full text-(--muted-foreground) cursor-pointer">
-                <h2 className="text-sm">PROJECTS</h2>
+                <h2 className="text-[13px]">PROJECTS</h2>
                 {!show ? <ChevronRight size={16} /> : <ChevronDown size={16}/> }
             </button>
         </div>

@@ -3,9 +3,20 @@
 import { mainNav } from "@/lib/data/generalData";
 import Link from "next/link";
 import { usePathname } from "next/navigation"
+import { useContext, useEffect } from "react";
+import { SidebarContext } from "../providers/sidebarProvider";
 
 export default function MainNavegation(){
     const pathname = usePathname();
+    const context = useContext(SidebarContext);
+
+    if(!context) return null;
+    
+    const {open, setOpen} = context;
+
+    useEffect(() => {
+        if(open) setOpen(false);
+    }, [pathname]);
 
     return (
         <div className="w-full flex flex-col gap-2 p-3 py-5 pb-2">

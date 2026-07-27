@@ -1,7 +1,7 @@
-import { Zap } from "lucide-react";
-import MainNavegation from "./navegation";
 import SidebarProjects from "./projects/projects";
+import MainNavegation from "./navegation";
 import SidebarUserInfo from "./userInfo";
+import { Zap } from "lucide-react";
 
 export default function Sidebar(){
     return (
