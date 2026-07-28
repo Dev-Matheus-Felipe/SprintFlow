@@ -1,4 +1,4 @@
-import SidebarProjects from "./projects/projects";
+import SidebarProjects from "../projects/sidebar";
 import MainNavegation from "./navegation";
 import SidebarUserInfo from "./userInfo";
 import { Zap } from "lucide-react";

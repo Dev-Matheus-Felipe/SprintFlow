@@ -19,7 +19,14 @@ enum ProjectColors {
 }
 
 enum ProjectIcons {
-  FOGUETE
+  Zap
+  Rocket
+  Palette
+  RefreshCw
+  Smartphone
+  Globe
+  Shield
+  ChartColumn
 }
 
 enum SprintSituations {

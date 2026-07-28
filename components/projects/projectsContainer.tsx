@@ -1,35 +1,28 @@
 "use client"
 
+import { AllFilters } from "@/lib/project/data";
 import { PageProjectsType } from "@/lib/types"
 import { Search } from "lucide-react";
 import { useState } from "react"
+import ProjectComponent from "./project";
 
 type FilterType = "TODOS" | "ATIVO" | "EM_PAUSA" | "FINALIZADO" | "ABORTADO";
 
-type AllFiltersType = {
+export type AllFiltersType = {
     name: string,
     filter: FilterType
 }
-
-const AllFilters: AllFiltersType[] = [
-    {name: "Todos", filter: "TODOS"},
-    {name: "Ativo", filter: "ATIVO"},
-    {name: "Em Pausa", filter: "EM_PAUSA"},
-    {name: "Finalizado", filter: "FINALIZADO"},
-    {name: "Abortado", filter: "ABORTADO"},
-]
 
 export default function Projects({projects} : {projects: PageProjectsType[]}){
     const [filter, setFilter] = useState<FilterType>("TODOS");
     const [search, setSearch] = useState<string>("");
 
-
-
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-5">
             <div className="flex flex-col lg:flex-row items-center gap-5">
                 <div className="flex gap-3 items-center bg-(--secondary) h-10 px-2 pl-3 py-3 rounded w-70 max-lg:w-full">
                     <Search size={16} />
+
                     <input 
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
@@ -50,6 +43,29 @@ export default function Projects({projects} : {projects: PageProjectsType[]}){
                         </button>
                     )) }
                 </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                {projects
+                    .filter(p => p.name.toLowerCase().includes(search.toLowerCase()) && (filter === "TODOS" || p.status === filter))
+                    .map((project) => (
+                        <ProjectComponent project={project} key={project.id} />
+                ))}
+
+                {/* EMPTY STATE */}
+                {projects.length === 0 && (
+                    <div className="col-span-full flex flex-col items-center justify-center py-16">
+                        <div className="text-4xl mb-3">🔍</div>
+
+                        <p className="text-sm font-medium text-(--foreground)">
+                            Nenhum projeto encontrado
+                        </p>
+
+                        <p className="text-xs mt-1 text-(--muted-foreground)">
+                            Tente ajustar os filtros ou criar um novo projeto
+                        </p>
+                    </div>
+                )}
             </div>
         </div>
     )

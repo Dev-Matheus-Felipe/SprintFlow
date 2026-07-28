@@ -13,6 +13,8 @@ import {
     ChartColumn, 
 } from "lucide-react";
 
+// ------------------------------------------ NAVEGATION DATA ------------------------------------------ //
+
 export const mainNav = [
     {Icon: LayoutDashboard, label: "Dashboard", url: "/dashboard"},
     {Icon: FolderKanban, label: "Projects", url: "/projects"},
@@ -23,18 +25,3 @@ export const mainNav = [
 export const pageTitles = Object.fromEntries(
     mainNav.map(({url, label}) => [url, label])
 );
-
-export const ProjectColors = ["BLUE", "GREEN", "ORANGE", "RED", "PURPLE", "CYAN"];
-
-
-
-export const ProjectIcons = [
-  Zap,
-  Rocket,
-  Palette,
-  RefreshCw,
-  Smartphone,
-  Globe,
-  Shield,
-  ChartColumn,
-];

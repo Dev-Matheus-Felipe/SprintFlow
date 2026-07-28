@@ -1,7 +1,7 @@
 import NewProjectButton from "@/components/buttons/newProjectButton";
-import Projects from "@/components/projects/projects";
+import Projects from "@/components/projects/projectsContainer";
 import { auth } from "@/lib/auth"
-import { getPageProjects } from "@/lib/getData/project";
+import { getPageProjects } from "@/lib/project/getPageData";
 import { PageProjectsType } from "@/lib/types";
 
 export default async function ProjectsPage(){
@@ -17,7 +17,7 @@ export default async function ProjectsPage(){
                     <h1 className="font-bold text-lg">Projects</h1>
                     <p className="flex-sm text-(--muted-foreground)">
                         {projects.length > 0
-                            ? projects.length + "totals"
+                            ? projects.length + " total" + (projects.length > 1 ? "s" : "")
                             : "No projects added"
                         }
                     </p>

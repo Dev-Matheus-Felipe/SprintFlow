@@ -12,24 +12,16 @@ export const getPageProjects = async({id} : {id: string}): Promise<PageProjectsT
                 select: {
                     user: {
                         select: {
-                            image: true
+                            image: true,
+                            id: true,
+                            name: true
                         }
                     }
                 }
-            }
-        }
-    });
-
-    return projects;
-}
-
-export const getSidebarProjects = async({id} : {id: string}) => {
-    const projects = await prisma.project.findMany({
-        where: {
-            members: {
-                some: { userId: id },
             },
-        },
+
+            tasks: true
+        }
     });
 
     return projects;
