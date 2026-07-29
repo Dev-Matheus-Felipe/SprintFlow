@@ -3,14 +3,6 @@ import {
     CheckSquare, 
     FolderKanban, 
     LayoutDashboard, 
-    Zap, 
-    Rocket, 
-    Palette, 
-    RefreshCw, 
-    Smartphone, 
-    Globe, 
-    Shield, 
-    ChartColumn, 
 } from "lucide-react";
 
 // ------------------------------------------ NAVEGATION DATA ------------------------------------------ //

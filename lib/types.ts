@@ -26,3 +26,12 @@ export type PageProjectsType = Prisma.ProjectGetPayload<{
         tasks: true
     }
 }>
+
+export type SidebarProjectsType = Prisma.ProjectGetPayload<{
+    select: {
+        name: true,
+        color: true,
+        id: true,
+        status: true
+    }
+}>

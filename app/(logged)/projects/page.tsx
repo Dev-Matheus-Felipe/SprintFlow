@@ -17,7 +17,7 @@ export default async function ProjectsPage(){
                     <h1 className="font-bold text-lg">Projects</h1>
                     <p className="flex-sm text-(--muted-foreground)">
                         {projects.length > 0
-                            ? projects.length + " total" + (projects.length > 1 ? "s" : "")
+                            ? projects.length + " project" + (projects.length > 1 ? "s" : "" + " in total")
                             : "No projects added"
                         }
                     </p>

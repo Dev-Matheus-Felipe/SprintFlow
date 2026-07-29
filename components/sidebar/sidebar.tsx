@@ -15,8 +15,8 @@ export default function Sidebar(){
                 <h1 className="font-bold text-lg">SprintFlow</h1>
             </div>
 
-            <div className="flex-1 flex flex-col justify-between">
-                <div className="flex flex-col flex-1">
+            <div className="flex-1 min-h-0 flex flex-col justify-between">
+                <div className="flex flex-col flex-1 min-h-0">
 
                     {/* MAIN NAVEGATION */}
                     <MainNavegation />

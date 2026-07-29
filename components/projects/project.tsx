@@ -1,22 +1,31 @@
 import { ProjectIcons, statusColor } from "@/lib/project/data";
 import { PageProjectsType } from "@/lib/types";
 import { CheckCircle2, Clock, Users } from "lucide-react";
+import Link from "next/link";
 
 export default function ProjectComponent({project} : {project: PageProjectsType}){
+
+    // task amount
     const projectTasks = project.tasks.filter((t) => t.projectId === project.id);
+
+    // completed projects amount
     const done = projectTasks.filter((t) => t.status === "CONCLUIDO").length;
 
+    // progress bar
     const progress = projectTasks.length > 0 ? Math.round((done / projectTasks.length) * 100) : 0;
+
+    // status background
     const cfg = statusColor.get(project.status)!;
 
+    // project icon
     const ICON = ProjectIcons.get(project.icon)!;
     
     return (
-        <div
+        <Link
             key={project.id}
             className={`rounded-xl p-5 cursor-pointer transition-all group bg-(--card)
-            border border-(--border) hover:border-(--primary)`}
-            
+            border border-(--border) hover:border-(--primary)`} 
+            href={`/projects/${project.id}`}            
         >
 
             {/* HEADER */}
@@ -107,14 +116,14 @@ export default function ProjectComponent({project} : {project: PageProjectsType}
 
                     {project.members.length > 3 && (
                         <div
-                        className={`w-6 h-6 rounded-full ring-2 flex items-center justify-center text-xs font-medium
-                        bg-(--muted) text-(--muted-foreground)`}
+                            className={`w-6 h-6 rounded-full ring-2 flex items-center justify-center text-xs font-medium
+                            bg-(--muted) text-(--muted-foreground)`}
                         >
-                        +{project.members.length - 3}
+                            +{project.members.length - 3}
                         </div>
                     )}
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }

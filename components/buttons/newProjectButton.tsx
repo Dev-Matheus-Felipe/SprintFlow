@@ -1,14 +1,10 @@
 "use client"
 
+import useNewProject from "@/lib/hooks/newProject";
 import { Plus } from "lucide-react"
-import { useContext } from "react"
-import { NewProjectContext } from "../providers/newProjectProvider"
 
 export default function NewProjectButton(){
-    const context = useContext(NewProjectContext);
-    if(!context) return null;
-
-    const {setOpen} = context;
+    const { setOpen } = useNewProject();
 
     return (
         <button 

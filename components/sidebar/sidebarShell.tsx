@@ -21,7 +21,7 @@ export default function SidebarShell({
             </aside>
 
             <div 
-                className={`${open ? "fixed" : "hidden"} inset-0 min-w-screen min-h-screen z-5 bg-black/60`} 
+                className={`${open ? "fixed" : "hidden"} inset-0 min-w-screen h-screen z-5 bg-black/60`} 
                 onClick={() => setOpen(false)}
             />
         </>

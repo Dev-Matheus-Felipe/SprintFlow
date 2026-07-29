@@ -17,8 +17,13 @@ export default function Projects({projects} : {projects: PageProjectsType[]}){
     const [filter, setFilter] = useState<FilterType>("TODOS");
     const [search, setSearch] = useState<string>("");
 
+    const filteredProjects = projects
+        .filter(p => p.name.toLowerCase().includes(search.toLowerCase()) && (filter === "TODOS" || p.status === filter));
+
     return (
         <div className="flex flex-col gap-5">
+
+            {/* SEARCH SYSTEM */}
             <div className="flex flex-col lg:flex-row items-center gap-5">
                 <div className="flex gap-3 items-center bg-(--secondary) h-10 px-2 pl-3 py-3 rounded w-70 max-lg:w-full">
                     <Search size={16} />
@@ -45,27 +50,27 @@ export default function Projects({projects} : {projects: PageProjectsType[]}){
                 </div>
             </div>
 
+            {/* FILTERED PROJECTS */}
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-                {projects
-                    .filter(p => p.name.toLowerCase().includes(search.toLowerCase()) && (filter === "TODOS" || p.status === filter))
-                    .map((project) => (
-                        <ProjectComponent project={project} key={project.id} />
-                ))}
+                {filteredProjects.length > 0
+                    ? filteredProjects
+                        .map((project) => (
+                            <ProjectComponent project={project} key={project.id} />
+                        ))
 
-                {/* EMPTY STATE */}
-                {projects.length === 0 && (
-                    <div className="col-span-full flex flex-col items-center justify-center py-16">
-                        <div className="text-4xl mb-3">🔍</div>
+                    :
+                        <div className="col-span-full flex flex-col items-center justify-center py-16">
+                            <div className="text-4xl mb-3">🔍</div>
 
-                        <p className="text-sm font-medium text-(--foreground)">
-                            Nenhum projeto encontrado
-                        </p>
+                            <p className="text-sm font-medium text-(--foreground)">
+                                No projects found
+                            </p>
 
-                        <p className="text-xs mt-1 text-(--muted-foreground)">
-                            Tente ajustar os filtros ou criar um novo projeto
-                        </p>
-                    </div>
-                )}
+                            <p className="text-xs mt-1 text-(--muted-foreground)">
+                                Try adjusting  the filters or creating a new project
+                            </p>
+                        </div>
+                }
             </div>
         </div>
     )
