@@ -1,10 +1,10 @@
 "use client"
 
-import { NewProjectContext } from "@/components/providers/newProjectProvider"
+import { ModalsContext } from "@/components/providers/modalsProvider";
 import { useContext } from "react"
 
 export default function useNewProject(){
-    const ctx = useContext(NewProjectContext);
+    const ctx = useContext(ModalsContext);
     if (!ctx) throw new Error("newProject must be used within the newProjectProvider");
 
     return ctx;

@@ -1,14 +1,14 @@
 import NewProjectButton from "@/components/buttons/newProjectButton";
 import Projects from "@/components/projects/projectsContainer";
 import { auth } from "@/lib/auth"
-import { getPageProjects } from "@/lib/project/getPageData";
-import { PageProjectsType } from "@/lib/types";
+import { getAllProjects } from "@/lib/project/pages/getAllProjects";
+import { AllProjectsType } from "@/lib/types";
 
 export default async function ProjectsPage(){
     const session = await auth();
     if(!session?.user?.id) return null;
     
-    const projects: PageProjectsType[] = await getPageProjects({id: session.user.id});
+    const projects: AllProjectsType[] = await getAllProjects({id: session.user.id});
 
     return (
         <div className="h-full flex flex-col gap-5">

@@ -1,6 +1,6 @@
 import { Project } from "@prisma/client";
-import { prisma } from "../prisma";
-import { SidebarProjectsType } from "../types";
+import { prisma } from "../../prisma";
+import { SidebarProjectsType } from "../../types";
 
 export const getSidebarProjects = async({id} : {id: string}): Promise<SidebarProjectsType[]> => {
     const projects = await prisma.project.findMany({

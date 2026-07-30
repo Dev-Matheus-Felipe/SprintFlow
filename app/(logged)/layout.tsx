@@ -1,4 +1,4 @@
-import NewProjectProvider from "@/components/providers/newProjectProvider";
+import ModalsProvider from "@/components/providers/modalsProvider";
 import SidebarProvider from "@/components/providers/sidebarProvider";
 import { TitlePageProvider } from "@/components/providers/titlePageProvider";
 import Sidebar from "@/components/sidebar/sidebar";
@@ -13,7 +13,7 @@ export default function LoggedLayout({
 }){
 
     return (
-        <NewProjectProvider>
+        <ModalsProvider>
             <SidebarProvider>
                 <TitlePageProvider>
                     <div className="w-full h-full flex relative">
@@ -26,6 +26,6 @@ export default function LoggedLayout({
                     </div>
                 </TitlePageProvider>
             </SidebarProvider>
-        </NewProjectProvider>
+        </ModalsProvider>
     )
 }

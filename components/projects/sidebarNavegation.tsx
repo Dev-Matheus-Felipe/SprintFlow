@@ -1,5 +1,6 @@
 "use client"
 
+import { usePageTitle } from "@/lib/hooks/pageTitle";
 import { statusColor } from "@/lib/project/data";
 import { SidebarProjectsType } from "@/lib/types";
 import { ChevronDown, ChevronRight } from "lucide-react";
@@ -9,6 +10,8 @@ import { useState } from "react"
 
 export default function ProjectsNavegation({projects} : {projects: SidebarProjectsType[]}){
     const [show, setShow] = useState(false);
+    
+    const { title } = usePageTitle();
     const pathname = usePathname();
 
     return (
@@ -42,7 +45,9 @@ export default function ProjectsNavegation({projects} : {projects: SidebarProjec
                                 </div>
 
                                 <div 
-                                    className="w-2 h-2 rounded-full opacity-0 group-hover:opacity-100" 
+                                    className={`w-2 h-2 rounded-full opacity-0 group-hover:opacity-100 
+                                    ${(title == name && pathname.startsWith("/projects/")) && "opacity-100"}`} 
+
                                     style={{background: obj.color}} 
                                 />
                             </Link>

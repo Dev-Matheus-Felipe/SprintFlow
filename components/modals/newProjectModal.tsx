@@ -1,21 +1,19 @@
 "Use client"
 
+import postNewProject from "@/lib/project/components/postNewProject";
 import { ProjectColors, ProjectIconNames, ProjectIcons } from "@/lib/project/data";
-import postNewProject from "@/lib/project/postNewProject";
 import { newProjectSchema, newProjectSchemType } from "@/lib/zod/newProjectSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { X } from "lucide-react"
-import React, { Dispatch } from "react"
 import { useForm } from "react-hook-form";
 
 const inputStyle = `w-full px-3 py-2.5 rounded-lg text-sm outline-none resize-none bg-(--secondary)
 border border-(--border) text-(--foreground)`;
 
-
 export default function NewProjectModal({
     setOpen,
 } : {
-    setOpen: Dispatch<React.SetStateAction<boolean>>
+    setOpen: (open: boolean) => void
 }){
 
     const {

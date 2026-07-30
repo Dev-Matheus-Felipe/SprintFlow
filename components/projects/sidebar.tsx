@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth"
 import ProjectsNavegation from "./sidebarNavegation";
-import { getSidebarProjects } from "@/lib/project/getSidebarData";
+import { getSidebarProjects } from "@/lib/project/components/getSidebarData";
 
 export default async function SidebarProjects() {
     const session = await auth();

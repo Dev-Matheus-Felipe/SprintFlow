@@ -15,7 +15,7 @@ export default function GlobalSearch(){
             <Search size={16} color="var(--muted-foreground)" />
 
             <input 
-                className={`text-sm text-(--muted-foreground) outline-0 ${focused ? "w-50" : "w-20"} duration-200`}
+                className={`text-sm text-(--muted-foreground) outline-0 w-20 ${focused && "sm:w-50"} duration-200`}
                 value={search} 
                 onChange={(e) => setSearch(e.target.value)} 
                 onFocus={() => setFocused(true)}

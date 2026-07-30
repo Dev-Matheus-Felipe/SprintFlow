@@ -1,9 +1,9 @@
 import { ProjectIcons, statusColor } from "@/lib/project/data";
-import { PageProjectsType } from "@/lib/types";
+import { AllProjectsType } from "@/lib/types";
 import { CheckCircle2, Clock, Users } from "lucide-react";
 import Link from "next/link";
 
-export default function ProjectComponent({project} : {project: PageProjectsType}){
+export default function ProjectComponent({project} : {project: AllProjectsType}){
 
     // task amount
     const projectTasks = project.tasks.filter((t) => t.projectId === project.id);

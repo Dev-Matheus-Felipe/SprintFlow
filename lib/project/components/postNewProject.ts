@@ -1,10 +1,10 @@
 "use server"
 
 import z from "zod";
-import { FuncResponseType } from "../types";
-import { newProjectSchema, newProjectSchemType } from "../zod/newProjectSchema";
-import { auth } from "../auth";
-import { prisma } from "../prisma";
+import { FuncResponseType } from "../../types";
+import { newProjectSchema, newProjectSchemType } from "../../zod/newProjectSchema";
+import { auth } from "../../auth";
+import { prisma } from "../../prisma";
 
 export default async function postNewProject({data} : {data: newProjectSchemType}): Promise<FuncResponseType> {
     const res = z.safeParse(newProjectSchema, data);

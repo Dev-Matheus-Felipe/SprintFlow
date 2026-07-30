@@ -1,10 +1,10 @@
 "use client"
 
 import { AllFilters } from "@/lib/project/data";
-import { PageProjectsType } from "@/lib/types"
+import { AllProjectsType } from "@/lib/types"
 import { Search } from "lucide-react";
 import { useState } from "react"
-import ProjectComponent from "./project";
+import ProjectComponent from "./projectComponent";
 
 type FilterType = "TODOS" | "ATIVO" | "EM_PAUSA" | "FINALIZADO" | "ABORTADO";
 
@@ -13,7 +13,7 @@ export type AllFiltersType = {
     filter: FilterType
 }
 
-export default function Projects({projects} : {projects: PageProjectsType[]}){
+export default function Projects({projects} : {projects: AllProjectsType[]}){
     const [filter, setFilter] = useState<FilterType>("TODOS");
     const [search, setSearch] = useState<string>("");
 

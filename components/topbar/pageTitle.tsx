@@ -13,10 +13,9 @@ export default function TopbarPageTitle(){
 
     useEffect(() => {
         const newName = pageTitles[pathname];
-        setName(newName || title);
+        setName(newName || title || "Page not found");
 
     }, [title, pathname]);
-
 
     return <h1 className="text-md font-bold">{name}</h1>;
 }

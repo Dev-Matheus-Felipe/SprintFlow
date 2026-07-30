@@ -1,7 +1,8 @@
-import { prisma } from "../prisma";
-import { PageProjectsType } from "../types";
+import { prisma } from "@/lib/prisma";
+import { AllProjectsType } from "@/lib/types";
 
-export const getPageProjects = async({id} : {id: string}): Promise<PageProjectsType[]> => {
+
+export const getAllProjects = async({id} : {id: string}): Promise<AllProjectsType[]> => {
     const projects = await prisma.project.findMany({
         where: {
             members: { some: {userId: id} }
@@ -20,7 +21,7 @@ export const getPageProjects = async({id} : {id: string}): Promise<PageProjectsT
                 }
             },
 
-            tasks: true
+            tasks: true,
         }
     });
 

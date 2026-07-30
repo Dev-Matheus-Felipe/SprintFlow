@@ -7,7 +7,10 @@ import {
     Smartphone, 
     Globe, 
     Shield, 
-    ChartColumn, 
+    ChartColumn,
+    Activity,
+    CheckSquare,
+    LucideIcon, 
 } from "lucide-react";
 
 // ------------------------------------------ PROJECT DATA ------------------------------------------ //
@@ -51,3 +54,34 @@ export const statusColor = new Map([
     ["ATIVO", {color: "#16A34A", background: "rgba(22, 163, 74, 0.15)"}],
     ["CONCLUIDO", {color: "#15803D", background: "rgba(21, 128, 61, 0.15)"}],
 ]);
+
+// ------------------------------------------ PROJECT OVERVIEW ------------------------------------------ //
+
+export const views: {
+    icon: LucideIcon,
+    label: string,
+    description: string
+}[] = [
+    {
+        icon: CheckSquare,
+        label: "Tasks",
+        description: "Complete list of tasks and filters",
+    },
+    {
+        icon: Activity,
+        label: "Sprints",
+        description: "Sprint planning and progress",
+    },
+];
+
+export const statusColors: Record<string, string> = {
+    ATIVO: "#10b981",
+    PLANEJAMENTO: "#6d6ef7",
+    CONCLUIDO: "#6b7280",
+};
+
+export const statusLabels: Record<string, string> = {
+    ATIVO: "Ativo",
+    PLANEJAMENTO: "Planejamento",
+    CONCLUIDO: "Concluído",
+};

@@ -9,7 +9,7 @@ export type FuncResponseType = {
 
 // ------------------------------------------ PROJECT ------------------------------------------ //
 
-export type PageProjectsType = Prisma.ProjectGetPayload<{
+export type AllProjectsType = Prisma.ProjectGetPayload<{
     include: {
         members: {
             select: {
@@ -33,5 +33,18 @@ export type SidebarProjectsType = Prisma.ProjectGetPayload<{
         color: true,
         id: true,
         status: true
+    }
+}>
+
+export type ProjectOverviewType = Prisma.ProjectGetPayload<{
+    include: {
+        tasks: true,
+        sprints: true,
+        members: {
+            select: {
+                user: true,
+                role: true,
+            }
+        }
     }
 }>

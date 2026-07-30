@@ -4,11 +4,11 @@ import useNewProject from "@/lib/hooks/newProject";
 import { Plus } from "lucide-react"
 
 export default function NewProjectButton(){
-    const { setOpen } = useNewProject();
+    const { setStatus } = useNewProject();
 
     return (
         <button 
-            onClick={() => setOpen(true)}
+            onClick={() => setStatus({component: "newProject", open: true})}
             className={`flex items-center gap-1.5 bg-(--primary) text-(--primary-foreground) rounded cursor-pointer 
             hover:bg-(--accent-foreground) py-2 px-3`}
         >
