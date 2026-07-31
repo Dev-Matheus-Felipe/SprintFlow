@@ -26,7 +26,7 @@ export default function ProjectOverview({project} : {project: ProjectOverviewTyp
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
                     {views.map((v) => (
-                        <ProjectViewButton v={v} key={v.label}  /> ))}
+                        <ProjectViewButton v={v} key={v.label} project={project}  /> ))}
 
                     </div>
                     

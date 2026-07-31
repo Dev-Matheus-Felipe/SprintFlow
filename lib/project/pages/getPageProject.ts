@@ -10,7 +10,16 @@ export default async function getProjectPage({id, userId} : {id: string, userId:
             }
         },
         include: {
-            tasks: true,
+            tasks: {
+                include: {
+                    project: {
+                        select: {
+                            name: true,
+                            icon: true
+                        }
+                    }
+                }
+            },
             sprints: true,
             members: {
                 select: {

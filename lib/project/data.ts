@@ -59,17 +59,20 @@ export const statusColor = new Map([
 export const views: {
     icon: ProjectViewIcon,
     label: string,
-    description: string
+    description: string,
+    url: "sprints" | "tasks"
 }[] = [
     {
         icon: "checkSquare",
         label: "Tasks",
         description: "Complete list of tasks and filters",
+        url: "tasks"
     },
     {
         icon: "activity",
         label: "Sprints",
         description: "Sprint planning and progress",
+        url: "sprints"
     },
 ];
  
