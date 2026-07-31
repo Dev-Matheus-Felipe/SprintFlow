@@ -1,6 +1,6 @@
 import { auth } from "@/lib/auth"
 import Image from "next/image";
-import LogoutButton from "../buttons/logoutButton";
+import LogoutButton from "../buttons/bars/logoutButton";
 
 export default async function SidebarUserInfo() {
     const session = await auth();

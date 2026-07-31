@@ -10,11 +10,11 @@ type MemberType = Prisma.ProjectMemberGetPayload<{
 
 export default function MemberComponent({
     member, 
-    i, 
+    index, 
     size
 } : {
     member: MemberType,
-    i: number,
+    index: number,
     size: number
 }){
     return (
@@ -23,7 +23,7 @@ export default function MemberComponent({
             className="flex items-center gap-3 px-4 py-3"
             style={{
                 borderBottom:
-                    i < size - 1
+                    index < size - 1
                     ? "1px solid var(--border)"
                     : "none",
             }}

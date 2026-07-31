@@ -14,14 +14,14 @@ type ProjectPageType = {
 export default async function ProjectPage({params} : ProjectPageType){
     const { id } =  await params;
     const session = await auth();
-
+    
     if (!/^[0-9a-fA-F]{24}$/.test(id) || !session?.user?.id) {
         return notFound();
     }
-
+    
     const project: ProjectOverviewType | null = await getProjectPage({id: id, userId: session.user.id});
     if(!project) notFound();
-
+    
     return (
         <>
             <SetTitlePage title={project?.name ?? ""} />

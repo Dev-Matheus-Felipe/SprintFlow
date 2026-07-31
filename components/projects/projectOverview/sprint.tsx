@@ -15,7 +15,6 @@ export default function SprintComponent({
 
     return (
         <div
-            key={sprint.id}
             className={`flex items-center gap-4 px-4 py-3 rounded-xl bg-(--card) border 
             border-(--border)`}>
                 

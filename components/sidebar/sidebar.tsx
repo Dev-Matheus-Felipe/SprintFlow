@@ -1,4 +1,4 @@
-import SidebarProjects from "../projects/sidebar";
+import SidebarProjects from "../projects/sidebar/sidebar";
 import MainNavegation from "./navegation";
 import SidebarUserInfo from "./userInfo";
 import { Zap } from "lucide-react";
@@ -7,7 +7,7 @@ export default function Sidebar(){
     return (
         <>
             {/* LOGO */}
-            <div className="flex items-center gap-3 border-b border-(--border) p-5">
+            <div className="flex items-center gap-3  p-5">
                 <div className="bg-primary p-2 rounded">
                     <Zap size={16} color="#fff" fill="#fff" />
                 </div>

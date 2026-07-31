@@ -1,7 +1,7 @@
 import GlobalSearch from "./globalSearch";
 import TopbarPageTitle from "./pageTitle";
-import OpenSidebarButton from "../buttons/openSidebarButton";
-import SwitchThemesButton from "../buttons/switchThemes";
+import OpenSidebarButton from "../buttons/bars/openSidebarButton";
+import SwitchThemesButton from "../buttons/bars/switchThemes";
 
 export default function Topbar(){
     return (

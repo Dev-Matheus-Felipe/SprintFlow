@@ -8,9 +8,8 @@ import {
     Globe, 
     Shield, 
     ChartColumn,
-    Activity,
     CheckSquare,
-    LucideIcon, 
+    Activity,
 } from "lucide-react";
 
 // ------------------------------------------ PROJECT DATA ------------------------------------------ //
@@ -58,21 +57,22 @@ export const statusColor = new Map([
 // ------------------------------------------ PROJECT OVERVIEW ------------------------------------------ //
 
 export const views: {
-    icon: LucideIcon,
+    icon: ProjectViewIcon,
     label: string,
     description: string
 }[] = [
     {
-        icon: CheckSquare,
+        icon: "checkSquare",
         label: "Tasks",
         description: "Complete list of tasks and filters",
     },
     {
-        icon: Activity,
+        icon: "activity",
         label: "Sprints",
         description: "Sprint planning and progress",
     },
 ];
+ 
 
 export const statusColors: Record<string, string> = {
     ATIVO: "#10b981",
@@ -85,3 +85,10 @@ export const statusLabels: Record<string, string> = {
     PLANEJAMENTO: "Planejamento",
     CONCLUIDO: "Concluído",
 };
+
+export const projectViewIcons = {
+  checkSquare: CheckSquare,
+  activity: Activity,
+};
+
+export type ProjectViewIcon = keyof typeof projectViewIcons;

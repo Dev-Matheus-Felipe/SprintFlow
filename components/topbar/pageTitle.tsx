@@ -13,7 +13,7 @@ export default function TopbarPageTitle(){
 
     useEffect(() => {
         const newName = pageTitles[pathname];
-        setName(newName || title || "Page not found");
+        setName(newName || title || "...");
 
     }, [title, pathname]);
 

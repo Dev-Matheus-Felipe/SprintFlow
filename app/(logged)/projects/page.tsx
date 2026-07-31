@@ -1,4 +1,4 @@
-import NewProjectButton from "@/components/buttons/newProjectButton";
+import NewProjectButton from "@/components/buttons/project/newProjectButton";
 import Projects from "@/components/projects/projectsContainer";
 import { auth } from "@/lib/auth"
 import { getAllProjects } from "@/lib/project/pages/getAllProjects";
