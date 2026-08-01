@@ -2,6 +2,7 @@
 
 import React, { createContext, Dispatch, useState } from "react"
 import NewProjectModal from "../modals/newProjectModal";
+import NewTaskModal from "../modals/newTaskModal";
 
 type ModalsContextType = {
     status: StatusType,
@@ -10,7 +11,7 @@ type ModalsContextType = {
 
 type StatusType = {
     open: boolean,
-    component: "newProject" | "newMember" | null
+    component: "newProject" | "newTask" | null
 }
 
 export const ModalsContext = createContext<ModalsContextType | null>(null);
@@ -27,7 +28,10 @@ export default function ModalsProvider({
 
     return (
         <ModalsContext.Provider value={{status, setStatus}}>
-            { status.open && <ManageModals status={status} setStatus={setStatus} /> }
+            { status.open && 
+                <ManageModals status={status} setStatus={setStatus} /> 
+            }
+
             {children}
         </ModalsContext.Provider>
     )
@@ -47,8 +51,8 @@ function ManageModals({
     }
 
     switch(status.component){
-        case "newMember":
-            return null;
+        case "newTask":
+            return <NewTaskModal setOpen={openModal} />;
         
         case "newProject":
             return <NewProjectModal setOpen={openModal} />;

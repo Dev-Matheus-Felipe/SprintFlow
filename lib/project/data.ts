@@ -1,4 +1,4 @@
-import { AllFiltersType } from "@/components/projects/projectsContainer";
+import { AllProjectsFilterType } from "@/components/projects/projectsList";
 import { 
     Zap, 
     Rocket, 
@@ -39,7 +39,7 @@ export const ProjectIconNames = [
   "ChartColumn",
 ] as const;
 
-export const AllFilters: AllFiltersType[] = [
+export const AllFilters: { name: string, filter: AllProjectsFilterType }[] = [
     {name: "Todos", filter: "TODOS"},
     {name: "Ativo", filter: "ATIVO"},
     {name: "Em Pausa", filter: "EM_PAUSA"},

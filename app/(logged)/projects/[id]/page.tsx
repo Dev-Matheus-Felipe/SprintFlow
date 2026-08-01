@@ -24,7 +24,7 @@ export default async function ProjectPage({params} : ProjectPageType){
     
     return (
         <>
-            <SetTitlePage title={project?.name ?? ""} />
+            <SetTitlePage title={project.name} />
             <ProjectOverview project={project} />
         </>
     )

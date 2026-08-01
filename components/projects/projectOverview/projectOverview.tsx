@@ -62,7 +62,7 @@ export default function ProjectOverview({project} : {project: ProjectOverviewTyp
                 <div>
                     <div className="flex items-center justify-between mb-3">
                         <h3 className="text-sm font-semibold text-(--foreground)">
-                            Membros ({project.members.length})
+                            Members ({project.members.length})
                         </h3>
 
                         <NewMemberButton />

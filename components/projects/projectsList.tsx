@@ -6,15 +6,10 @@ import { Search } from "lucide-react";
 import { useState } from "react"
 import ProjectComponent from "./projectComponent";
 
-type FilterType = "TODOS" | "ATIVO" | "EM_PAUSA" | "FINALIZADO" | "ABORTADO";
+export type AllProjectsFilterType = "TODOS" | "ATIVO" | "EM_PAUSA" | "FINALIZADO" | "ABORTADO";
 
-export type AllFiltersType = {
-    name: string,
-    filter: FilterType
-}
-
-export default function Projects({projects} : {projects: AllProjectsType[]}){
-    const [filter, setFilter] = useState<FilterType>("TODOS");
+export default function ProjectsList({projects} : {projects: AllProjectsType[]}){
+    const [filter, setFilter] = useState<AllProjectsFilterType>("TODOS");
     const [search, setSearch] = useState<string>("");
 
     const filteredProjects = projects
@@ -58,18 +53,17 @@ export default function Projects({projects} : {projects: AllProjectsType[]}){
                             <ProjectComponent project={project} key={project.id} />
                         ))
 
-                    :
-                        <div className="col-span-full flex flex-col items-center justify-center py-16">
-                            <div className="text-4xl mb-3">🔍</div>
+                    : <div className="col-span-full flex flex-col items-center justify-center py-16">
+                        <div className="text-4xl mb-3">🔍</div>
 
-                            <p className="text-sm font-medium text-(--foreground)">
-                                No projects found
-                            </p>
+                        <p className="text-sm font-medium text-(--foreground)">
+                            No projects found
+                        </p>
 
-                            <p className="text-xs mt-1 text-(--muted-foreground)">
-                                Try adjusting  the filters or creating a new project
-                            </p>
-                        </div>
+                        <p className="text-xs mt-1 text-(--muted-foreground)">
+                            Try adjusting  the filters or creating a new project
+                        </p>
+                    </div>
                 }
             </div>
         </div>

@@ -1,5 +1,5 @@
 import NewProjectButton from "@/components/buttons/project/newProjectButton";
-import Projects from "@/components/projects/projectsContainer";
+import ProjectsList from "@/components/projects/projectsList";
 import { auth } from "@/lib/auth"
 import { getAllProjects } from "@/lib/project/pages/getAllProjects";
 import { AllProjectsType } from "@/lib/types";
@@ -26,7 +26,7 @@ export default async function ProjectsPage(){
                 <NewProjectButton />
             </div>
             
-            <Projects projects={projects} />
+            <ProjectsList projects={projects} />
         </div>
     )
 }

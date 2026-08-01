@@ -1,4 +1,5 @@
 import ModalsProvider from "@/components/providers/modalsProvider";
+import ProjectProvider from "@/components/providers/projectProvider";
 import SidebarProvider from "@/components/providers/sidebarProvider";
 import { TitlePageProvider } from "@/components/providers/titlePageProvider";
 import Sidebar from "@/components/sidebar/sidebar";
@@ -13,19 +14,21 @@ export default function LoggedLayout({
 }){
 
     return (
-        <ModalsProvider>
-            <SidebarProvider>
-                <TitlePageProvider>
-                    <div className="w-full h-full flex relative">
-                        <SidebarShell children={ <Sidebar /> } />
+        <ProjectProvider>
+            <ModalsProvider>
+                <SidebarProvider>
+                    <TitlePageProvider>
+                            <div className="w-full h-full flex relative">
+                                <SidebarShell children={ <Sidebar /> } />
 
-                        <div className="flex-1 flex flex-col">
-                            <Topbar />
-                            <div className="py-7 px-9 overflow-y-auto">{children}</div>
-                        </div>
-                    </div>
-                </TitlePageProvider>
-            </SidebarProvider>
-        </ModalsProvider>
+                                <div className="flex-1 flex flex-col">
+                                    <Topbar />
+                                    <div className="p-7">{children}</div>
+                                </div>
+                            </div>
+                    </TitlePageProvider>
+                </SidebarProvider>
+            </ModalsProvider>
+        </ProjectProvider>     
     )
 }

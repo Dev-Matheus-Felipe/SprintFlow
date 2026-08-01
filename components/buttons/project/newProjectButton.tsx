@@ -1,10 +1,10 @@
 "use client"
 
-import useNewProject from "@/lib/hooks/newProject";
+import useModal from "@/lib/hooks/newProject";
 import { Plus } from "lucide-react"
 
 export default function NewProjectButton(){
-    const { setStatus } = useNewProject();
+    const { setStatus } = useModal();
 
     return (
         <button 

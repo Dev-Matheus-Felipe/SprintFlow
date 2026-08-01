@@ -1,12 +1,13 @@
 import { ProjectIcons, statusColor } from "@/lib/project/data";
 import { AllProjectsType } from "@/lib/types";
 import { CheckCircle2, Clock, Users } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function ProjectComponent({project} : {project: AllProjectsType}){
 
-    // task amount
-    const projectTasks = project.tasks.filter((t) => t.projectId === project.id);
+    // tasks amount
+    const projectTasks = project.tasks;
 
     // completed projects amount
     const done = projectTasks.filter((t) => t.status === "CONCLUIDO").length;
@@ -23,9 +24,9 @@ export default function ProjectComponent({project} : {project: AllProjectsType})
     return (
         <Link
             key={project.id}
+            href={`/projects/${project.id}`}            
             className={`rounded-xl p-5 cursor-pointer transition-all group bg-(--card)
             border border-(--border) hover:border-(--primary)`} 
-            href={`/projects/${project.id}`}            
         >
 
             {/* HEADER */}
@@ -88,7 +89,7 @@ export default function ProjectComponent({project} : {project: AllProjectsType})
                     </div>
 
                     <div className="flex items-center gap-1">
-                        <Clock size={13} style={{ color: "var(--muted-foreground)" }} />
+                        <Clock size={13} color="var(--muted-foreground)" />
 
                         <span className="text-xs text-(--muted-foreground)">
                             {projectTasks.length - done}
@@ -106,11 +107,13 @@ export default function ProjectComponent({project} : {project: AllProjectsType})
 
                 <div className="flex -space-x-2">
                     {project.members.slice(0, 3).map((m) => (
-                        <img 
+                        <Image 
                             key={m.user.id} 
                             src={m.user.image ?? ""} 
                             alt={m.user.name} 
-                            className="w-6 h-6 rounded-full ring-2" style={{ WebkitRingColor: "var(--card)" } as any} 
+                            width={24}
+                            height={24}
+                            className="rounded-full ring-2" style={{ WebkitRingColor: "var(--card)" } as any} 
                         />
                     ))}
 
