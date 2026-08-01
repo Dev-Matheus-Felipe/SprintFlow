@@ -1,8 +1,15 @@
-import { ProjectIcons, statusColor } from "@/lib/project/data";
-import { AllProjectsType } from "@/lib/types";
 import { CheckCircle2, Clock, Users } from "lucide-react";
+import { ProjectIcons } from "@/lib/project/data";
+import { AllProjectsType } from "@/lib/types";
 import Image from "next/image";
 import Link from "next/link";
+
+export const statusColor = new Map([
+    ["Paused", { color: "#F97316", background: "rgba(249, 115, 22, 0.15)" }],
+    ["Cancelled", {color: "#DC2626", background: "rgba(220, 38, 38, 0.15)"}],
+    ["Active", {color: "#16A34A", background: "rgba(22, 163, 74, 0.15)"}],
+    ["Completed", {color: "#15803D", background: "rgba(21, 128, 61, 0.15)"}],
+]);
 
 export default function ProjectComponent({project} : {project: AllProjectsType}){
 
@@ -10,7 +17,7 @@ export default function ProjectComponent({project} : {project: AllProjectsType})
     const projectTasks = project.tasks;
 
     // completed projects amount
-    const done = projectTasks.filter((t) => t.status === "CONCLUIDO").length;
+    const done = projectTasks.filter((t) => t.status === "Completed").length;
 
     // progress bar
     const progress = projectTasks.length > 0 ? Math.round((done / projectTasks.length) * 100) : 0;
@@ -61,7 +68,7 @@ export default function ProjectComponent({project} : {project: AllProjectsType})
             <div className="mb-4">
                 <div className="flex items-center justify-between mb-1.5">
                     <span className="text-xs texxt-(--muted-foreground)">
-                        Progresso
+                        Progress
                     </span>
 
                     <span className="text-xs font-medium text-(--foreground)">

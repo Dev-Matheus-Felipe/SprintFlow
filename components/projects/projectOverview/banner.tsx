@@ -7,7 +7,7 @@ export default function Banner({project} : {project: ProjectOverviewType}){
     const projectStatus = getProjectStatus({tasks: project.tasks});    
 
     // completed tasks and progress data
-    const done = project.tasks.filter((t) => t.status === "CONCLUIDO").length;
+    const done = project.tasks.filter((t) => t.status === "Completed").length;
     const progress = project.tasks.length > 0 ? Math.round((done / project.tasks.length) * 100) : 0;
 
     // icon

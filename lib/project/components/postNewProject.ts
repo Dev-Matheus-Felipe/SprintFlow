@@ -19,13 +19,13 @@ export default async function postNewProject({data} : {data: newProjectSchemType
         const project = await prisma.project.create({
             data: {
                 ...validatedData,
-                status: "ATIVO",
+                status: "Active",
             }
         });
 
         await prisma.projectMember.create({
             data: {
-                role: "OWNER",
+                role: "Owner",
                 projectId: project.id,
                 userId: session.user.id
             }

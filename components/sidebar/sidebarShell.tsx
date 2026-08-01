@@ -1,6 +1,6 @@
 "use client"
 
-import React, { Dispatch, useContext } from "react"
+import React, { useContext } from "react"
 import { SidebarContext } from "../providers/sidebarProvider"
 
 export default function SidebarShell({

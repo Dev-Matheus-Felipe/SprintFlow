@@ -46,7 +46,7 @@ export default function MemberComponent({
                 </p>
             </div>
 
-            {member.role === "OWNER" && (
+            {member.role === "Owner" && (
                 <span className={`text-xs px-2 py-0.5 rounded-full font-medium text-(--primary)
                 bg-(--accent)`} >
                     Dono

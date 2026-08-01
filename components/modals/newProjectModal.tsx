@@ -1,7 +1,7 @@
 "Use client"
 
 import postNewProject from "@/lib/project/components/postNewProject";
-import { ProjectColors, ProjectIconNames, ProjectIcons } from "@/lib/project/data";
+import { ProjectIcons } from "@/lib/project/data";
 import { newProjectSchema, newProjectSchemType } from "@/lib/zod/newProjectSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { X } from "lucide-react"
@@ -9,6 +9,8 @@ import { useForm } from "react-hook-form";
 
 const inputStyle = `w-full px-3 py-2.5 rounded-lg text-sm outline-none resize-none bg-(--secondary)
 border border-(--border) text-(--foreground)`;
+
+const ProjectColors = ["Blue", "Green", "Orange", "Red", "Purple", "Cyan"] as const;
 
 export default function NewProjectModal({
     setOpen,
@@ -104,7 +106,7 @@ export default function NewProjectModal({
                                     className={`w-6 h-6 rounded-full transition-transform hover:scale-110 cursor-pointer`}
                                     style={{
                                         background: c,
-                                        outline: color === c ? `2px solid ${c}` : "none",
+                                        outline: color === c ? `2px solid ${c.toLowerCase()}` : "none",
                                         outlineOffset: "2px",
                                     }}
                                 />
@@ -119,28 +121,25 @@ export default function NewProjectModal({
                         <label className="block text-sm font-medium mb-2 text-(--foreground)">Ícone</label>
 
                         <div className="flex gap-2 flex-wrap">
-                            {ProjectIconNames.map((name, index) => {
-                                const IC = ProjectIcons.get(name)!;
+                            { [...ProjectIcons].map(([name, Icon], index) => (
+                                <button
+                                    key={index}
+                                    type="button"
+                                    onClick={() => setValue("icon", name)}
+                                    className={`w-8 h-8 rounded-lg flex items-center justify-center text-lg transition-all border 
+                                    cursor-pointer ${icon == name 
+                                        ? "bg-(--accent) border-(--primary)" 
+                                        : "bg-(--secondary) border-(--border)"}`}
+    
+                                    >
 
-                                return (
-                                    <button
-                                        key={index}
-                                        type="button"
-                                        onClick={() => setValue("icon", name)}
-                                        className={`w-8 h-8 rounded-lg flex items-center justify-center text-lg transition-all border 
-                                        cursor-pointer ${icon == name 
-                                            ? "bg-(--accent) border-(--primary)" 
-                                            : "bg-(--secondary) border-(--border)"}`}
-        
-                                        >
-
-                                        <IC size={16} color={`${icon == name 
-                                            ? `${color || "var(--muted-foreground)"}` 
-                                            : "var(--muted-foreground)"}`} 
-                                        />
-                                    </button>
-                                )
-                            })}
+                                    <Icon size={16} color={`${icon == name 
+                                        ? `${color || "var(--muted-foreground)"}` 
+                                        : "var(--muted-foreground)"}`} 
+                                    />
+                                </button>
+                                
+                            ))}
                         </div>
 
                         {errors.icon && <p className="text-xs text-red-500 pt-2">{errors.icon.message}</p>}

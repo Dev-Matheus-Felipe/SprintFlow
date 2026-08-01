@@ -1,4 +1,3 @@
-import { Project } from "@prisma/client";
 import { prisma } from "../../prisma";
 import { SidebarProjectsType } from "../../types";
 

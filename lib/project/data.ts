@@ -1,4 +1,3 @@
-import { AllProjectsFilterType } from "@/components/projects/projectsList";
 import { 
     Zap, 
     Rocket, 
@@ -14,47 +13,21 @@ import {
 
 // ------------------------------------------ PROJECT DATA ------------------------------------------ //
 
-export const ProjectColors = ["BLUE", "GREEN", "ORANGE", "RED", "PURPLE", "CYAN"] as const;
+export const ProjectStatus = ["Active", "Paused", "Completed", "Cancelled"] as const;
 
 export const ProjectIcons = new Map([
-  ["Zap", Zap],
-  ["Rocket", Rocket],
-  ["Palette", Palette],
-  ["RefreshCw", RefreshCw],
-  ["Smartphone", Smartphone],
-  ["Globe", Globe],
-  ["Shield", Shield],
-  ["ChartColumn", ChartColumn],
+    ["Zap", Zap],
+    ["Rocket", Rocket],
+    ["Palette", Palette],
+    ["RefreshCw", RefreshCw],
+    ["Smartphone", Smartphone],
+    ["Globe", Globe],
+    ["Shield", Shield],
+    ["ChartColumn", ChartColumn],
 ] as const);
 
 
-export const ProjectIconNames = [
-  "Zap",
-  "Rocket",
-  "Palette",
-  "RefreshCw",
-  "Smartphone",
-  "Globe",
-  "Shield",
-  "ChartColumn",
-] as const;
-
-export const AllFilters: { name: string, filter: AllProjectsFilterType }[] = [
-    {name: "Todos", filter: "TODOS"},
-    {name: "Ativo", filter: "ATIVO"},
-    {name: "Em Pausa", filter: "EM_PAUSA"},
-    {name: "Finalizado", filter: "FINALIZADO"},
-    {name: "Abortado", filter: "ABORTADO"},
-];
-
-export const statusColor = new Map([
-    ["PLANEJAMENTO", {color: "#2563EB", background: "rgba(37, 99, 235, 0.15)"}],
-    ["ATRASADO", {color: "#DC2626", background: "rgba(220, 38, 38, 0.15)"}],
-    ["ATIVO", {color: "#16A34A", background: "rgba(22, 163, 74, 0.15)"}],
-    ["CONCLUIDO", {color: "#15803D", background: "rgba(21, 128, 61, 0.15)"}],
-]);
-
-// ------------------------------------------ PROJECT OVERVIEW ------------------------------------------ //
+// ---------------------------------- PROJECT OVERVIEW ---------------------------------- //
 
 export const views: {
     icon: ProjectViewIcon,
@@ -77,17 +50,6 @@ export const views: {
 ];
  
 
-export const statusColors: Record<string, string> = {
-    ATIVO: "#10b981",
-    PLANEJAMENTO: "#6d6ef7",
-    CONCLUIDO: "#6b7280",
-};
-
-export const statusLabels: Record<string, string> = {
-    ATIVO: "Ativo",
-    PLANEJAMENTO: "Planejamento",
-    CONCLUIDO: "Concluído",
-};
 
 export const projectViewIcons = {
   checkSquare: CheckSquare,

@@ -1,5 +1,5 @@
+import { ProjectColors, ProjectIcons } from '@prisma/client';
 import {z} from 'zod'
-import { ProjectColors, ProjectIconNames } from '../project/data';
 
 export const newProjectSchema = z.object({
     name: z
@@ -18,7 +18,7 @@ export const newProjectSchema = z.object({
         .enum(ProjectColors, "Not a valid color!"),
 
     icon: z
-        .enum(ProjectIconNames, "Not a valid Icon!")
+        .enum(ProjectIcons, "Not a valid Icon!")
 });
 
 

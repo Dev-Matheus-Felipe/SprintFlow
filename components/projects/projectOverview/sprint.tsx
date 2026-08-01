@@ -1,5 +1,10 @@
-import { statusColors, statusLabels } from "@/lib/project/data";
 import { Sprint } from "@prisma/client";
+
+const sprintStatus: Record<string, string> = {
+    Active: "#10b981",
+    Planning: "#6d6ef7",
+    Completed: "#6b7280",
+};
 
 export default function SprintComponent({
     sprint,
@@ -28,11 +33,11 @@ export default function SprintComponent({
                     <span
                         className="text-xs px-2 py-0.5 rounded-full font-medium"
                         style={{
-                            color: statusColors[sprint.situation],
-                            background: statusColors[sprint.situation] + "15",
+                            color: sprintStatus[sprint.situation],
+                            background: sprintStatus[sprint.situation] + "15",
                         }}
                     >
-                        {statusLabels[sprint.situation]}
+                        {sprint.situation}
                     </span>
                 </div>
 
@@ -41,7 +46,7 @@ export default function SprintComponent({
                         className="h-full rounded-full"
                         style={{
                             width: `${pct}%`,
-                            background: statusColors[sprint.situation],
+                            background: sprintStatus[sprint.situation],
                         }}
                     />
                 </div>

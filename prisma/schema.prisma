@@ -8,14 +8,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 enum ProjectColors {
-  BLUE
-  GREEN
-  ORANGE
-  RED
-  PURPLE
-  CYAN
+  Blue
+  Green
+  Orange
+  Red
+  Purple
+  Cyan
 }
 
 enum ProjectIcons {
@@ -29,38 +28,38 @@ enum ProjectIcons {
   ChartColumn
 }
 
-enum SprintSituations {
-  PLANEJAMENTO
-  ATRASADO
-  ATIVO
-  CONCLUIDO
+enum SprintStatus {
+  Planning
+  Delayed
+  Active
+  Completed
 }
 
 enum TaskStatus {
-  AFAZER
-  EM_PROGRESSO
-  EM_REVISAO
-  CONCLUIDO
+  Todo
+  InProgress
+  InReview
+  Completed
 }
 
 enum TaskPriorities {
-  BAIXA
-  MEDIA
-  ALTA
-  CRITICO
+  Low
+  Medium
+  High
+  Critical
 }
 
 enum ProjectRoles {
-  OWNER
-  ADMIN
-  MEMBER
+  Owner
+  Admin
+  Member
 }
 
-enum ProjectStatus  {
-  ATIVO
-  EM_PAUSA
-  FINALIZADO
-  ABORTADO
+enum ProjectStatus {
+  Active
+  Paused
+  Completed
+  Cancelled
 }
 
 
@@ -117,7 +116,7 @@ model ProjectMember {
   id String @id @default(auto()) @map("_id") @db.ObjectId
 
 
-  role ProjectRoles @default(MEMBER)
+  role ProjectRoles @default(Member)
 
 
   userId String @db.ObjectId
@@ -152,8 +151,8 @@ model Task {
   updatedAt DateTime @updatedAt
 
 
-  userId String @db.ObjectId
-  user   User @relation(fields: [userId], references: [id])
+  userId String? @db.ObjectId
+  user   User? @relation(fields: [userId], references: [id])
 
 
   sprintId String @db.ObjectId
@@ -197,7 +196,7 @@ model Sprint {
   objective String
 
 
-  situation SprintSituations
+  situation SprintStatus
 
 
   startAt DateTime

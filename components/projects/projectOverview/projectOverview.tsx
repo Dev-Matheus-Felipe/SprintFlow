@@ -40,7 +40,7 @@ export default function ProjectOverview({project} : {project: ProjectOverviewTyp
                         {projectSprints.length > 0 
                             ? projectSprints.map((sprint) => {
                                 const sprintTasks = project.tasks.filter((t) => t.sprintId === sprint.id);
-                                const sprintDone = sprintTasks.filter((t) => t.status === "CONCLUIDO").length;
+                                const sprintDone = sprintTasks.filter((t) => t.status === "Completed").length;
 
                                 return (
                                     <SprintComponent 

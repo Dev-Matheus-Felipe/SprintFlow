@@ -1,17 +1,15 @@
 "use client"
 
-import useProjectData from "@/lib/hooks/projectProps";
-import { ProjectIcons } from "@/lib/project/data";
 import { Calendar, X, Zap } from "lucide-react";
 import { useForm } from "react-hook-form";
 
-const statusOptions = ["To do", "Backlog", "In Progress", "In Revision", "Concluded"];
+const taskStatus = ["Todo", "InProgress", "InReview", "Completed"];
 
-const priorityOptions: { value: string; label: string; color: string; dot: string }[] = [
-  { value: "CRITICO", label: "Critic", color: "#ef4444", dot: "🔴" },
-  { value: "ALTA", label: "High", color: "#f97316", dot: "🟠" },
-  { value: "MEDIA", label: "Medium", color: "#f59e0b", dot: "🟡" },
-  { value: "BAIXA", label: "Low", color: "#6b7280", dot: "⚪" },
+const priorityOptions: { label: string; color: string; dot: string }[] = [
+  { label: "Critical", color: "#ef4444", dot: "🔴" },
+  { label: "High", color: "#f97316", dot: "🟠" },
+  { label: "Medium", color: "#f59e0b", dot: "🟡" },
+  { label: "Low", color: "#6b7280", dot: "⚪" },
 ];
 
 export default function NewTaskModal({
@@ -28,7 +26,7 @@ export default function NewTaskModal({
         setValue,
     } = useForm({
         defaultValues: {
-            priority: "MEDIA",
+            priority: "Medium",
             status: "To do",
             points: "",
             date: "",
@@ -41,7 +39,7 @@ export default function NewTaskModal({
     const priority = watch("priority");
     const dueDate = watch("date");
     
-    const currentPriority = priorityOptions.find((p) => p.value === priority)!;
+    const currentPriority = priorityOptions.find((p) => p.label === priority)!;
     const submitTask = (data: any) => {
 
     }
@@ -96,7 +94,7 @@ export default function NewTaskModal({
                                         onFocus={(e) => (e.target.style.borderColor = "var(--primary)!")}
                                         onBlur={(e) => (e.target.style.borderColor = "var(--border)!")}
                                     >
-                                        { statusOptions.map((s, index) => (
+                                        { taskStatus.map((s, index) => (
                                             <option key={index} value={s} onClick={() => setValue("status", s)}>
                                                 {s}
                                             </option>
@@ -113,15 +111,15 @@ export default function NewTaskModal({
                                     <div className="flex gap-1.5">
                                         {priorityOptions.map((p) => (
                                             <button
-                                            key={p.value}
+                                            key={p.label}
                                             type="button"
-                                            onClick={() => setValue("priority", p.value)}
+                                            onClick={() => setValue("priority", p.label)}
                                             className="flex-1 py-2 rounded-lg text-xs font-medium transition-all"
                                             style={{
-                                                    background: priority === p.value ? p.color + "20" : "var(--secondary)",
-                                                    color: priority === p.value ? p.color : "var(--muted-foreground)",
-                                                    border: `1px solid ${priority === p.value ? p.color + "50" : "var(--border)"}`,
-                                                    fontWeight: priority === p.value ? 600 : 400,
+                                                    background: priority === p.label ? p.color + "20" : "var(--secondary)",
+                                                    color: priority === p.label ? p.color : "var(--muted-foreground)",
+                                                    border: `1px solid ${priority === p.label ? p.color + "50" : "var(--border)"}`,
+                                                    fontWeight: priority === p.label ? 600 : 400,
                                                 }}
                                                 >
                                                 {p.dot}

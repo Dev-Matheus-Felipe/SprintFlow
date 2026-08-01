@@ -1,12 +1,18 @@
 "use client"
 
 import { usePageTitle } from "@/lib/hooks/pageTitle";
-import { statusColor } from "@/lib/project/data";
 import { SidebarProjectsType } from "@/lib/types";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react"
+
+const projectStatusColors = new Map([
+    ["Active", "#16A34A"],
+    ["Paused", "#eb6e25"],
+    ["Completed", "#15803D"],
+    ["Cancelled", "#DC2626"],
+]);
 
 export default function ProjectsNavegation({projects} : {projects: SidebarProjectsType[]}){
     const [show, setShow] = useState(false);
@@ -27,7 +33,7 @@ export default function ProjectsNavegation({projects} : {projects: SidebarProjec
             <div className="w-full pr-2 my-4 overflow-y-auto flex-1 ">
                 {show && ( projects.length > 0  
                     ? projects.map(({name, id, color, status}) => {
-                        const obj = statusColor.get(status)!;
+                        const statusColor = projectStatusColors.get(status)!;
 
                         return (
                             <Link 
@@ -45,10 +51,8 @@ export default function ProjectsNavegation({projects} : {projects: SidebarProjec
                                 </div>
 
                                 <div 
-                                    className={`w-2 h-2 rounded-full opacity-0 group-hover:opacity-100 
+                                    className={`w-2 h-2 rounded-full opacity-0 group-hover:opacity-100 bg-[${statusColor}] 
                                     ${(title == name && pathname.startsWith("/projects/")) && "opacity-100"}`} 
-
-                                    style={{background: obj.color}} 
                                 />
                             </Link>
                         )

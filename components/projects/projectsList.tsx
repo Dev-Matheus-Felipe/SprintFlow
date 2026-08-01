@@ -1,19 +1,21 @@
 "use client"
 
-import { AllFilters } from "@/lib/project/data";
+import { ProjectStatus } from "@/lib/project/data";
 import { AllProjectsType } from "@/lib/types"
 import { Search } from "lucide-react";
 import { useState } from "react"
 import ProjectComponent from "./projectComponent";
 
-export type AllProjectsFilterType = "TODOS" | "ATIVO" | "EM_PAUSA" | "FINALIZADO" | "ABORTADO";
+type AllProjectsFilterType = "All" | "Active" | "Paused" | "Completed" | "Cancelled";
+
+const filterOptions: AllProjectsFilterType[] = ["All", ...ProjectStatus];
 
 export default function ProjectsList({projects} : {projects: AllProjectsType[]}){
-    const [filter, setFilter] = useState<AllProjectsFilterType>("TODOS");
+    const [filter, setFilter] = useState<AllProjectsFilterType>("All");
     const [search, setSearch] = useState<string>("");
 
     const filteredProjects = projects
-        .filter(p => p.name.toLowerCase().includes(search.toLowerCase()) && (filter === "TODOS" || p.status === filter));
+        .filter(p => p.name.toLowerCase().includes(search.toLowerCase()) && (filter === "All" || p.status === filter));
 
     return (
         <div className="flex flex-col gap-5">
@@ -33,11 +35,11 @@ export default function ProjectsList({projects} : {projects: AllProjectsType[]})
 
                 <div className={`bg-(--secondary) flex gap-3 items-center p-2 rounded h-10 max-sm:flex-wrap max-sm:h-auto
                 justify-around max-lg:w-full`}>
-                    { AllFilters.map(({name, filter: f}) => (
+                    { filterOptions.map((name) => (
                         <button 
                             key={name}
-                            onClick={() => setFilter(f)}
-                            className={`cursor-pointer text-sm py-1 px-2 rounded ${filter == f && "bg-(--card)"} text-sm`}
+                            onClick={() => setFilter(name)}
+                            className={`cursor-pointer text-sm py-1 px-2 rounded ${filter == name && "bg-(--card)"} text-sm`}
                         >
                             {name}
                         </button>
