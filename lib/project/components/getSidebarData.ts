@@ -13,7 +13,8 @@ export const getSidebarProjects = async({id} : {id: string}): Promise<SidebarPro
             name: true,
             color: true,
             id: true,
-            status: true
+            status: true,
+            url: true,
         }
     });
 

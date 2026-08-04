@@ -1,10 +1,12 @@
+"use server"
+
 import { prisma } from "@/lib/prisma";
 import { ProjectOverviewType } from "@/lib/types";
 
-export default async function getProjectPage({id, userId} : {id: string, userId: string}): Promise<ProjectOverviewType | null>{
+export default async function getProjectPage({url, userId} : {url: string, userId: string}): Promise<ProjectOverviewType | null>{
     const projects = await prisma.project.findUnique({
         where: {
-            id,
+            url,
             members: {
                 some: { userId }
             }

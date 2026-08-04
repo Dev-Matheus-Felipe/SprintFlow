@@ -13,12 +13,24 @@ export default async function postNewProject({data} : {data: newProjectSchemType
     if(!res.success || !session?.user?.id)
         return {sucess: false, message: "Incompatible Informations"};
 
+    const url = res.data.name
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "-");
+
+    const exists = await prisma.project.findUnique({where: {url}});
+    
+    if(exists){
+        return {sucess: false, message: "Please Try another name."};
+    }
+
     try {
         const validatedData = res.data;
 
         const project = await prisma.project.create({
             data: {
                 ...validatedData,
+                url: url,
                 status: "Active",
             }
         });

@@ -30,8 +30,8 @@ export default function ProjectComponent({project} : {project: AllProjectsType})
     
     return (
         <Link
-            key={project.id}
-            href={`/projects/${project.id}`}            
+            key={project.url}
+            href={`/projects/${project.url}`}            
             className={`rounded-xl p-5 cursor-pointer transition-all group bg-(--card)
             border border-(--border) hover:border-(--primary)`} 
         >

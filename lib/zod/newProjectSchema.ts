@@ -6,7 +6,8 @@ export const newProjectSchema = z.object({
         .string("Must exist")
         .trim()
         .max(20, "Max length: 20")
-        .min(5, "Too short!"),
+        .min(5, "Too short!")
+        .regex(/^[a-zA-Z0-9 ]+$/, "Can't have special characters"),
 
     description: z
         .string("Must exist")

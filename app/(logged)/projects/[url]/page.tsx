@@ -5,21 +5,26 @@ import getProjectPage from "@/lib/project/pages/getPageProject";
 import { ProjectOverviewType } from "@/lib/types";
 import { notFound } from "next/navigation";
 
-type ProjectPageType = {
+export type ProjectUrlParamstype = {
     params: Promise<{
-        id: string;
+        url: string;
     }>;
 }
 
-export default async function ProjectPage({params} : ProjectPageType){
-    const { id } =  await params;
+export default async function ProjectPage({params} : ProjectUrlParamstype){
+    const { url } =  await params;
     const session = await auth();
     
-    if (!/^[0-9a-fA-F]{24}$/.test(id) || !session?.user?.id) {
+    if (!session?.user?.id) {
         return notFound();
     }
+
+    const valitedUrl = url
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "-");
     
-    const project: ProjectOverviewType | null = await getProjectPage({id: id, userId: session.user.id});
+    const project: ProjectOverviewType | null = await getProjectPage({url: valitedUrl, userId: session.user.id});
     if(!project) notFound();
     
     return (

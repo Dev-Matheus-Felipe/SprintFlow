@@ -1,10 +1,12 @@
+"use server"
+
 import { prisma } from "@/lib/prisma";
 import { ProjectTaskPageType } from "@/lib/types";
 
-export default async function getTaskPage({id, userId} : {id: string, userId: string}): Promise<ProjectTaskPageType | null> {
+export default async function getTaskPage({url, userId} : {url: string, userId: string}): Promise<ProjectTaskPageType | null> {
     return await prisma.project.findUnique({
         where: {
-            id,
+            url,
             members: { some: { userId } }
         },
         

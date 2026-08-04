@@ -32,15 +32,15 @@ export default function ProjectsNavegation({projects} : {projects: SidebarProjec
             {/* PROJECTS */}
             <div className="w-full pr-2 my-4 overflow-y-auto flex-1 ">
                 {show && ( projects.length > 0  
-                    ? projects.map(({name, id, color, status}) => {
+                    ? projects.map(({name, id, color, status, url}) => {
                         const statusColor = projectStatusColors.get(status)!;
 
                         return (
                             <Link 
-                                href={`/projects/${id}`} 
+                                href={`/projects/${url}`} 
                                 key={id} 
                                 className={`group flex items-center justify-between py-2 px-3 rounded 
-                                ${pathname == `/projects/${id}` 
+                                ${pathname == `/projects/${url}` 
                                     ? "bg-(--accent) text-(--primary)" 
                                     : "text-(--muted-foreground) hover:bg-(--muted) hover:text-(--foreground)!"}`}
                             >
@@ -51,8 +51,9 @@ export default function ProjectsNavegation({projects} : {projects: SidebarProjec
                                 </div>
 
                                 <div 
-                                    className={`w-2 h-2 rounded-full opacity-0 group-hover:opacity-100 bg-[${statusColor}] 
-                                    ${(title == name && pathname.startsWith("/projects/")) && "opacity-100"}`} 
+                                    className={`w-2 h-2 rounded-full opacity-0 group-hover:opacity-100
+                                    ${(title == name && pathname.startsWith("/projects/")) && "opacity-100"}`}
+                                    style={{background: statusColor}} 
                                 />
                             </Link>
                         )

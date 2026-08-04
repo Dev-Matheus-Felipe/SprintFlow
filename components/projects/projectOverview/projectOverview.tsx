@@ -6,9 +6,14 @@ import MemberComponent from "./member";
 import ProjectViewButton from "@/components/buttons/project/projectViewButton";
 import NewMemberButton from "@/components/buttons/project/newMemberButton";
 
-export default function ProjectOverview({project} : {project: ProjectOverviewType}){
-    const projectSprints = project.sprints;
+export default function ProjectOverview({
+    project,
+} : {
+    project: ProjectOverviewType,
+}){
     
+    const projectSprints = project.sprints;
+
     return (
         <div className="flex-1 overflow-y-auto">
 

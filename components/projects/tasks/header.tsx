@@ -3,6 +3,7 @@ import useModal from "@/lib/hooks/newProject";
 import { ProjectIcons } from "@/lib/project/data";
 import { ChevronDown, ChevronUp, Plus, Search } from "lucide-react";
 import { Dispatch } from "react";
+import TaskSprintHeader from "../taskSprintHeader";
 
 const filters = ["Most recent", "Deadline", "Priority"];
 
@@ -27,40 +28,9 @@ export default function TaskPageHeader({
     setSearch: Dispatch<React.SetStateAction<string>>,
 }){
 
-    const { setStatus } = useModal();
-
-    const ICON = ProjectIcons.get(projectInfo.icon)!;
-
     return (
         <div className="px-6 py-4 shrink-0 border-b border-(--border)">
-            <div className="flex items-center gap-3 mb-3">
-                <ICON size={16} color="var(--muted-foreground)" />
-
-                <span className="text-sm text-(--muted-foreground)">
-                    {projectInfo.name}
-                </span>
-
-                <span className="text-(--border)">/</span>
-
-                <span className="text-sm font-medium text-(--foreground)">
-                    Tasks
-                </span>
-
-                <span className="text-xs px-2 py-0.5 rounded font-medium text-(--muted-foreground) bg-(--muted)">
-                    {tasksLength}
-                </span>
-
-                <div className="flex-1" />
-
-                <button 
-                    onClick={() => setStatus({component: "newTask", open: true})}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium 
-                    transition-colors bg-(--primary) text-(--primary-foreground) cursor-pointer`}
-                >
-                    <Plus size={14} />
-                    New Task
-                </button>
-            </div>
+            <TaskSprintHeader type="Task" length={tasksLength} projectInfo={projectInfo} />
 
             <div className="flex items-center gap-3 my-5">
                 <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg flex-1 max-w-xs

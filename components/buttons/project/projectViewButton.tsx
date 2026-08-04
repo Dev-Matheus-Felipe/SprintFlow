@@ -8,11 +8,12 @@ import Link from "next/link";
 
 export default function ProjectViewButton({
     v,
-    project
+    project,
 } : {
     v: { icon: ProjectViewIcon, label: string, description: string, url: "sprints" | "tasks" },
-    project: ProjectOverviewType
+    project: ProjectOverviewType,
 }){
+    
     const ViewIcon = projectViewIcons[v.icon];
 
     const { setData } = useProjectData();
@@ -36,7 +37,7 @@ export default function ProjectViewButton({
     return (
         <Link
             onClick={() => passProps()}
-            href={`/projects/${project.id}/${v.url}`}
+            href={`/projects/${project.url}/${v.url}`}
             className={`rounded-xl p-4 text-left transition-all group bg-(--card) border border-(--border)
             hover:bg-(--accent) hover:border-(--primary) cursor-pointer`} 
         >
