@@ -63,6 +63,7 @@ enum ProjectStatus {
 }
 
 
+
 model User {
   id            String   @id @default(auto()) @map("_id") @db.ObjectId
 
@@ -156,8 +157,8 @@ model Task {
   user   User? @relation(fields: [userId], references: [id])
 
 
-  sprintId String @db.ObjectId
-  sprint   Sprint @relation(fields: [sprintId], references: [id])
+  sprintId String? @db.ObjectId
+  sprint   Sprint? @relation(fields: [sprintId], references: [id])
 
 
   projectId String @db.ObjectId

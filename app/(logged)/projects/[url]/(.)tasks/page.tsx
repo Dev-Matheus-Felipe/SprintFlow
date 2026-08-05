@@ -11,6 +11,6 @@ export default function ProjectTasksIntercept(){
     }
 
     return (
-      <Tasks tasks={data.tasks} projectInfo={data.projectInfo} />
+      <Tasks tasks={data.tasks} sprints={data.sprints} projectInfo={data.projectInfo} />
   );
 }

@@ -9,7 +9,7 @@ export const NewSprintSchema = z.object({
     objective: z
         .string("Not a String")
         .min(3, "Too short!")
-        .max(200, "Max length: 100"),
+        .max(200, "Max length: 200"),
 
     startAt: z.date("Not a valid date"),
     endAt:   z.date("Not a valid date")

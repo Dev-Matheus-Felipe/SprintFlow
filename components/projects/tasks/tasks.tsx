@@ -2,32 +2,37 @@
 
 import { ProjectInfoType } from "@/components/providers/projectProvider";
 import { usePageTitle } from "@/lib/hooks/pageTitle";
-import { Task } from "@prisma/client";
+import { Sprint, Task } from "@prisma/client";
 import { useEffect, useState } from "react";
 import TaskPageHeader from "./header";
+import useProjectData from "@/lib/hooks/projectProps";
 
 const tableHeaders = ["Tasks", "Status", "Priority", "Responsible", "Deadline", "Points"];
 
 export default function Tasks({
     tasks,
-    projectInfo
+	sprints,
+    projectInfo,
 } : { 
     tasks: Task[],
-    projectInfo: ProjectInfoType
+	sprints: Sprint[]
+    projectInfo: ProjectInfoType,
 }){
     
     const[filterStatus, setFilterStatus] = useState<{open: boolean, text: string}>({open: false, text: "Most recent"});
     const[search, setSearch] = useState<string>("");
 
     const { setTitle } = usePageTitle();
+	const { setData } = useProjectData();
 
     useEffect(() => {
         setTitle("Tasks");
+		setData({sprints: sprints, tasks: tasks, projectInfo})
     },[]);
 
     
     return (
-    	<div className="flex-1 flex flex-col">
+    	<div className="flex-1 flex flex-col min-w-0">
 
             {/* Header */}
             <TaskPageHeader
@@ -39,15 +44,15 @@ export default function Tasks({
 			/>
 
       		{/* Table */}
-			<div className="flex-1">
-				<table className="w-full">
+			<div className="flex-1 overflow-x-auto min-w-0">
+  <table className="w-full min-w-100">
 					<thead>
 						<tr className="border-b border-(--border)" >
 						{tableHeaders.map((h) => (
 							<th
 								key={h}
 								className={`text-left px-4 py-3 text-xs font-medium uppercase tracking-wider 
-								text-(--muted-foreground)`}
+								text-(--muted-foreground) ${h == "Points" && "max-md:hidden"}`}
 							>
 								{h}
 							</th>

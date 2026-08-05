@@ -6,7 +6,10 @@
   font-family: "Montserrat", sans-serif;
 }
 
+
 @theme {
+  --breakpoint-xs: 450px;
+
   --font-mono: 'Geist Mono', ui-monospace, monospace;
   --color-primary: #5b5cf6;
   --color-primary-foreground: #ffffff;

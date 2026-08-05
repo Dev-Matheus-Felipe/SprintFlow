@@ -22,6 +22,6 @@ export default async function ProjectTasksPage({params} : ProjectUrlParamstype){
     if(!project) notFound();
     
     return (
-        <Tasks tasks={project.tasks } projectInfo={{name: project.name, icon: project.icon}} />
+        <Tasks tasks={project.tasks } sprints={project.sprints} projectInfo={{name: project.name, icon: project.icon}} />
     )
 }

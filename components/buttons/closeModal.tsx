@@ -1,9 +1,8 @@
 "use client"
 
-import { standardColors } from "@/components/modals/newSprintModal"
-import React, { Dispatch } from "react"
+import React from "react"
 
-export default function CancelModal({
+export default function CloseModal({
     setOpen,
     children,
     style,

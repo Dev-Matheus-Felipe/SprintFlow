@@ -17,24 +17,25 @@ export default function TaskSprintHeader({
     const ICON = ProjectIcons.get(projectInfo.icon)!;
 
     return (
-        <div className="flex items-center gap-3 mb-3">
-            <ICON size={16} color="var(--muted-foreground)" />
+        <div className="flex items-center gap-3 mb-3 flex-wrap max-xs:flex-col max-xs:gap-5 xs:justify-between">
+            <div className="flex gap-3">
+                <ICON size={16} color="var(--muted-foreground)" />
 
-            <span className="text-sm text-(--muted-foreground)">
-                {projectInfo.name}
-            </span>
+                <span className="text-sm text-(--muted-foreground)">
+                    {projectInfo.name}
+                </span>
 
-            <span className="text-(--border)">/</span>
+                <span className="text-(--border)">/</span>
 
-            <span className="text-sm font-medium text-(--foreground)">
-                {type}s
-            </span>
+                <span className="text-sm font-medium text-(--foreground)">
+                    {type}s
+                </span>
 
-            <span className="text-xs px-2 py-0.5 rounded font-medium text-(--muted-foreground) bg-(--muted)">
-                {length}
-            </span>
+                <span className="text-xs px-2 py-0.5 rounded font-medium text-(--muted-foreground) bg-(--muted)">
+                    {length}
+                </span>
+            </div>
 
-            <div className="flex-1" />
 
             <button 
                 onClick={() => setStatus({component: (type == "Task" ? "newTask" : "newSprint"), open: true})}

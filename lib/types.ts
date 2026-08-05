@@ -62,7 +62,8 @@ export type ProjectOverviewType = Prisma.ProjectGetPayload<{
 
 export type ProjectTaskPageType = Prisma.ProjectGetPayload<{
     include: {
-        tasks: true
+        tasks: true,
+        sprints: true
     }
 }>
 

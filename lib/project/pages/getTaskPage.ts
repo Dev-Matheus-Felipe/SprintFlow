@@ -11,7 +11,8 @@ export default async function getTaskPage({url, userId} : {url: string, userId: 
         },
         
         include: {
-            tasks: true
+            tasks: true,
+            sprints: true
         }
     });
 }

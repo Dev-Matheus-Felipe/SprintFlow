@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import { useForm } from "react-hook-form";
-import CancelModal from "../buttons/sprint/closeModal";
+import CloseModal from "../buttons/closeModal";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { NewSprintSchema, NewSprintSchemaType } from "@/lib/zod/newSprintSchema";
 import PostNewSprint from "@/lib/sprint/postNewSprint";
@@ -41,12 +41,12 @@ export default function NewSprintModal({
                         New Sprint
                     </h2>
 
-                    <CancelModal 
+                    <CloseModal 
                         setOpen={setOpen}
                         style={"text-(--muted-foreground) cursor-pointer hover:bg-(--secondary) p-1 rounded"}
                     >
                         <X size={16} />
-                    </CancelModal>
+                    </CloseModal>
 
                 </div>
 
@@ -116,7 +116,7 @@ export default function NewSprintModal({
                     </div>
 
                     <div className="flex gap-3 pt-2">
-                        <CancelModal 
+                        <CloseModal 
                             setOpen={setOpen} 
                             children={"Cancel"} 
                             style={`flex-1 py-2.5 rounded-lg text-sm font-medium ${standardColors} cursor-pointer`} />
