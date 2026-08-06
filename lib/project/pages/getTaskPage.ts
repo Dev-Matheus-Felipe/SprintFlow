@@ -16,7 +16,13 @@ export default async function getTaskPage({url, userId} : {url: string, userId: 
                     user: true
                 }
             },
-            sprints: true
+
+            sprints: {
+                select: {
+                    id: true,
+                    name: true,
+                }
+            }
         }
     });
 }

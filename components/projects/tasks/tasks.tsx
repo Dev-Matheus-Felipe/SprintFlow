@@ -2,13 +2,14 @@
 
 import { ProjectInfoType } from "@/components/providers/projectProvider";
 import { usePageTitle } from "@/lib/hooks/pageTitle";
-import { Sprint, Task } from "@prisma/client";
 import { useEffect, useState } from "react";
 import TaskPageHeader from "./header";
 import useProjectData from "@/lib/hooks/projectProps";
 import { Calendar } from "lucide-react";
 import { TaskPageDataType } from "@/lib/types";
 import Image from "next/image";
+import { ProjectStatusColors } from "@/lib/project/data";
+import { priorityOptions } from "@/components/modals/newTaskModal";
 
 const tableHeaders = ["Tasks", "Status", "Priority", "Responsible", "Deadline", "Points"];
 
@@ -18,11 +19,15 @@ export default function Tasks({
     projectInfo,
 } : { 
     tasks: TaskPageDataType[],
-	sprints: Sprint[]
+	sprints: { name: string, id: string }[]
     projectInfo: ProjectInfoType,
 }){
     
-    const[filterStatus, setFilterStatus] = useState<{open: boolean, text: string}>({open: false, text: "Most recent"});
+    const[filterStatus, setFilterStatus] = useState<{open: boolean, text: string}>({
+		open: false, 
+		text: "Most recent",
+	});
+
     const[search, setSearch] = useState<string>("");
 
 	const { data, setData } = useProjectData();
@@ -71,6 +76,9 @@ export default function Tasks({
 							const isOverdue = new Date(task.deadline) < new Date() && task.status !== "Completed";
 							const date = task.deadline;
 
+							const Pcolor = priorityOptions.filter(p => p.label == task.priority)[0];
+							const Scolor = ProjectStatusColors.get(task.status);
+
 							return (
 								<tr
 									key={task.id}
@@ -90,14 +98,20 @@ export default function Tasks({
 										</div>
 									</td>
 
-									<td className="px-4 py-3">
-										<span className="px-2 py-0.5 rounded-full text-xs font-medium">
+									<td className="px-3  py-3">
+										<span 
+											className={` py-0.5 rounded-full text-xs font-medium`}
+											style={{color: Scolor}}
+										>
 											{task.status}
 										</span>
 									</td>
 
 									<td className="px-4 py-3">
-										<span className="px-2 py-0.5 rounded-full text-xs font-medium">
+										<span 
+											className={`px-2 py-0.5 rounded-full text-xs font-medium`}
+											style={{color: Pcolor.color}}
+										>
 											{task.priority}
 										</span>
 									</td>
@@ -108,6 +122,8 @@ export default function Tasks({
 												<Image 
 													src={task.user.image ?? ""} 
 													alt={"User Icon"} 
+													width={20}
+													height={20}
 													className="w-5 h-5 rounded-full" 
 												/>
 

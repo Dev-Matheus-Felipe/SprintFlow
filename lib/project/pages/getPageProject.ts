@@ -14,6 +14,8 @@ export default async function getProjectPage({url, userId} : {url: string, userI
         include: {
             tasks: {
                 include: {
+                    user: true,
+                    
                     project: {
                         select: {
                             name: true,
@@ -22,7 +24,10 @@ export default async function getProjectPage({url, userId} : {url: string, userI
                     }
                 }
             },
+            
+            
             sprints: true,
+
             members: {
                 select: {
                     user: true,

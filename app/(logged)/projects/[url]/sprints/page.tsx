@@ -29,7 +29,7 @@ export default async function ProjectSprintsPage({params}: ProjectUrlParamstype)
 
             <ProjectSprintComponent 
                 sprints={project.sprints} 
-                projectInfo={{name: project.name, icon: project.icon}}  
+                projectInfo={{name: project.name, icon: project.icon, id: project.id}}  
             />
         </>
     )

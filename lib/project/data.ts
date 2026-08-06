@@ -26,6 +26,15 @@ export const ProjectIcons = new Map([
     ["ChartColumn", ChartColumn],
 ] as const);
 
+export const ProjectStatusColors = new Map([
+    ["Completed", "#27e619"],
+    ["InReview", "#ebd726"],
+    ["InProgress", "#1b5af7"],
+    ["Todo", "#27e619"],
+]);
+
+
+
 
 // ---------------------------------- PROJECT OVERVIEW ---------------------------------- //
 

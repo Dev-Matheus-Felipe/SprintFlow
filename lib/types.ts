@@ -41,6 +41,8 @@ export type ProjectOverviewType = Prisma.ProjectGetPayload<{
     include: {
         tasks:  {
             include: {
+                user: true,
+                
                 project: {
                     select: {
                         name: true,
@@ -51,6 +53,7 @@ export type ProjectOverviewType = Prisma.ProjectGetPayload<{
         },
 
         sprints: true,
+
         members: {
             select: {
                 user: true,
@@ -59,6 +62,8 @@ export type ProjectOverviewType = Prisma.ProjectGetPayload<{
         }
     }
 }>
+
+// ------------------------------------------ TASKS ------------------------------------------ //
 
 export type TaskPageDataType = Prisma.TaskGetPayload<{
     include: {
@@ -73,12 +78,20 @@ export type ProjectTaskPageType = Prisma.ProjectGetPayload<{
                 user: true
             }
         },
-        sprints: true
+
+        sprints: {
+            select: {
+                name: true,
+                id: true
+            }
+        }
     }
 }>
 
+// ------------------------------------------ SPRINTS ------------------------------------------ //
 
-export type ProjectSprintsPageType = Prisma.ProjectGetPayload<{
+
+export type SprintPage = Prisma.ProjectGetPayload<{
     include: {
         sprints: {
             include: {
@@ -87,6 +100,16 @@ export type ProjectSprintsPageType = Prisma.ProjectGetPayload<{
                         user: true
                     }
                 }
+            }
+        }
+    }
+}>
+
+export type ProjectSprints = Prisma.SprintGetPayload<{
+    include: {
+        tasks: {
+            include: {
+                user: true
             }
         }
     }

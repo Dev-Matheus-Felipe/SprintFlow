@@ -17,11 +17,12 @@ type PriorityOptionsType = {
 
 const taskStatus = ["Todo", "InProgress", "InReview", "Completed"] as const;
 
-const priorityOptions: PriorityOptionsType[] = [
-  { label: "Critical", color: "#ef4444", dot: "🔴" },
-  { label: "High", color: "#f97316", dot: "🟠" },
-  { label: "Medium", color: "#f59e0b", dot: "🟡" },
-  { label: "Low", color: "#6b7280", dot: "⚪" },
+
+export const priorityOptions: PriorityOptionsType[] = [
+    { label: "Critical", color: "#ef4444", dot: "🔴" },
+    { label: "High", color: "#f97316", dot: "🟠" },
+    { label: "Medium", color: "#f59e0b", dot: "🟡" },
+    { label: "Low", color: "#6b7280", dot: "⚪" },
 ] as const;
 
 
@@ -117,6 +118,7 @@ export default function NewTaskModal({
                                     </label>
 
                                     <select
+                                        {...register("status")}
                                         className={`w-full px-3 py-2 rounded-lg text-sm outline-none appearance-none 
                                         bg-(--secondary) border border-(--border) text-(--foreground) cursor-pointer`}
                                         onFocus={(e) => (e.target.style.borderColor = "var(--primary)!")}

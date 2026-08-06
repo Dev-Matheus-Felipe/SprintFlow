@@ -1,0 +1,6 @@
+export const sprintStatus: Record<string, string> = {
+    Active: "#10b981",
+    Planning: "#6d6ef7",
+    Completed: "#6b7280",
+    Delayed: "#dbd114"
+};

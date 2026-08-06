@@ -17,7 +17,7 @@ export type ProjectInfoType = {
 
 export type ProjectDataType = {
     tasks: TaskPageDataType[],
-    sprints: Sprint[],
+    sprints: { name: string, id: string }[],
 
     projectInfo: ProjectInfoType
 };

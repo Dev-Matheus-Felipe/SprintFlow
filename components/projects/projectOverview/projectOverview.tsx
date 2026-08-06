@@ -30,8 +30,8 @@ export default function ProjectOverview({
                     </h3>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
-                    {views.map((v) => (
-                        <ProjectViewButton v={v} key={v.label} project={project}  /> ))}
+                    {views.map((view) => (
+                        <ProjectViewButton view={view} key={view.label} project={project}  /> ))}
 
                     </div>
                     

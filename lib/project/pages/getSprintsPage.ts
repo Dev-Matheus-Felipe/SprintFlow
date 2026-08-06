@@ -1,9 +1,9 @@
 "use server"
 
 import { prisma } from "@/lib/prisma";
-import { ProjectSprintsPageType } from "@/lib/types";
+import { SprintPage } from "@/lib/types";
 
-export default async function getSprintsPage({url, userId} : {url: string, userId: string}): Promise<ProjectSprintsPageType | null> {
+export default async function getSprintsPage({url, userId} : {url: string, userId: string}): Promise<SprintPage | null> {
     const projects = await prisma.project.findUnique({
         where: {
             url,

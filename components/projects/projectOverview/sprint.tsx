@@ -1,10 +1,6 @@
+import { sprintStatus } from "@/lib/sprint/data";
 import { Sprint } from "@prisma/client";
 
-const sprintStatus: Record<string, string> = {
-    Active: "#10b981",
-    Planning: "#6d6ef7",
-    Completed: "#6b7280",
-};
 
 export default function SprintComponent({
     sprint,
