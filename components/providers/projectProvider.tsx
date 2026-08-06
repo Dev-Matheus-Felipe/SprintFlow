@@ -1,5 +1,6 @@
 "use client"
 
+import { TaskPageDataType } from "@/lib/types";
 import { Sprint, Task } from "@prisma/client";
 import { createContext, Dispatch, useState } from "react"
 
@@ -10,11 +11,12 @@ type ProjectProviderType = {
 
 export type ProjectInfoType = {
     name: string,
+    id: string,
     icon: "Zap" | "Rocket" | "Palette" | "RefreshCw" | "Smartphone" | "Globe" | "Shield" | "ChartColumn"
 }
 
 export type ProjectDataType = {
-    tasks: Task[],
+    tasks: TaskPageDataType[],
     sprints: Sprint[],
 
     projectInfo: ProjectInfoType

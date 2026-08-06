@@ -6,6 +6,9 @@ import { Sprint, Task } from "@prisma/client";
 import { useEffect, useState } from "react";
 import TaskPageHeader from "./header";
 import useProjectData from "@/lib/hooks/projectProps";
+import { Calendar } from "lucide-react";
+import { TaskPageDataType } from "@/lib/types";
+import Image from "next/image";
 
 const tableHeaders = ["Tasks", "Status", "Priority", "Responsible", "Deadline", "Points"];
 
@@ -14,7 +17,7 @@ export default function Tasks({
 	sprints,
     projectInfo,
 } : { 
-    tasks: Task[],
+    tasks: TaskPageDataType[],
 	sprints: Sprint[]
     projectInfo: ProjectInfoType,
 }){
@@ -22,15 +25,17 @@ export default function Tasks({
     const[filterStatus, setFilterStatus] = useState<{open: boolean, text: string}>({open: false, text: "Most recent"});
     const[search, setSearch] = useState<string>("");
 
+	const { data, setData } = useProjectData();
     const { setTitle } = usePageTitle();
-	const { setData } = useProjectData();
 
     useEffect(() => {
+		if(data == null) setData({sprints: sprints, tasks: tasks, projectInfo});
         setTitle("Tasks");
-		setData({sprints: sprints, tasks: tasks, projectInfo})
     },[]);
 
-    
+    const filteredTasks = 
+		tasks.filter(task => task.description.toLowerCase().includes(search.toLowerCase()));
+
     return (
     	<div className="flex-1 flex flex-col min-w-0">
 
@@ -45,109 +50,111 @@ export default function Tasks({
 
       		{/* Table */}
 			<div className="flex-1 overflow-x-auto min-w-0">
-  <table className="w-full min-w-100">
-					<thead>
-						<tr className="border-b border-(--border)" >
-						{tableHeaders.map((h) => (
-							<th
-								key={h}
-								className={`text-left px-4 py-3 text-xs font-medium uppercase tracking-wider 
-								text-(--muted-foreground) ${h == "Points" && "max-md:hidden"}`}
-							>
-								{h}
-							</th>
-						))}
-						</tr>
-					</thead>
+  				{ filteredTasks.length > 0 ? 
+					<table className="w-full min-w-100">
+						<thead>
+							<tr className="border-b border-(--border)" >
+							{tableHeaders.map((h) => (
+								<th
+									key={h}
+									className={`text-left px-4 py-3 text-xs font-medium uppercase tracking-wider 
+									text-(--muted-foreground) ${h == "Points" && "max-md:hidden"}`}
+								>
+									{h}
+								</th>
+							))}
+							</tr>
+						</thead>
 
-					<tbody>
-					{ /* tasks.map((task) => {
-					const sc = statusFilter;
-					const pc = priorityFilter;
-					const isOverdue = new Date(task.deadline) < new Date() && task.status !== "CONCLUIDO";
+						<tbody>
+						{ filteredTasks.map((task) => {
+							const isOverdue = new Date(task.deadline) < new Date() && task.status !== "Completed";
+							const date = task.deadline;
 
-					return (
-						<tr
-						key={task.id}
-						className="cursor-pointer transition-colors"
-						style={{ borderBottom: "1px solid var(--border)" }}
-						onMouseEnter={(e) => {
-							(e.currentTarget as HTMLTableRowElement).style.background = "var(--muted)";
-						}}
-						onMouseLeave={(e) => {
-							(e.currentTarget as HTMLTableRowElement).style.background = "transparent";
-						}}
-						>
-						<td className="px-4 py-3">
-							<div className="flex flex-col gap-1">
-							<span className="text-sm font-medium" style={{ color: "var(--foreground)" }}>
-								{task.description}
-							</span>
-							</div>
-						</td>
-						<td className="px-4 py-3">
-							<span
-							className="px-2 py-0.5 rounded-full text-xs font-medium"
-							>
-							{sc}
-							</span>
-						</td>
-						<td className="px-4 py-3">
-							<span
-							className="px-2 py-0.5 rounded-full text-xs font-medium"
-							>
-							{pc}
-							</span>
-						</td>
-						<td className="px-4 py-3">
-							{task.assignee ? (
-							<div className="flex items-center gap-2">
-								<img src={task.assignee.avatar} alt={task.assignee.name} className="w-5 h-5 rounded-full" />
-								<span className="text-xs" style={{ color: "var(--foreground)" }}>
-								{task.assignee.name.split(" ")[0]}
-								</span>
-							</div>
-							) : (
-							<span className="text-xs" style={{ color: "var(--muted-foreground)" }}>
-								—
-							</span>
-							)}
-						</td>
-						<td className="px-4 py-3">
-						<span
-								className="flex items-center gap-1 text-xs"
-								style={{ color: isOverdue ? "#ef4444" : "var(--muted-foreground)" }}
-							>
-								<Calendar size={11} />
-								DATA HERE
-							</span>
-						</td>
-						<td className="px-4 py-3">
-							<span
-							className="text-xs font-medium"
-							style={{ color: "var(--muted-foreground)", fontFamily: "var(--font-mono)" }}
-							>
-							{task.userId || "—"}
-							</span>
-						</td>
-						</tr>
-					);
-					}) */}
-				</tbody>
-			</table>
+							return (
+								<tr
+									key={task.id}
+									className="cursor-pointer transition-colors"
+									style={{ borderBottom: "1px solid var(--border)" }}
+									onMouseEnter={(e) => {
+										(e.currentTarget as HTMLTableRowElement).style.background = "var(--muted)"; }}
 
-        {/*filtered.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-16">
-            <div className="text-4xl mb-3">📋</div>
-            <p className="text-sm font-medium" style={{ color: "var(--foreground)" }}>
-              Nenhuma tarefa encontrada
-            </p>
-            <p className="text-xs mt-1" style={{ color: "var(--muted-foreground)" }}>
-              Ajuste os filtros ou crie uma nova tarefa
-            </p>
-          </div>
-        )*/ }
+									onMouseLeave={(e) => {
+										(e.currentTarget as HTMLTableRowElement).style.background = "transparent"; }}
+								>
+									<td className="px-4 py-3 min-w-40">
+										<div className="flex flex-col gap-1">
+											<span className="text-sm font-medium text-(--foreground)">
+												{task.description}
+											</span>
+										</div>
+									</td>
+
+									<td className="px-4 py-3">
+										<span className="px-2 py-0.5 rounded-full text-xs font-medium">
+											{task.status}
+										</span>
+									</td>
+
+									<td className="px-4 py-3">
+										<span className="px-2 py-0.5 rounded-full text-xs font-medium">
+											{task.priority}
+										</span>
+									</td>
+
+									<td className="px-4 py-3">
+										{task.user ? (
+											<div className="flex items-center gap-2">
+												<Image 
+													src={task.user.image ?? ""} 
+													alt={"User Icon"} 
+													className="w-5 h-5 rounded-full" 
+												/>
+
+												<span className="text-xs text-(--foreground)">
+													{task.user.name.split(" ")[0]}
+												</span>
+											</div>
+										) : (
+										<span className="text-xs text-(--muted-foreground)">
+											—
+										</span>
+										)}
+									</td>
+									<td className="px-4 py-3">
+										<span
+											className={`flex items-center gap-1 text-xs
+											${isOverdue ? "text-red-500" : "text-(--muted-foreground)"}`}
+										>
+												<Calendar size={11} />
+												{ date.toLocaleDateString("pt-BR") }
+											</span>
+									</td>
+
+									<td className="px-4 py-3">
+										<span className="text-xs font-medium text-(--muted-foreground)">
+											{task.userId || "—"}
+										</span>
+									</td>
+								</tr>
+							);
+						}) }
+						</tbody>
+					</table>
+
+					: <div className="flex flex-col items-center justify-center py-16">
+						<div className="text-4xl mb-3">📋</div>
+
+						<p className="text-sm font-medium text-(--foreground)">
+							No tasks found
+						</p>
+
+						<p className="text-xs mt-1 text-(--muted-foreground)">
+							Adjust the filters or create a new task
+						</p>
+					</div>
+				}
       		</div>
-    </div>
-  );
+		</div>
+	);
 }

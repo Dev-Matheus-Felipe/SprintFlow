@@ -9,7 +9,7 @@ export default function ProjectTasksIntercept(){
     if(!data){
         throw new Error("Project Context must be inside the Project Provider");
     }
-
+    
     return (
       <Tasks tasks={data.tasks} sprints={data.sprints} projectInfo={data.projectInfo} />
   );

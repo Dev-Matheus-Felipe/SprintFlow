@@ -60,12 +60,23 @@ export type ProjectOverviewType = Prisma.ProjectGetPayload<{
     }
 }>
 
+export type TaskPageDataType = Prisma.TaskGetPayload<{
+    include: {
+        user: true
+    }
+}>
+
 export type ProjectTaskPageType = Prisma.ProjectGetPayload<{
     include: {
-        tasks: true,
+        tasks: {
+            include: {
+                user: true
+            }
+        },
         sprints: true
     }
 }>
+
 
 export type ProjectSprintsPageType = Prisma.ProjectGetPayload<{
     include: {

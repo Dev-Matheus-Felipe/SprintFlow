@@ -20,16 +20,14 @@ export default function ProjectViewButton({
 
     const passProps = () => {
         const newData: ProjectDataType = { 
-            tasks: [], 
-            sprints: [], 
+            tasks: project.tasks, 
+            sprints: project.sprints, 
             projectInfo: {
                 name: project.name, 
-                icon: project.icon
+                icon: project.icon,
+                id: project.id,
             } 
         };
-
-        if(v.url == "tasks") newData.tasks = project.tasks;
-        else newData.sprints = project.sprints;
 
         setData(newData);
     };

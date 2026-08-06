@@ -8,7 +8,7 @@ export default function SwitchThemesButton(){
     const [mounted, setMounted] = useState<boolean>(false);
     const {theme, setTheme} = useTheme();
 
-    const Icon = theme == "dark" ? Sun : Moon;
+    const Icon = theme == "dark" ? Moon : Sun;
 
     useEffect(() => {
         setMounted(true);

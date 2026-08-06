@@ -5,9 +5,9 @@ import { useForm } from "react-hook-form";
 import CloseModal from "../buttons/closeModal";
 import { avaliablePoints, NewTaskSchema, NewTaskSchemaType } from "@/lib/zod/newTaskSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useParams } from "next/navigation";
 import useProjectData from "@/lib/hooks/projectProps";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import postNewTassk from "@/lib/project/components/postNewTask";
 
 type PriorityOptionsType = {
     label: "Critical" | "High" | "Medium" | "Low",
@@ -33,14 +33,13 @@ export default function NewTaskModal({
 
     const [ filterOpen, setFilterOpen ] = useState<boolean>(false);
     const { data } = useProjectData();
-    const params = useParams();
 
     const {
         register,
         handleSubmit,
         watch,
-        getValues,
         setValue,
+        formState: { isSubmitting, isValid }
     } = useForm({
         resolver: zodResolver(NewTaskSchema),
         defaultValues: {
@@ -60,8 +59,16 @@ export default function NewTaskModal({
     const sprint = watch("sprint");
 
     const currentPriority = priorityOptions.find((p) => p.label === priority)!;
-    const submitTask = (data: NewTaskSchemaType) => {
 
+    const submitTask = async(formData: NewTaskSchemaType) => {
+        if(!data?.projectInfo) return;
+
+        const res = await postNewTassk({data: formData, projectId: data.projectInfo.id});
+        if(res.sucess){
+            setOpen(false);
+        }
+
+        alert(res.message);
     }
 
     return (
@@ -139,7 +146,8 @@ export default function NewTaskModal({
                                                 key={p.label}
                                                 type="button"
                                                 onClick={() => setValue("priority", p.label)}
-                                                className="flex-1 py-2 rounded-lg text-xs font-medium transition-all"
+                                                className={`flex-1 py-2 rounded-lg text-xs font-medium transition-all 
+                                                cursor-pointer`}
                                                 style={{
                                                     background: priority === p.label ? p.color + "20" : "var(--secondary)",
                                                     color: priority === p.label ? p.color : "var(--muted-foreground)",
@@ -159,7 +167,7 @@ export default function NewTaskModal({
                         </div>
 
                         {/* Row 2 — Due date + Story Points */}
-                        <div className="grid grid-cols-2 gap-4 ">
+                        <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1 ">
                             <div>
                                 <label
                                     className="block text-xs font-medium mb-1.5 uppercase tracking-wider text-(--muted-foreground)"
@@ -196,7 +204,7 @@ export default function NewTaskModal({
                                             type="button"
                                             onClick={() => setValue("points", pt)}
                                             className={`flex-1 py-2 rounded-lg text-xs font-medium transition-all border
-                                            cursor-pointer ${points === String(pt) 
+                                            cursor-pointer hover:border-(--primary) ${points === String(pt) 
                                                 ? "text-(--primary) border-(--primary) font-semibold bg-(--accent)" 
                                                 : "text-(--muted-foreground) border-(--border) font-normal bg-(--secondary)"}`}
                                         >
@@ -219,12 +227,14 @@ export default function NewTaskModal({
                     />
 
                     {/* Footer */}
-                    <div className="px-6 py-4 flex items-center justify-between shrink-0 border-t border-(--border)">
+                    <div className={`px-6 py-4 flex items-center justify-between shrink-0 border-t border-(--border)
+                    max-sm:flex-col max-sm:gap-5 max-sm:items-start`}
+                    >
                         <div className="relative flex flex-col min-h-0">
-
                             <div 
                                 className={`flex items-center gap-2 px-2 py-1.5 rounded-lg text-sm cursor-pointer border
-                                border-(--border) text-(--muted-foreground) relative w-45 justify-center bg-(--secondary) `}
+                                border-(--border) text-(--muted-foreground) relative  
+                                max-sm:w-full w-45 justify-center bg-(--secondary) `}
                                 onClick={() => setFilterOpen(prev => !prev)}
                             >
                                 <p>{sprint?.name ?? "No sprints conected"}</p>
@@ -233,13 +243,15 @@ export default function NewTaskModal({
                             </div>
 
                             <div className={`bg-(--secondary) outline-none text-sm cursor-pointer text-(--foreground) 
-                                ${filterOpen ? "flex" : "hidden"} whitespace-nowrap px-3 py-2 gap-5 w-45 z-5 rounded
+                                ${filterOpen ? "flex" : "hidden"} whitespace-nowrap gap-5 max-sm:w-full w-45 z-5 rounded
                                 -top-10 left-1/2 -translate-x-1/2 absolute flex-col `}
                             >
                                 {data?.sprints.map(f => (
                                 <button 
                                     key={f.id} 
-                                    className="cursor-pointer text-xs"
+                                    type="button"
+                                    className={`cursor-pointer text-xs border hover:border-(--primary) rounded-md  
+                                    border-transparent px-3 py-2`}
                                     onClick={() =>{
                                         setValue("sprint", {name: f.name, id: f.id});
                                         setFilterOpen(false);
@@ -251,7 +263,7 @@ export default function NewTaskModal({
                             </div>  
                         </div>
 
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 max-sm:justify-between max-sm:w-full ">
 
                             <CloseModal 
                                 setOpen={setOpen}
@@ -262,9 +274,9 @@ export default function NewTaskModal({
 
                             <button
                                 type="submit"
-                                disabled={!getValues("description").trim()}
+                                disabled={isSubmitting || !isValid}
                                 className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all
-                                ${getValues("description").trim() 
+                                ${ isValid 
                                     ? "bg-(--primary) text-(--primary-foreground) cursor-pointer" 
                                     : "bg-(--muted) text-(--muted-foreground) cursor-not-allowed"}`}
                             >
