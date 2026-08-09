@@ -27,12 +27,11 @@ export const ProjectIcons = new Map([
 ] as const);
 
 export const ProjectStatusColors = new Map([
-    ["Completed", "#27e619"],
-    ["InReview", "#ebd726"],
-    ["InProgress", "#1b5af7"],
-    ["Todo", "#27e619"],
+  ["Completed", { color: "#27e619", bg: "rgba(39, 230, 25, 0.15)" }],
+  ["InReview", { color: "#ebd726", bg: "rgba(235, 215, 38, 0.18)" }],
+  ["InProgress", { color: "#1b5af7", bg: "rgba(27, 90, 247, 0.15)" }],
+  ["Todo", { color: "#27e619", bg: "rgba(39, 230, 25, 0.15)" }],
 ]);
-
 
 
 

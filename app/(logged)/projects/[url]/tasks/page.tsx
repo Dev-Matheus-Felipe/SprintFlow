@@ -1,6 +1,6 @@
 import Tasks from "@/components/projects/tasks/tasks";
 import { auth } from "@/lib/auth";
-import getTaskPage from "@/lib/project/pages/getTaskPage";
+import getTaskPage from "@/lib/task/getTaskPage";
 import {ProjectTaskPageType } from "@/lib/types";
 import { notFound } from "next/navigation";
 import { ProjectUrlParamstype } from "../page";

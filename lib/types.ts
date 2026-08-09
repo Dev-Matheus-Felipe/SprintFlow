@@ -48,7 +48,7 @@ export type ProjectOverviewType = Prisma.ProjectGetPayload<{
                         name: true,
                         icon: true
                     }
-                }
+                },
             }
         },
 
@@ -67,7 +67,7 @@ export type ProjectOverviewType = Prisma.ProjectGetPayload<{
 
 export type TaskPageDataType = Prisma.TaskGetPayload<{
     include: {
-        user: true
+        user: true,
     }
 }>
 
@@ -75,7 +75,7 @@ export type ProjectTaskPageType = Prisma.ProjectGetPayload<{
     include: {
         tasks: {
             include: {
-                user: true
+                user: true,
             }
         },
 

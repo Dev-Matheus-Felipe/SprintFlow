@@ -10,8 +10,9 @@ import { TaskPageDataType } from "@/lib/types";
 import Image from "next/image";
 import { ProjectStatusColors } from "@/lib/project/data";
 import { priorityOptions } from "@/components/modals/newTaskModal";
+import useModal from "@/lib/hooks/newProject";
 
-const tableHeaders = ["Tasks", "Status", "Priority", "Responsible", "Deadline", "Points"];
+export const tableHeaders = ["Tasks", "Status", "Priority", "Responsible", "Deadline", "Points"];
 
 export default function Tasks({
     tasks,
@@ -32,6 +33,7 @@ export default function Tasks({
 
 	const { data, setData } = useProjectData();
     const { setTitle } = usePageTitle();
+	const { setStatus } = useModal();
 
     useEffect(() => {
 		if(data == null) setData({sprints: sprints, tasks: tasks, projectInfo});
@@ -77,13 +79,20 @@ export default function Tasks({
 							const date = task.deadline;
 
 							const Pcolor = priorityOptions.filter(p => p.label == task.priority)[0];
-							const Scolor = ProjectStatusColors.get(task.status);
+							const Scolor = ProjectStatusColors.get(task.status)!;
 
 							return (
 								<tr
 									key={task.id}
-									className="cursor-pointer transition-colors"
-									style={{ borderBottom: "1px solid var(--border)" }}
+									onClick={() => {
+										setData(prev => {
+											return (!prev) ? null : {...prev, taskOverviewId: task.id};
+
+										});
+										
+										setStatus({open: true, component: "taskOverview"});
+									} }
+									className="cursor-pointer transition-colors border-b border-(--border)"
 									onMouseEnter={(e) => {
 										(e.currentTarget as HTMLTableRowElement).style.background = "var(--muted)"; }}
 
@@ -100,8 +109,8 @@ export default function Tasks({
 
 									<td className="px-3  py-3">
 										<span 
-											className={` py-0.5 rounded-full text-xs font-medium`}
-											style={{color: Scolor}}
+											className={`py-1 rounded-full text-xs font-medium px-2`}
+											style={{color: Scolor.color, background: Scolor.bg }}
 										>
 											{task.status}
 										</span>
@@ -109,8 +118,8 @@ export default function Tasks({
 
 									<td className="px-4 py-3">
 										<span 
-											className={`px-2 py-0.5 rounded-full text-xs font-medium`}
-											style={{color: Pcolor.color}}
+											className={`px-2 py-1 rounded-full text-xs font-medium`}
+											style={{color: Pcolor.color, background: Pcolor.bg }}
 										>
 											{task.priority}
 										</span>

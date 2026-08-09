@@ -21,7 +21,7 @@ export default async function getProjectPage({url, userId} : {url: string, userI
                             name: true,
                             icon: true
                         }
-                    }
+                    },
                 }
             },
             

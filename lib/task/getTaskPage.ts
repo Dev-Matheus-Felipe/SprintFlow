@@ -13,7 +13,7 @@ export default async function getTaskPage({url, userId} : {url: string, userId: 
         include: {
             tasks: {
                 include: {
-                    user: true
+                    user: true,
                 }
             },
 

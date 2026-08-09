@@ -12,13 +12,14 @@ type ProjectProviderType = {
 export type ProjectInfoType = {
     name: string,
     id: string,
-    icon: "Zap" | "Rocket" | "Palette" | "RefreshCw" | "Smartphone" | "Globe" | "Shield" | "ChartColumn"
+    icon: "Zap" | "Rocket" | "Palette" | "RefreshCw" | "Smartphone" | "Globe" | "Shield" | "ChartColumn",
+    taskOverviewId?: string
 }
 
 export type ProjectDataType = {
     tasks: TaskPageDataType[],
     sprints: { name: string, id: string }[],
-
+    taskOverviewId?: string,
     projectInfo: ProjectInfoType
 };
 

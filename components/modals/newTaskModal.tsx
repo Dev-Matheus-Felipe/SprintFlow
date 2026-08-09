@@ -11,6 +11,7 @@ import postNewTassk from "@/lib/project/components/postNewTask";
 
 type PriorityOptionsType = {
     label: "Critical" | "High" | "Medium" | "Low",
+    bg: string,
     color: string,
     dot: string
 }
@@ -19,10 +20,10 @@ const taskStatus = ["Todo", "InProgress", "InReview", "Completed"] as const;
 
 
 export const priorityOptions: PriorityOptionsType[] = [
-    { label: "Critical", color: "#ef4444", dot: "🔴" },
-    { label: "High", color: "#f97316", dot: "🟠" },
-    { label: "Medium", color: "#f59e0b", dot: "🟡" },
-    { label: "Low", color: "#6b7280", dot: "⚪" },
+    { label: "Critical", color: "#ef4444", bg: "rgba(239, 68, 68, 0.15)", dot: "🔴" },
+    { label: "High", color: "#f97316", bg: "rgba(249, 115, 22, 0.15)", dot: "🟠" },
+    { label: "Medium", color: "#f59e0b", bg: "rgba(245, 158, 11, 0.15)", dot: "🟡" },
+    { label: "Low", color: "#6b7280", bg: "rgba(107, 114, 128, 0.15)", dot: "⚪" },
 ] as const;
 
 

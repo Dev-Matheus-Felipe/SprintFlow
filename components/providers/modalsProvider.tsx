@@ -4,6 +4,7 @@ import React, { createContext, Dispatch, useState } from "react"
 import NewProjectModal from "../modals/newProjectModal";
 import NewTaskModal from "../modals/newTaskModal";
 import NewSprintModal from "../modals/newSprintModal";
+import ViewProjectTaskModal from "../modals/viewProjectTaskModal";
 
 type ModalsContextType = {
     status: StatusType,
@@ -12,7 +13,7 @@ type ModalsContextType = {
 
 type StatusType = {
     open: boolean,
-    component: "newProject" | "newTask" | "newSprint" | null
+    component: "newProject" | "newTask" | "newSprint" | "taskOverview" | null
 }
 
 export const ModalsContext = createContext<ModalsContextType | null>(null);
@@ -60,6 +61,9 @@ function ManageModals({
 
         case "newSprint":
             return <NewSprintModal setOpen={openModal} />;
+
+        case "taskOverview":
+            return <ViewProjectTaskModal setOpen={openModal} />
 
         default: return null;
     }    

@@ -2,7 +2,7 @@ import { SetTitlePage } from "@/components/topbar/setTitlePage";
 import { ProjectUrlParamstype } from "../page";
 import { auth } from "@/lib/auth";
 import { notFound } from "next/navigation";
-import getSprintsPage from "@/lib/project/pages/getSprintsPage";
+import getSprintsPage from "@/lib/sprint/getSprintsPage";
 import ProjectSprintComponent from "@/components/projects/sprints/sprints";
 
 export default async function ProjectSprintsPage({params}: ProjectUrlParamstype){
