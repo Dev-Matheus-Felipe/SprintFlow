@@ -4,6 +4,10 @@ import z from "zod";
 export const EditTaskSchema = z.object({
     status: z.enum(TaskStatus),
     priority: z.enum(TaskPriorities),
+    sprintId: z.
+        string()
+        .transform(value => value === "" ? undefined : value)
+        .optional()
 });
 
 

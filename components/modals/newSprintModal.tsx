@@ -16,7 +16,7 @@ export default function NewSprintModal({
 
     const {
         register,
-        formState: {errors},
+        formState: {errors, isValid},
         handleSubmit
     } = useForm<NewSprintSchemaType>({
         resolver: zodResolver(NewSprintSchema)
@@ -124,7 +124,7 @@ export default function NewSprintModal({
                         <button
                             type="submit"
                             className={`flex-1 py-2.5 rounded-lg text-sm font-semibold bg-(--primary) text-(--primary-foreground)
-                            cursor-pointer`}
+                            ${isValid ? "cursor-pointer" : "cursor-not-allowed"}`}
                         >
                             Create Sprint
                         </button>

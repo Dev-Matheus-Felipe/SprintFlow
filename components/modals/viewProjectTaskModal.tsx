@@ -10,6 +10,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EditTaskSchema, EditTaskSchemaType } from "@/lib/zod/editTask";
 import EditTaskFunc from "@/lib/task/editTask";
+import DeleteTaskFunc from "@/lib/task/deleteTask";
+import { useEffect, useState } from "react";
+import getAllSprints from "@/lib/sprint/getAllSprints";
 
 
 const statusOptions: { value: TaskStatus; label: string; color: string }[] = [
@@ -21,6 +24,7 @@ const statusOptions: { value: TaskStatus; label: string; color: string }[] = [
 
 
 export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolean) => void}){
+    const [sprints, setSprints] = useState<{name: string, id: string}[]>([]);
     const { data } = useProjectData();
 
     const task = data?.tasks.find(task => task.id == data.taskOverviewId);
@@ -34,7 +38,8 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
     } = useForm({
         defaultValues: {
             status: task?.status ?? "Todo",
-            priority: task?.priority ?? "Low"
+            priority: task?.priority ?? "Low",
+            sprintId: task?.sprintId ?? ""
         },
 
         resolver: zodResolver(EditTaskSchema)
@@ -42,6 +47,15 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
 
     const priority = watch("priority");
 
+    useEffect(() => {
+        async function load(){
+            const sprints = await getAllSprints({id: data?.projectInfo.id ?? ""});
+            setSprints(sprints);
+        }
+
+        load();
+    }, []);
+    
 
     if(!data || !task){
         return null;
@@ -51,6 +65,15 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
         const res = await EditTaskFunc({data, id: task.id});
         
         alert(res.message);
+    }
+
+    const deleteTask = async() => {
+        const res = await DeleteTaskFunc({id: task.id});
+        alert(res.message);
+
+        if(res.sucess){
+            setOpen(false);
+        }
     }
 
     const currentPriority = priorityOptions.find((p) => p.label === priority);
@@ -80,6 +103,7 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
                     
                     <div className="flex items-center gap-1">
                         <button
+                            onClick={() => deleteTask()}
                             className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors 
                             text-(--muted-foreground) cursor-pointer`}
                             onMouseEnter={(e) => {
@@ -163,6 +187,35 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
                                                 style={{color: p.color}}
                                             >
                                                 {p.label}
+                                            </option>
+                                        )) }
+                                    </select>
+                                </div>
+
+                                {/* Sprint */}
+                                <div>
+                                    <p className="text-xs font-medium mt-4 mb-2 text-(--muted-foreground)">
+                                        Sprint
+                                    </p>
+
+                                    <select
+                                        {...register("sprintId")}
+                                        className={`w-full px-2.5 py-2 rounded-lg text-xs outline-none appearance-none
+                                        bg-(--secondary) border border-(--border) cursor-pointer`}
+                                    >
+
+                                        { !task.sprintId &&
+                                            <option value="">
+                                                Undefined
+                                            </option>
+                                        }
+
+                                        { sprints.map((p) => (
+                                            <option 
+                                                key={p.id} 
+                                                value={p.id}
+                                            >
+                                                {p.name}
                                             </option>
                                         )) }
                                     </select>

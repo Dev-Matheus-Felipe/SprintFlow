@@ -11,6 +11,7 @@ import Image from "next/image";
 import { ProjectStatusColors } from "@/lib/project/data";
 import { priorityOptions } from "@/components/modals/newTaskModal";
 import useModal from "@/lib/hooks/newProject";
+import sortTasks from "@/lib/task/sortTasks";
 
 export const tableHeaders = ["Tasks", "Status", "Priority", "Responsible", "Deadline", "Points"];
 
@@ -40,8 +41,8 @@ export default function Tasks({
         setTitle("Tasks");
     },[]);
 
-    const filteredTasks = 
-		tasks.filter(task => task.description.toLowerCase().includes(search.toLowerCase()));
+    const filteredTasks = sortTasks({tasks, type: filterStatus.text})
+		.filter(task => task.description.toLowerCase().includes(search.toLowerCase()));
 
     return (
     	<div className="flex-1 flex flex-col min-w-0">
