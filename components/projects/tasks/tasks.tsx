@@ -3,26 +3,30 @@
 import { ProjectInfoType } from "@/components/providers/projectProvider";
 import { usePageTitle } from "@/lib/hooks/pageTitle";
 import { useEffect, useState } from "react";
-import TaskPageHeader from "./header";
 import useProjectData from "@/lib/hooks/projectProps";
-import { Calendar } from "lucide-react";
+import { Calendar, Search } from "lucide-react";
 import { TaskPageDataType } from "@/lib/types";
 import Image from "next/image";
 import { ProjectStatusColors } from "@/lib/project/data";
 import { priorityOptions } from "@/components/modals/newTaskModal";
 import useModal from "@/lib/hooks/newProject";
 import sortTasks from "@/lib/task/sortTasks";
+import { ProjectRoles } from "@prisma/client";
+import TaskSprintHeader from "../taskSprintHeader";
 
 export const tableHeaders = ["Tasks", "Status", "Priority", "Responsible", "Deadline", "Points"];
+const filters = ["Most recent", "Deadline", "Priority"];
 
 export default function Tasks({
     tasks,
 	sprints,
     projectInfo,
+	role
 } : { 
     tasks: TaskPageDataType[],
 	sprints: { name: string, id: string }[]
     projectInfo: ProjectInfoType,
+	role: ProjectRoles
 }){
     
     const[filterStatus, setFilterStatus] = useState<{open: boolean, text: string}>({
@@ -48,13 +52,51 @@ export default function Tasks({
     	<div className="flex-1 flex flex-col min-w-0">
 
             {/* Header */}
-            <TaskPageHeader
-				filterStatus={filterStatus} setFilterStatus={setFilterStatus}
-				search={search} setSearch={setSearch}
+            <div className="px-6 py-4 shrink-0 border-b border-(--border)">
+				<TaskSprintHeader 
+					type="Task" 
+					length={tasks.length} 
+					projectInfo={projectInfo} 
+					role={role}
+				/>
 
-				projectInfo={projectInfo}
-				tasksLength={tasks.length}
-			/>
+				<div className="flex items-center gap-3 my-5 min-0 max-xs:mt-10 max-xs:flex-col">
+					<div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg flex-1 max-w-xs min-w-0
+					bg-(--secondary) border border-(--border) max-xs:w-full`}
+					>
+						<Search size={13} color="var(--muted-foreground)"/>
+
+						<input
+							type="text"
+							value={search}
+							onChange={(e) => setSearch(e.target.value)}
+							placeholder="Search tasks..."
+							className="bg-transparent outline-none text-sm flex-1 text-(--foreground) min-w-0"
+						/>
+						
+					</div>
+
+					<div>
+						<select
+							value={filterStatus.text}
+							onChange={(e) => setFilterStatus({ open: false, text: e.target.value })}
+							className={`w-full px-2.5 py-2 rounded-lg text-xs outline-none appearance-none
+							bg-(--secondary) border border-(--border) cursor-pointer`}
+							>
+
+							{ filters.map((p) => (
+								<option 
+									key={p} 
+									value={p}
+									onClick={() => setFilterStatus({open: false, text: p})}
+									>
+									{p}
+								</option>
+							)) }
+						</select>     
+					</div>  
+				</div>
+			</div>
 
       		{/* Table */}
 			<div className="flex-1 overflow-x-auto min-w-0">

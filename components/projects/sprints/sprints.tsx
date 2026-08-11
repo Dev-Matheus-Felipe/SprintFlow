@@ -1,31 +1,30 @@
-"use client"
 
 import { ProjectInfoType } from "@/components/providers/projectProvider";
-import { usePageTitle } from "@/lib/hooks/pageTitle"
-import { useEffect } from "react";
 import TaskSprintHeader from "../taskSprintHeader";
 import { ProjectSprints } from "@/lib/types";
 import Image from "next/image";
 import { Play } from "lucide-react";
 import { sprintStatus } from "@/lib/sprint/data";
+import { ProjectRoles } from "@prisma/client";
 
 export default function ProjectSprintComponent({
     sprints,
-    projectInfo
+    projectInfo,
+    role,
 } : { 
     sprints: ProjectSprints[],
-    projectInfo: ProjectInfoType
+    projectInfo: ProjectInfoType,
+    role: ProjectRoles,
 }){
-
-    const { setTitle } = usePageTitle();
-
-    useEffect(() => {
-        setTitle("Sprints");
-    },[])
 
     return (
         <div className="flex-1 overflow-y-auto p-3 flex flex-col">
-            <TaskSprintHeader type="Sprint" length={sprints.length} projectInfo={projectInfo} />
+            <TaskSprintHeader 
+                type="Sprint" 
+                length={sprints.length} 
+                projectInfo={projectInfo} 
+                role={role}
+            />
       
             {/* Sprints list */}
             <div className="space-y-4 mt-5">

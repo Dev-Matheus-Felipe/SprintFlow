@@ -1,7 +1,7 @@
 "use client"
 
 import useProjectData from "@/lib/hooks/projectProps";
-import { TaskStatus } from "@prisma/client";
+import { ProjectRoles, TaskStatus } from "@prisma/client";
 import { format } from "date-fns";
 import { Calendar, Trash2, User, X } from "lucide-react";
 import Image from "next/image";
@@ -12,7 +12,7 @@ import { EditTaskSchema, EditTaskSchemaType } from "@/lib/zod/editTask";
 import EditTaskFunc from "@/lib/task/editTask";
 import DeleteTaskFunc from "@/lib/task/deleteTask";
 import { useEffect, useState } from "react";
-import getAllSprints from "@/lib/sprint/getAllSprints";
+import getAllProjectSprints from "@/lib/sprint/getAllSprints";
 
 
 const statusOptions: { value: TaskStatus; label: string; color: string }[] = [
@@ -25,6 +25,7 @@ const statusOptions: { value: TaskStatus; label: string; color: string }[] = [
 
 export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolean) => void}){
     const [sprints, setSprints] = useState<{name: string, id: string}[]>([]);
+    const [role, setRole] = useState<ProjectRoles>("Member");
     const { data } = useProjectData();
 
     const task = data?.tasks.find(task => task.id == data.taskOverviewId);
@@ -49,8 +50,10 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
 
     useEffect(() => {
         async function load(){
-            const sprints = await getAllSprints({id: data?.projectInfo.id ?? ""});
+            const { sprints, role } = await getAllProjectSprints({id: data?.projectInfo.id ?? ""});
+
             setSprints(sprints);
+            setRole(role);
         }
 
         load();
@@ -102,21 +105,24 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
                     </div>
                     
                     <div className="flex items-center gap-1">
-                        <button
-                            onClick={() => deleteTask()}
-                            className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors 
-                            text-(--muted-foreground) cursor-pointer`}
-                            onMouseEnter={(e) => {
-                                (e.currentTarget as HTMLButtonElement).style.color = "#ef4444";
-                                (e.currentTarget as HTMLButtonElement).style.background = "#ef444415";
-                            }}
-                            onMouseLeave={(e) => {
-                                (e.currentTarget as HTMLButtonElement).style.color = "var(--muted-foreground)";
-                                (e.currentTarget as HTMLButtonElement).style.background = "transparent";
-                            }}
-                        >
-                            <Trash2 size={14} />
-                        </button>
+                        {
+                            role != "Member" &&
+                                <button
+                                    onClick={() => deleteTask()}
+                                    className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors 
+                                    text-(--muted-foreground) cursor-pointer`}
+                                    onMouseEnter={(e) => {
+                                        (e.currentTarget as HTMLButtonElement).style.color = "#ef4444";
+                                        (e.currentTarget as HTMLButtonElement).style.background = "#ef444415";
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        (e.currentTarget as HTMLButtonElement).style.color = "var(--muted-foreground)";
+                                        (e.currentTarget as HTMLButtonElement).style.background = "transparent";
+                                    }}
+                                >
+                                    <Trash2 size={14} />
+                                </button>
+                        }
 
                         <button
                             className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors 

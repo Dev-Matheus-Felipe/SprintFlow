@@ -9,7 +9,6 @@ const priorityOrder: Record<TaskPriorities, number> = {
 };
 
 export default function sortTasks({tasks, type} : {tasks: TaskPageDataType[], type: string}): TaskPageDataType[]{
-    console.log(type);
     return [...tasks].sort((a, b) => {
         switch(type){
             case "Most recent":

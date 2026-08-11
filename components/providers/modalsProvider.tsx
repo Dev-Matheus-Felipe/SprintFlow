@@ -5,6 +5,7 @@ import NewProjectModal from "../modals/newProjectModal";
 import NewTaskModal from "../modals/newTaskModal";
 import NewSprintModal from "../modals/newSprintModal";
 import ViewProjectTaskModal from "../modals/viewProjectTaskModal";
+import NewUserModal from "../modals/newUser";
 
 type ModalsContextType = {
     status: StatusType,
@@ -13,7 +14,7 @@ type ModalsContextType = {
 
 type StatusType = {
     open: boolean,
-    component: "newProject" | "newTask" | "newSprint" | "taskOverview" | null
+    component: "newProject" | "newTask" | "newSprint" | "taskOverview" | "newUser" | null
 }
 
 export const ModalsContext = createContext<ModalsContextType | null>(null);
@@ -64,6 +65,9 @@ function ManageModals({
 
         case "taskOverview":
             return <ViewProjectTaskModal setOpen={openModal} />
+
+        case "newUser":
+            return <NewUserModal setOpen={openModal} />
 
         default: return null;
     }    

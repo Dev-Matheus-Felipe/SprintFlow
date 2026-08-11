@@ -1,16 +1,21 @@
+"use client"
+
 import { ProjectIcons } from "@/lib/project/data";
 import { ProjectInfoType } from "../providers/projectProvider";
 import { Plus } from "lucide-react";
 import useModal from "@/lib/hooks/newProject";
+import { ProjectRoles } from "@prisma/client";
 
 export default function TaskSprintHeader({
     projectInfo,
     length,
     type,
+    role,
 } : {
     projectInfo: ProjectInfoType,
     length: number,
-    type: "Task" | "Sprint"
+    type: "Task" | "Sprint",
+    role: ProjectRoles
 }){
 
     const { setStatus } = useModal();
@@ -37,14 +42,17 @@ export default function TaskSprintHeader({
             </div>
 
 
-            <button 
-                onClick={() => setStatus({component: (type == "Task" ? "newTask" : "newSprint"), open: true})}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium 
-                transition-colors bg-(--primary) text-(--primary-foreground) cursor-pointer`}
-            >
-                <Plus size={14} />
-                New {type}
-            </button>
+            {
+                (role != "Member") &&
+                    <button 
+                        onClick={() => setStatus({component: (type == "Task" ? "newTask" : "newSprint"), open: true})}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium 
+                        transition-colors bg-(--primary) text-(--primary-foreground) cursor-pointer`}
+                    >
+                        <Plus size={14} />
+                        New {type}
+                    </button>
+            }
         </div>
     )
 }

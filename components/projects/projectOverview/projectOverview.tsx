@@ -5,11 +5,14 @@ import SprintComponent from "./sprint";
 import MemberComponent from "./member";
 import ProjectViewButton from "@/components/buttons/project/projectViewButton";
 import NewMemberButton from "@/components/buttons/project/newMemberButton";
+import { ProjectRoles } from "@prisma/client";
 
 export default function ProjectOverview({
     project,
+    role,
 } : {
     project: ProjectOverviewType,
+    role: ProjectRoles,
 }){
     
     const projectSprints = project.sprints;
@@ -70,7 +73,10 @@ export default function ProjectOverview({
                             Members ({project.members.length})
                         </h3>
 
-                        <NewMemberButton />
+                        {
+                            (role != "Member") && 
+                                <NewMemberButton />
+                        }
                     </div>
 
                     <div className="rounded-xl overflow-hidden bg-(--card) border border-(--border)">

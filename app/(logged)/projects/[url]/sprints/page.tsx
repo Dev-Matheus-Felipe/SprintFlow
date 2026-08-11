@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { notFound } from "next/navigation";
 import getSprintsPage from "@/lib/sprint/getSprintsPage";
 import ProjectSprintComponent from "@/components/projects/sprints/sprints";
+import getMember from "@/lib/task/getMember";
 
 export default async function ProjectSprintsPage({params}: ProjectUrlParamstype){
     const { url } = await params;
@@ -19,7 +20,8 @@ export default async function ProjectSprintsPage({params}: ProjectUrlParamstype)
         .replace(/\s+/g, "-");
 
     const project = await getSprintsPage({url: valitedUrl, userId: session.user.id})
-    if(!project){
+    const user = await getMember({userId: session.user.id, projectId: project?.id ?? ""});
+    if(!project || !user){
         notFound();
     }
 
@@ -30,6 +32,7 @@ export default async function ProjectSprintsPage({params}: ProjectUrlParamstype)
             <ProjectSprintComponent 
                 sprints={project.sprints} 
                 projectInfo={{name: project.name, icon: project.icon, id: project.id}}  
+                role={user.role}
             />
         </>
     )
