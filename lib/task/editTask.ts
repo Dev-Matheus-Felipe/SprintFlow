@@ -33,12 +33,13 @@ export default async function EditTaskFunc({
     }
 
     try {
-        const data = res.data;
+        const {user, ...data} = res.data;
         
         await prisma.task.update({
             where: { id: projectId.id },
             data: {
-                ...data
+                ...data,
+                userId: user?.id
             }
         });
 

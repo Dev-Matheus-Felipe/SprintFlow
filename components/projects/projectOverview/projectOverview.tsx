@@ -21,7 +21,7 @@ export default function ProjectOverview({
         <div className="flex-1 overflow-y-auto">
 
             {/* MAIN INFO - BANNER */}
-            <Banner project={project} />
+            <Banner project={project} role={role} />
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
@@ -33,7 +33,7 @@ export default function ProjectOverview({
                     </h3>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
-                    {views.map((view) => (
+                    { views.map((view) => (
                         <ProjectViewButton view={view} key={view.label} project={project}  /> ))}
 
                     </div>
@@ -45,7 +45,7 @@ export default function ProjectOverview({
                     </h3>
                     
                     <div className="space-y-2">
-                        {projectSprints.length > 0 
+                        { projectSprints.length > 0 
                             ? projectSprints.map((sprint) => {
                                 const sprintTasks = project.tasks.filter((t) => t.sprintId === sprint.id);
                                 const sprintDone = sprintTasks.filter((t) => t.status === "Completed").length;
@@ -80,7 +80,7 @@ export default function ProjectOverview({
                     </div>
 
                     <div className="rounded-xl overflow-hidden bg-(--card) border border-(--border)">
-                        {project.members.map((member, i) => (
+                        { project.members.map((member, i) => (
                             <MemberComponent 
                                 key={member.user.id}
                                 member={member} 

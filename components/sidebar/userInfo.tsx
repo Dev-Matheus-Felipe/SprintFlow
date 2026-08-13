@@ -17,8 +17,8 @@ export default async function SidebarUserInfo() {
                     height={30}
                 />
 
-                <div>
-                    <h1 className="text-sm">{session.user.name}</h1>
+                <div className="w-full min-w-0">
+                    <h1 className="text-sm truncate">{session.user.name}</h1>
                     <p className="text-xs text-(--muted-foreground)">Full-Stack Developer</p>
                 </div>
             </div>

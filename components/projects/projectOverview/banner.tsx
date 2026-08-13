@@ -1,9 +1,21 @@
+"use client"
+
+import useModal from "@/lib/hooks/newProject";
 import { getProjectStatus } from "@/lib/project/components/getProjectStatus";
 import { ProjectIcons } from "@/lib/project/data";
 import { ProjectOverviewType } from "@/lib/types";
+import { ProjectRoles } from "@prisma/client";
 import { Settings, UserPlus } from "lucide-react";
 
-export default function Banner({project} : {project: ProjectOverviewType}){
+export default function Banner({
+    project,
+    role
+} : {
+    project: ProjectOverviewType,
+    role: ProjectRoles
+}){
+    const { setStatus } = useModal();
+
     const projectStatus = getProjectStatus({tasks: project.tasks});    
 
     // completed tasks and progress data
@@ -47,15 +59,19 @@ export default function Banner({project} : {project: ProjectOverviewType}){
                     </div>
                 </div>
                 
-                <button
-                    className={`sm:hidden flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors
-                    bg-(--secondary) text-(--foregroubd) border border-(--border) cursor-pointer 
-                    hover:bg-(--primary)`}
-                >
+                {
+                    role != "Member" &&
+                        <button
+                            onClick={() => setStatus({component: "newUser", open: true})}
+                            className={`sm:hidden flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors
+                            bg-(--secondary) text-(--foregroubd) border border-(--border) cursor-pointer 
+                            hover:bg-(--primary)`}
+                        >
 
-                    <UserPlus size={14} />
-                    Invite User
-                </button>
+                        <UserPlus size={14} />
+                        Invite User
+                    </button>
+                }
 
             </div>
 

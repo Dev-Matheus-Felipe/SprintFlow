@@ -3,7 +3,7 @@
 import useProjectData from "@/lib/hooks/projectProps";
 import { ProjectRoles, TaskStatus } from "@prisma/client";
 import { format } from "date-fns";
-import { Calendar, Trash2, User, X } from "lucide-react";
+import { Calendar, Plus, Trash2, User, X } from "lucide-react";
 import Image from "next/image";
 import { priorityOptions } from "./newTaskModal";
 import { useForm } from "react-hook-form";
@@ -13,7 +13,9 @@ import EditTaskFunc from "@/lib/task/editTask";
 import DeleteTaskFunc from "@/lib/task/deleteTask";
 import { useEffect, useState } from "react";
 import getAllProjectSprints from "@/lib/sprint/getAllSprints";
+import SetUserTask, { AllProjectUserType } from "../projects/tasks/setUserTask";
 
+ 
 
 const statusOptions: { value: TaskStatus; label: string; color: string }[] = [
   { value: "Todo", label: "To Do", color: "#6b7280" },
@@ -22,10 +24,11 @@ const statusOptions: { value: TaskStatus; label: string; color: string }[] = [
   { value: "Completed", label: "Completed", color: "#10b981" },
 ];
 
-
 export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolean) => void}){
     const [sprints, setSprints] = useState<{name: string, id: string}[]>([]);
+    const [openSelector, setOpenSelector] = useState<boolean>(false);
     const [role, setRole] = useState<ProjectRoles>("Member");
+
     const { data } = useProjectData();
 
     const task = data?.tasks.find(task => task.id == data.taskOverviewId);
@@ -35,18 +38,21 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
         formState: {isDirty},
         handleSubmit,
         watch,
+        setValue,
 
     } = useForm({
         defaultValues: {
             status: task?.status ?? "Todo",
             priority: task?.priority ?? "Low",
-            sprintId: task?.sprintId ?? ""
+            sprintId: task?.sprintId ?? "",
+            user: task?.user ? {name: task.user.name, id: task.user.id, image: task.user.image ?? ""} : undefined
         },
 
         resolver: zodResolver(EditTaskSchema)
     });
 
     const priority = watch("priority");
+    const user = watch("user");
 
     useEffect(() => {
         async function load(){
@@ -77,6 +83,12 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
         if(res.sucess){
             setOpen(false);
         }
+    }
+
+    const setUser = (id: AllProjectUserType) => {
+        setValue("user", id, {
+            shouldDirty: true,
+        });
     }
 
     const currentPriority = priorityOptions.find((p) => p.label === priority);
@@ -239,27 +251,45 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
                         </div>
 
                         {/* Sidebar metadata */}
-                        <div className="lg:w-56 p-5 shrink-0 space-y-5 border-l border-(--border)">
+                        <div className="lg:w-56 p-5 pt-3  shrink-0 space-y-5 border-l border-(--border)">
 
                             {/* Assignee */}
                             <div>
-                                <p className="text-xs font-medium mb-2 flex items-center gap-1 text-(--muted-foreground)">
-                                    <User size={11} />
-                                    Person in charge
-                                </p>
+                                <div className="flex justify-between items-center relative">
+                                    <p className="text-xs font-medium mb-2 flex items-center gap-1 text-(--muted-foreground)">
+                                        <User size={11} />
+                                        Person in charge
+                                    </p>
 
-                                { task.user ? (
+                                    <button
+                                        onClick={() => setOpenSelector(prev => !prev)} 
+                                        className="text-(--muted-foreground) p-1 hover:bg-(--muted) rounded cursor-pointer"
+                                    >
+                                        <Plus size={13} />
+                                    </button> 
+
+                                    { openSelector && 
+                                        <SetUserTask 
+                                            projectId={data.projectInfo.id}
+                                            setOpenSelector={setOpenSelector}
+                                            setUser={setUser}
+                                        /> 
+                                    }
+                                </div>
+                                
+
+                                { user ? (
                                     <div className="flex items-center gap-2">
                                         <Image 
-                                            src={task.user.image ?? ""}
+                                            src={user.image ?? ""}
                                             width={24}
                                             height={24} 
-                                            alt={task.user.name} 
+                                            alt={user.name} 
                                             className="w-6 h-6 rounded-full" 
                                         />
 
-                                        <span className="text-xs text-(--foreground)">
-                                            {task.user.name}
+                                        <span className="text-xs text-(--foreground) truncate">
+                                            {user.name}
                                         </span>
                                     </div>
 

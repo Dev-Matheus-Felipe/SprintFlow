@@ -7,6 +7,14 @@ export const EditTaskSchema = z.object({
     sprintId: z.
         string()
         .transform(value => value === "" ? undefined : value)
+        .optional(),
+
+    user: z
+        .object({
+            name: z.string(),
+            id: z.string(),
+            image: z.string().optional()
+        })
         .optional()
 });
 
