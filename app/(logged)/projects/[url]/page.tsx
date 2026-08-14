@@ -1,11 +1,9 @@
 import ProjectOverview from "@/components/projects/projectOverview/projectOverview";
-import SetDataComponent from "@/components/projects/setData";
 import { SetTitlePage } from "@/components/topbar/setTitlePage";
-import { auth } from "@/lib/auth";
 import getProjectPage from "@/lib/project/pages/getPageProject";
-import getMember from "@/lib/task/getMember";
 import { ProjectOverviewType } from "@/lib/types";
 import { notFound } from "next/navigation";
+import { auth } from "@/lib/auth";
 
 export type ProjectUrlParamstype = {
     params: Promise<{
@@ -27,16 +25,13 @@ export default async function ProjectPage({params} : ProjectUrlParamstype){
         .replace(/\s+/g, "-");
     
     const project: ProjectOverviewType | null = await getProjectPage({url: valitedUrl, userId: session.user.id});
-    const role = await getMember({userId: session.user.id, projectId: project?.id ?? ""});
     
-    if(!project || !role) notFound();
+    if(!project) notFound();
     
     return (
         <>
             <SetTitlePage title={project.name} />
-            <SetDataComponent project={project}  />
-
-            <ProjectOverview project={project} role={role?.role} />
+            <ProjectOverview project={project} role={session.user.role} />
         </>
     )
 }

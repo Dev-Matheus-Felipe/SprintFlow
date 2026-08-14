@@ -19,8 +19,12 @@ export default async function postNewTassk({
 
     const validProjectId = await prisma.project.findUnique({where: {id: projectId}, select: {id: true}});
 
-    if(valid.error || !session?.user || !validProjectId)
-        return {sucess: false, message: "Invalidated Information"};
+    if(valid.error || !session?.user || !validProjectId){
+        return {sucess: false, message: "Invalidated information!"};
+    
+    } else if(session.user.role == "Member"){
+        return { sucess: false, message: "Not authorized!" };
+    }
 
     try {
         const { points, sprint, ...task } = valid.data;
@@ -35,9 +39,9 @@ export default async function postNewTassk({
             }
         })
 
-        return { sucess: true, message: "Task created successufully!" };
+        return { sucess: true, message: "Task created successfully." };
 
     } catch (error) {
-        return { sucess: false, message: "Something went wrong!" };
+        return { sucess: false, message: "Internal database error!" };
     }
 }

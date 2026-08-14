@@ -1,9 +1,7 @@
 "use client"
 
-import { ProjectInfoType } from "@/components/providers/projectProvider";
 import { usePageTitle } from "@/lib/hooks/pageTitle";
 import { useEffect, useState } from "react";
-import useProjectData from "@/lib/hooks/projectProps";
 import { Calendar, Search } from "lucide-react";
 import { TaskPageDataType } from "@/lib/types";
 import Image from "next/image";
@@ -13,6 +11,8 @@ import useModal from "@/lib/hooks/newProject";
 import sortTasks from "@/lib/task/sortTasks";
 import { ProjectRoles } from "@prisma/client";
 import TaskSprintHeader from "../taskSprintHeader";
+import useTask from "@/lib/hooks/tasks";
+import { projetInfoType } from "@/app/(logged)/projects/[url]/tasks/page";
 
 export const tableHeaders = ["Tasks", "Status", "Priority", "Responsible", "Deadline", "Points"];
 const filters = ["Most recent", "Deadline", "Priority"];
@@ -24,11 +24,12 @@ export default function Tasks({
 	role
 } : { 
     tasks: TaskPageDataType[],
-	sprints: { name: string, id: string }[]
-    projectInfo: ProjectInfoType,
+	sprints: {name: string, id: string}[]
+    projectInfo: projetInfoType,
 	role: ProjectRoles
 }){
-    
+   
+	// SEARCH METHODS
     const[filterStatus, setFilterStatus] = useState<{open: boolean, text: string}>({
 		open: false, 
 		text: "Most recent",
@@ -36,22 +37,25 @@ export default function Tasks({
 
     const[search, setSearch] = useState<string>("");
 
-	const { data, setData } = useProjectData();
+	// HOOKS NEEDED
     const { setTitle } = usePageTitle();
 	const { setStatus } = useModal();
+	const { setData } = useTask();
 
+	// INICIALIZATE TASK PROVIDER
     useEffect(() => {
-		if(data == null) setData({sprints: sprints, tasks: tasks, projectInfo});
+		setData({sprints: sprints, projectId: projectInfo.id});
         setTitle("Tasks");
     },[]);
 
+	// FILTERED TASKS
     const filteredTasks = sortTasks({tasks, type: filterStatus.text})
 		.filter(task => task.description.toLowerCase().includes(search.toLowerCase()));
 
     return (
     	<div className="flex-1 flex flex-col min-w-0">
 
-            {/* Header */}
+            {/* HEADER */}
             <div className="px-6 py-4 shrink-0 border-b border-(--border)">
 				<TaskSprintHeader 
 					type="Task" 
@@ -98,13 +102,13 @@ export default function Tasks({
 				</div>
 			</div>
 
-      		{/* Table */}
+      		{/* TABLE */}
 			<div className="flex-1 overflow-x-auto min-w-0">
   				{ filteredTasks.length > 0 ? 
 					<table className="w-full min-w-100">
 						<thead>
 							<tr className="border-b border-(--border)" >
-							{tableHeaders.map((h) => (
+							{ tableHeaders.map((h) => (
 								<th
 									key={h}
 									className={`text-left px-4 py-3 text-xs font-medium uppercase tracking-wider 
@@ -118,9 +122,11 @@ export default function Tasks({
 
 						<tbody>
 						{ filteredTasks.map((task) => {
+							// DATE MANAGEMENT
 							const isOverdue = new Date(task.deadline) < new Date() && task.status !== "Completed";
 							const date = task.deadline;
-
+							
+							// TASK PRIORITY AND STATUS
 							const Pcolor = priorityOptions.filter(p => p.label == task.priority)[0];
 							const Scolor = ProjectStatusColors.get(task.status)!;
 
@@ -128,13 +134,10 @@ export default function Tasks({
 								<tr
 									key={task.id}
 									onClick={() => {
-										setData(prev => {
-											return (!prev) ? null : {...prev, taskOverviewId: task.id};
-
-										});
-										
+										setData(prev => ({...prev, task: task}));
 										setStatus({open: true, component: "taskOverview"});
-									} }
+
+									}}
 									className="cursor-pointer transition-colors border-b border-(--border)"
 									onMouseEnter={(e) => {
 										(e.currentTarget as HTMLTableRowElement).style.background = "var(--muted)"; }}
@@ -169,7 +172,7 @@ export default function Tasks({
 									</td>
 
 									<td className="px-4 py-3">
-										{task.user ? (
+										{ task.user ? (
 											<div className="flex items-center gap-2">
 												<Image 
 													src={task.user.image ?? ""} 

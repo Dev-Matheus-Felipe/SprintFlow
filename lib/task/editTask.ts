@@ -13,11 +13,15 @@ export default async function EditTaskFunc({
     id: string
 
 }): Promise<FuncResponseType> {
+
     const session = await auth();
     const res = EditTaskSchema.safeParse(data);
 
     if(res.error || !session?.user?.id){
-        return { sucess: false, message: "Invalid Data" };
+        return { sucess: false, message: "Invalid data!" };
+    
+    } else if(session.user.role == "Member"){
+        return { sucess: false, message: "Not authorized!" };
     }
 
     const projectId = await prisma.task.findUnique({
@@ -29,7 +33,7 @@ export default async function EditTaskFunc({
     })
 
     if(!projectId){
-        return { sucess: false, message: "Task not found" };
+        return { sucess: false, message: "Task not found!" };
     }
 
     try {
@@ -43,9 +47,10 @@ export default async function EditTaskFunc({
             }
         });
 
+    return { sucess: true, message: "Task edited successfully." };
+
     } catch (error) {
-        return { sucess: false, message: "Internal Database Error." };
+        return { sucess: false, message: "Internal database error!" };
     }
     
-    return { sucess: true, message: "Task edited successfully!" };
 }

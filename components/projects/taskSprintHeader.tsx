@@ -1,10 +1,10 @@
 "use client"
 
 import { ProjectIcons } from "@/lib/project/data";
-import { ProjectInfoType } from "../providers/projectProvider";
 import { Plus } from "lucide-react";
 import useModal from "@/lib/hooks/newProject";
 import { ProjectRoles } from "@prisma/client";
+import { projetInfoType } from "@/app/(logged)/projects/[url]/tasks/page";
 
 export default function TaskSprintHeader({
     projectInfo,
@@ -12,7 +12,7 @@ export default function TaskSprintHeader({
     type,
     role,
 } : {
-    projectInfo: ProjectInfoType,
+    projectInfo: projetInfoType,
     length: number,
     type: "Task" | "Sprint",
     role: ProjectRoles
@@ -42,7 +42,7 @@ export default function TaskSprintHeader({
             </div>
 
 
-            {
+            {   // ONLY ADMS CAN ADD NEW TASKS AND SPRINTS
                 (role != "Member") &&
                     <button 
                         onClick={() => setStatus({component: (type == "Task" ? "newTask" : "newSprint"), open: true})}

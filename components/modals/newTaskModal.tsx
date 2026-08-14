@@ -1,13 +1,13 @@
 "use client"
 
-import { Calendar, ChevronDown, ChevronUp, X, Zap } from "lucide-react";
-import { useForm } from "react-hook-form";
-import CloseModal from "../buttons/closeModal";
 import { avaliablePoints, NewTaskSchema, NewTaskSchemaType } from "@/lib/zod/newTaskSchema";
+import { Calendar, ChevronDown, ChevronUp, X, Zap } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useProjectData from "@/lib/hooks/projectProps";
+import postNewTassk from "@/lib/task/postNewTask";
+import CloseModal from "../buttons/closeModal";
+import { useForm } from "react-hook-form";
 import { useState } from "react";
-import postNewTassk from "@/lib/project/components/postNewTask";
+import useTask from "@/lib/hooks/tasks";
 
 type PriorityOptionsType = {
     label: "Critical" | "High" | "Medium" | "Low",
@@ -16,8 +16,8 @@ type PriorityOptionsType = {
     dot: string
 }
 
+// GENERAL STATUS
 const taskStatus = ["Todo", "InProgress", "InReview", "Completed"] as const;
-
 
 export const priorityOptions: PriorityOptionsType[] = [
     { label: "Critical", color: "#ef4444", bg: "rgba(239, 68, 68, 0.15)", dot: "🔴" },
@@ -34,7 +34,7 @@ export default function NewTaskModal({
 }){
 
     const [ filterOpen, setFilterOpen ] = useState<boolean>(false);
-    const { data } = useProjectData();
+    const { data } = useTask();
 
     const {
         register,
@@ -63,9 +63,9 @@ export default function NewTaskModal({
     const currentPriority = priorityOptions.find((p) => p.label === priority)!;
 
     const submitTask = async(formData: NewTaskSchemaType) => {
-        if(!data?.projectInfo) return;
+        if(!data?.projectId) return;
 
-        const res = await postNewTassk({data: formData, projectId: data.projectInfo.id});
+        const res = await postNewTassk({data: formData, projectId: data.projectId});
         if(res.sucess){
             setOpen(false);
         }
@@ -81,7 +81,7 @@ export default function NewTaskModal({
                 border border-(--border) z-20`}
             >
                 
-                {/* Header */}
+                {/* HEADER */}
                 <div className="flex items-center justify-between px-6 py-4 shrink-0 pb-0">
                     <div className="flex items-center gap-2">
                         <div className="w-6 h-6 rounded-md flex items-center justify-center bg-(--accent)">
@@ -104,13 +104,13 @@ export default function NewTaskModal({
                     </CloseModal>
                 </div>
 
-                {/* Form */}
+                {/* FORM */}
                 <form className="flex-1 overflow-y-auto" onSubmit={handleSubmit(submitTask)}>
                     <div className="px-6 py-5 space-y-5">
 
                         <div className="h-px bg-(--border) "/>
 
-                            {/* Row 1 — Status + Priority */}
+                            {/* ROW 1 - STATUS + PRIORITY */}
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <label className={`block text-xs font-medium mb-1.5 uppercase tracking-wider 
@@ -169,7 +169,7 @@ export default function NewTaskModal({
                                 </div>
                         </div>
 
-                        {/* Row 2 — Due date + Story Points */}
+                        {/* ROW 2 - DUE DATE + POINTS */}
                         <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1 ">
                             <div>
                                 <label
@@ -219,7 +219,7 @@ export default function NewTaskModal({
                         </div>
                     </div>
 
-                    {/* Description */}
+                    {/* DESCRIPTION */}
                     <textarea
                         {...register("description")}
                         placeholder="Add a description.."
@@ -229,7 +229,7 @@ export default function NewTaskModal({
                         border-t p-3 border-(--border)`}
                     />
 
-                    {/* Footer */}
+                    {/* FOOTER */}
                     <div className={`px-6 py-4 flex items-center justify-between shrink-0 border-t border-(--border)
                     max-sm:flex-col max-sm:gap-5 max-sm:items-start`}
                     >
@@ -249,19 +249,19 @@ export default function NewTaskModal({
                                 ${filterOpen ? "flex" : "hidden"} whitespace-nowrap gap-5 max-sm:w-full w-45 z-5 rounded
                                 -top-10 left-1/2 -translate-x-1/2 absolute flex-col `}
                             >
-                                {data?.sprints.map(f => (
-                                <button 
-                                    key={f.id} 
-                                    type="button"
-                                    className={`cursor-pointer text-xs border hover:border-(--primary) rounded-md  
-                                    border-transparent px-3 py-2`}
-                                    onClick={() =>{
-                                        setValue("sprint", {name: f.name, id: f.id});
-                                        setFilterOpen(false);
-                                    } }
-                                >
-                                    {f.name}
-                                </button>
+                                { data?.sprints.map(f => (
+                                    <button 
+                                        key={f.id} 
+                                        type="button"
+                                        className={`cursor-pointer text-xs border hover:border-(--primary) rounded-md  
+                                        border-transparent px-3 py-2`}
+                                        onClick={() =>{
+                                            setValue("sprint", {name: f.name, id: f.id});
+                                            setFilterOpen(false);
+                                        } }
+                                    >
+                                        {f.name}
+                                    </button>
                                 ))}
                             </div>  
                         </div>

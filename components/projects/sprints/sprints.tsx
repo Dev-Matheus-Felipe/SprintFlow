@@ -1,11 +1,10 @@
-
-import { ProjectInfoType } from "@/components/providers/projectProvider";
 import TaskSprintHeader from "../taskSprintHeader";
 import { ProjectSprints } from "@/lib/types";
 import Image from "next/image";
 import { Play } from "lucide-react";
 import { sprintStatus } from "@/lib/sprint/data";
 import { ProjectRoles } from "@prisma/client";
+import { projetInfoType } from "@/app/(logged)/projects/[url]/tasks/page";
 
 export default function ProjectSprintComponent({
     sprints,
@@ -13,7 +12,7 @@ export default function ProjectSprintComponent({
     role,
 } : { 
     sprints: ProjectSprints[],
-    projectInfo: ProjectInfoType,
+    projectInfo: projetInfoType,
     role: ProjectRoles,
 }){
 
@@ -26,11 +25,14 @@ export default function ProjectSprintComponent({
                 role={role}
             />
       
-            {/* Sprints list */}
+            {/* SPRINTS LIST */}
             <div className="space-y-4 mt-5">
                 { sprints.map((sprint) => {
+                
+                // SPRINT TASKS
                 const sprintTasks = sprint.tasks;
 
+                // DATE DIFF
                 const diffMs = sprint.endAt.getTime() - sprint.startAt.getTime();
                 const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
@@ -38,12 +40,12 @@ export default function ProjectSprintComponent({
                     .filter((t) => t.status === "Completed")
                     .reduce((acc, t) => acc + t.points, 0);
 
+                // COMPLETED AND IN PROGRESS TASKS
                 const inProgress = sprintTasks.filter((t) => t.status === "InProgress").length;
                 const done = sprintTasks.filter((t) => t.status === "Completed").length;
                 
                 const progress = sprintTasks.length > 0 ? Math.round((done / sprintTasks.length) * 100) : 0;
                 const totalPoints = sprintTasks.reduce((acc, t) => acc + t.points, 0);
-
 
                 return (
                     <div
@@ -51,7 +53,7 @@ export default function ProjectSprintComponent({
                         className="rounded-xl overflow-hidden bg-(--card) border border-(--border)"
                     >
 
-                    {/* Sprint header */}
+                    {/* HEADER */}
                     <div className="px-5 py-4 border-b border-(--border)">
                         <div className="flex items-start justify-between">
                             <div className="flex-1">
@@ -99,7 +101,7 @@ export default function ProjectSprintComponent({
                         </div>
                     </div>
 
-                    {/* Progress bar */}
+                    {/* PROGRESS BAR */}
                     <div className="mt-3">
                         <div className="flex items-center justify-between mb-1.5">
                             <span className="text-xs text-(--muted-foreground)">
@@ -121,7 +123,7 @@ export default function ProjectSprintComponent({
                     </div>
                 </div>
 
-                {/* Task breakdown */}
+                {/* TASK BREAKDOWN */}
                 <div className="px-5 py-3">
                     <div className="grid grid-cols-4 gap-2">
                     {[
@@ -145,7 +147,7 @@ export default function ProjectSprintComponent({
                     </div>
                 </div>
 
-                {/* Tasks list (collapsed) */}
+                {/* TASKS LIST */}
                 { sprintTasks.length > 0 && (
                     <div className="px-5 py-3 space-y-1 border-t border-(--border)">
                         { sprintTasks.slice(0, 4).map((task) => {

@@ -1,11 +1,11 @@
 import ModalsProvider from "@/components/providers/modalsProvider";
-import ProjectProvider from "@/components/providers/projectProvider";
 import SidebarProvider from "@/components/providers/sidebarProvider";
 import { TitlePageProvider } from "@/components/providers/titlePageProvider";
 import Sidebar from "@/components/sidebar/sidebar";
 import SidebarShell from "@/components/sidebar/sidebarShell";
 import Topbar from "@/components/topbar/topbar";
 import React from "react";
+import TaskProvider from "@/components/providers/tasksProvider";
 
 export default function LoggedLayout({
     children,
@@ -14,7 +14,7 @@ export default function LoggedLayout({
 }){
 
     return (
-        <ProjectProvider>
+        <TaskProvider>
             <ModalsProvider>
                 <SidebarProvider>
                     <TitlePageProvider>
@@ -29,6 +29,6 @@ export default function LoggedLayout({
                     </TitlePageProvider>
                 </SidebarProvider>
             </ModalsProvider>
-        </ProjectProvider>     
+        </TaskProvider>     
     )
 }

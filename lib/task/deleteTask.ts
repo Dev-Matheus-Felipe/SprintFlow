@@ -9,6 +9,9 @@ export default async function DeleteTaskFunc({id} : {id: string}): Promise<FuncR
 
     if(!session?.user?.id){
         return {sucess: false, message: "Not logged!"};
+    
+    }else if(session.user.role == "Member"){
+        return { sucess: false, message: "Not authorized!" };
     }
 
     const task = await prisma.task.findUnique({
@@ -24,9 +27,9 @@ export default async function DeleteTaskFunc({id} : {id: string}): Promise<FuncR
     try {
         await prisma.task.delete({where: {id: task.id}});
 
-        return {sucess: false, message: "Task deleted successfully. "};
+        return {sucess: false, message: "Task deleted successfully."};
 
     } catch (error) {
-        return {sucess: false, message: "Internal Database Error."};
+        return {sucess: false, message: "Internal database error!"};
     }
 }

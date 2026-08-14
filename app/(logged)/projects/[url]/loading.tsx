@@ -13,7 +13,7 @@ export default function ProjectLoading(){
                     </h3>
 
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
-                    {views.map((v) => {
+                    { views.map((v) => {
                         const ViewIcon = projectViewIcons[v.icon];
 
                         return (
@@ -39,7 +39,7 @@ export default function ProjectLoading(){
 
                     </div>
 
-                    {/* Sprints */}
+                    {/* SPRINTS */}
                     <h3 className="text-sm font-semibold mb-3 text-(--foreground)">
                         Sprints
                     </h3>
@@ -49,7 +49,7 @@ export default function ProjectLoading(){
                     </div>
                 </div>
 
-                {/* Members */}
+                {/* MEMBERS */}
                 <div>
                     <div className="flex items-center justify-between mb-3">
                         <h3 className="text-sm font-semibold text-(--foreground)">

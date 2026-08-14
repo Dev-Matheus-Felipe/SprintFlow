@@ -1,6 +1,5 @@
 import TSHeaderLoading from "@/components/loading/TSHeaderLoading";
 
-
 const tableHeaders = ["Tasks", "Status", "Priority", "Responsible", "Deadline", "Points"];
 
 export default function ProjectTaskLoading(){

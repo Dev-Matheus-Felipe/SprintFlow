@@ -1,17 +1,17 @@
 "use client"
 
 import useModal from "@/lib/hooks/newProject"
-import { Plus } from "lucide-react"
+import { Plus, UserPlus } from "lucide-react"
 
-export default function NewMemberButton(){
+export default function NewMemberButton({style, banner} : {style: string, banner?: boolean}){
     const { setStatus } = useModal();
 
     return (
         <button 
-            className="flex items-center gap-1 text-xs transition-colors text-(--primary) cursor-pointer"
             onClick={() => setStatus({component: "newUser", open: true})}    
+            className={style}
         >
-            <Plus size={12} />
+            { banner ? <UserPlus size={12} /> : <Plus size={12} /> }
             Invite User
         </button>
     )

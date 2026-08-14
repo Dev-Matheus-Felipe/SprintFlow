@@ -1,6 +1,6 @@
 "use client"
 
-import useProjectData from "@/lib/hooks/projectProps";
+import useTask from "@/lib/hooks/tasks";
 import addNewUser from "@/lib/project/components/addNewUser";
 import { NewUserSchema, NewUserSchemaType } from "@/lib/zod/newUserSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 const roleOptions = ["Member", "Owner", "Admin"];
 
 export default function NewUserModal({setOpen} : {setOpen: (open: boolean) => void}){
-    const { data } = useProjectData();
+    const { data } = useTask();
 
     const {
         register,
@@ -22,9 +22,9 @@ export default function NewUserModal({setOpen} : {setOpen: (open: boolean) => vo
     });
 
     const handleAddNewUser = async(formData: NewUserSchemaType) => {
-        if(!data?.projectInfo.id) return;
+        if(!data?.projectId) return;
 
-        const res = await addNewUser({projectId: data.projectInfo.id, formData});
+        const res = await addNewUser({projectId: data.projectId, formData});
         alert(res.message);
     }
 

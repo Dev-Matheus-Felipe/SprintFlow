@@ -40,19 +40,22 @@ export type SidebarProjectsType = Prisma.ProjectGetPayload<{
 export type ProjectOverviewType = Prisma.ProjectGetPayload<{
     include: {
         tasks:  {
-            include: {
-                user: true,
-                
-                project: {
-                    select: {
-                        name: true,
-                        icon: true
-                    }
-                },
+            select: {
+                id: true,
+                status: true
             }
         },
 
-        sprints: true,
+        sprints: {
+            include: {
+                tasks: {
+                    select: {
+                        id: true,
+                        status: true
+                    }
+                }
+            }
+        },
 
         members: {
             select: {

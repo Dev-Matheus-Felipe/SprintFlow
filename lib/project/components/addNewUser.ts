@@ -18,7 +18,10 @@ export default async function addNewUser({
     const res = NewUserSchema.safeParse(formData);
 
     if(!session?.user?.id || res.error){
-        return { sucess: false, message: "Invalid Informations" };
+        return { sucess: false, message: "Invalid informations!" };
+    
+    }else if(session.user.role == "Member"){
+        return { sucess: false, message: "Not authorized!" };
     }
 
     const project = await prisma.project.findUnique({
@@ -34,10 +37,10 @@ export default async function addNewUser({
 
 
     if(!project || !user) {
-        return { sucess: false, message: "Data not found! " };
+        return { sucess: false, message: "Data not found!" };
     
     } else if(project.members.find(member => member.userId == user.id)){
-        return { sucess: false, message: "User already has added!" };
+        return { sucess: false, message: "User already has been added!" };
     }
 
     try {
@@ -52,6 +55,6 @@ export default async function addNewUser({
         return { sucess: true, message: "User added successfully." };
 
     } catch (error) {
-        return { sucess: false, message: "Internal database error" };
+        return { sucess: false, message: "Internal database error!" };
     }
 }

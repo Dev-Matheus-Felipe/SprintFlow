@@ -19,7 +19,7 @@ export default function MemberComponent({
 }){
     return (
         <div
-            key={member.user.id}
+            key={ member.user.id}
             className="flex items-center gap-3 px-4 py-3"
             style={{
                 borderBottom:
@@ -46,10 +46,10 @@ export default function MemberComponent({
                 </p>
             </div>
 
-            {member.role === "Owner" && (
+            { member.role === "Owner" && (
                 <span className={`text-xs px-2 py-0.5 rounded-full font-medium text-(--primary)
                 bg-(--accent)`} >
-                    Dono
+                    Owner
                 </span>
             )}
         </div>

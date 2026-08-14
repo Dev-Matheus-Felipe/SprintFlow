@@ -9,7 +9,12 @@ export default async function PostNewSprint({data, url} : {data: NewSprintSchema
     const validatedData = NewSprintSchema.safeParse({data});
     const session = await auth();
 
-    if(!session?.user || !validatedData)  return {sucess: false, message: "Invalidated Data"};
+    if(!session?.user || !validatedData){
+        return {sucess: false, message: "Invalidated data!"};
+    
+    } else if(session.user.role == "Member"){
+        return { sucess: false, message: "Not authorized!" };
+    }
 
     const userId = session.user.id;
     const project = await prisma.project.findUnique({
@@ -21,7 +26,7 @@ export default async function PostNewSprint({data, url} : {data: NewSprintSchema
         }
     });
 
-    if(!project) return {sucess: false, message: "Project not Found"};
+    if(!project) return {sucess: false, message: "Project not found!"};
 
     try {
         await prisma.sprint.create({
@@ -32,10 +37,10 @@ export default async function PostNewSprint({data, url} : {data: NewSprintSchema
             }
         })
 
-        return {sucess: true, message: "Sprint created successfully"};
+        return {sucess: true, message: "Sprint created successfully."};
 
     } catch (error) {
-        return {sucess: false, message: "Internal Database Error"};
+        return {sucess: false, message: "Internal database error!"};
     }
 
 }

@@ -1,6 +1,6 @@
 "use client"
 
-import useProjectData from "@/lib/hooks/projectProps";
+import useProjectData from "@/lib/hooks/tasks";
 import { ProjectRoles, TaskStatus } from "@prisma/client";
 import { format } from "date-fns";
 import { Calendar, Plus, Trash2, User, X } from "lucide-react";
@@ -11,12 +11,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { EditTaskSchema, EditTaskSchemaType } from "@/lib/zod/editTask";
 import EditTaskFunc from "@/lib/task/editTask";
 import DeleteTaskFunc from "@/lib/task/deleteTask";
-import { useEffect, useState } from "react";
-import getAllProjectSprints from "@/lib/sprint/getAllSprints";
+import { useState } from "react";
 import SetUserTask, { AllProjectUserType } from "../projects/tasks/setUserTask";
+import { useSession } from "next-auth/react";
 
- 
 
+// TASK GENERAL STATUS
 const statusOptions: { value: TaskStatus; label: string; color: string }[] = [
   { value: "Todo", label: "To Do", color: "#6b7280" },
   { value: "InProgress", label: "In Progress", color: "#6d6ef7" },
@@ -25,13 +25,15 @@ const statusOptions: { value: TaskStatus; label: string; color: string }[] = [
 ];
 
 export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolean) => void}){
-    const [sprints, setSprints] = useState<{name: string, id: string}[]>([]);
-    const [openSelector, setOpenSelector] = useState<boolean>(false);
-    const [role, setRole] = useState<ProjectRoles>("Member");
 
+    // HOOKS NEEDED
+    const { data: session } = useSession();
     const { data } = useProjectData();
+    
+    // SELECT PERSON IN CHARGE
+    const [openSelector, setOpenSelector] = useState<boolean>(false);
 
-    const task = data?.tasks.find(task => task.id == data.taskOverviewId);
+    const task = data?.task;
 
     const {
         register,
@@ -54,53 +56,44 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
     const priority = watch("priority");
     const user = watch("user");
 
-    useEffect(() => {
-        async function load(){
-            const { sprints, role } = await getAllProjectSprints({id: data?.projectInfo.id ?? ""});
-
-            setSprints(sprints);
-            setRole(role);
-        }
-
-        load();
-    }, []);
-    
-
-    if(!data || !task){
+    if(!data || !task || !session?.user){
         return null;
     }
 
+    
     const editTaskhandler = async(data: EditTaskSchemaType) => {
         const res = await EditTaskFunc({data, id: task.id});
         
         alert(res.message);
     }
-
+    
     const deleteTask = async() => {
         const res = await DeleteTaskFunc({id: task.id});
         alert(res.message);
-
+        
         if(res.sucess){
             setOpen(false);
         }
     }
-
+    
     const setUser = (id: AllProjectUserType) => {
         setValue("user", id, {
             shouldDirty: true,
         });
     }
-
+    
+    // GENERAL DATA
     const currentPriority = priorityOptions.find((p) => p.label === priority);
     const currentStatus = statusOptions.find((s) => s.value === task.status);
-
+    const role = session.user.role;
+    
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[rgba(0,0,0,0.6)]">
             <div
                 className={`w-full max-w-lg max-h-[90vh] flex flex-col rounded-2xl shadow-2xl overflow-hidden
                 bg-(--card) border border-(--border)`}
             >
-                {/* Header */}
+                {/* HEADER */}
                 <div className="flex items-center justify-between px-6 py-4 shrink-0 border-b border-(--border)">
                     <div className="flex items-center gap-2  flex-1 min-w-0">
                         <span className={`text-xs font-mono px-2 py-0.5 rounded bg-(--muted) text-(--muted-foreground)
@@ -117,8 +110,7 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
                     </div>
                     
                     <div className="flex items-center gap-1">
-                        {
-                            role != "Member" &&
+                        { role != "Member" &&
                                 <button
                                     onClick={() => deleteTask()}
                                     className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors 
@@ -156,7 +148,7 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
                 <div className="flex-1 overflow-y-auto">
                     <div className="flex flex-col lg:flex-row">
 
-                        {/* Main content */}
+                        {/* MAIN CONTENT */}
                         <div className="flex-1 px-6 py-4 min-w-0">
 
                             <p className="text-sm leading-relaxed mb-6 text-(--muted-foreground)">
@@ -165,7 +157,7 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
 
                             <form onSubmit={handleSubmit(editTaskhandler)}>
 
-                                {/* Status */}
+                                {/* STATUS */}
                                 <div>
                                     <p className="text-xs font-medium mb-2 text-(--muted-foreground)">
                                         Status
@@ -180,12 +172,12 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
                                             <option key={s.value} value={s.value}>
                                                 {s.label}
                                             </option>
-                                        )) }
+                                        ))}
                                     </select>
 
                                 </div>
 
-                                {/* Priority */}
+                                {/* PRIORITY */}
                                 <div>
                                     <p className="text-xs font-medium mt-4 mb-2 text-(--muted-foreground)">
                                         Priority
@@ -210,7 +202,7 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
                                     </select>
                                 </div>
 
-                                {/* Sprint */}
+                                {/* SPRINT */}
                                 <div>
                                     <p className="text-xs font-medium mt-4 mb-2 text-(--muted-foreground)">
                                         Sprint
@@ -228,7 +220,7 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
                                             </option>
                                         }
 
-                                        { sprints.map((p) => (
+                                        { data.sprints.map((p) => (
                                             <option 
                                                 key={p.id} 
                                                 value={p.id}
@@ -250,10 +242,10 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
                             </form>
                         </div>
 
-                        {/* Sidebar metadata */}
+                        {/*SIDEBAR METADATA */}
                         <div className="lg:w-56 p-5 pt-3  shrink-0 space-y-5 border-l border-(--border)">
 
-                            {/* Assignee */}
+                            {/* ASSIGNEE */}
                             <div>
                                 <div className="flex justify-between items-center relative">
                                     <p className="text-xs font-medium mb-2 flex items-center gap-1 text-(--muted-foreground)">
@@ -270,9 +262,9 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
 
                                     { openSelector && 
                                         <SetUserTask 
-                                            projectId={data.projectInfo.id}
                                             setOpenSelector={setOpenSelector}
                                             setUser={setUser}
+                                            projectId={data.projectId}
                                         /> 
                                     }
                                 </div>
@@ -302,7 +294,7 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
                                 )}
                             </div>
 
-                            {/* Due date */}
+                            {/* DUE DATE */}
                             <div>
                                 <p className="text-xs font-medium mb-2 flex items-center gap-1 text-(--muted-foreground)">
                                     <Calendar size={11} />
@@ -322,7 +314,7 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
                                 </span>
                             </div>
 
-                            {/* Story points */}
+                            {/* POINTS */}
                             <div>
                                 <p className="text-xs font-medium mb-2 text-(--muted-foreground)">
                                     Points
@@ -333,7 +325,7 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
                                 </span>
                             </div>
 
-                            {/* Dates */}
+                            {/* DATES */}
                             <div className="pt-3 border-t border-(--border)">
                                 <p className="text-xs text-(--muted-foreground)">
                                     Created at { format(new Date(task.createdAt), "dd/MM/yyyy") }

@@ -11,7 +11,7 @@ export default async function postNewProject({data} : {data: newProjectSchemType
     const session = await auth();
     
     if(!res.success || !session?.user?.id)
-        return {sucess: false, message: "Incompatible Informations"};
+        return {sucess: false, message: "Incompatible informations!"};
 
     const url = res.data.name
         .trim()
@@ -21,7 +21,7 @@ export default async function postNewProject({data} : {data: newProjectSchemType
     const exists = await prisma.project.findUnique({where: {url}});
     
     if(exists){
-        return {sucess: false, message: "Please Try another name."};
+        return {sucess: false, message: "Please try another name!"};
     }
 
     try {
@@ -46,6 +46,6 @@ export default async function postNewProject({data} : {data: newProjectSchemType
         return {sucess: true, message: "Project created successfully!"};
         
     } catch (error) {
-        return {sucess: false, message: "Internal databse error, try again later!"};
+        return {sucess: false, message: "Internal databse error!"};
     }
 }

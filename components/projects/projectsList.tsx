@@ -6,14 +6,18 @@ import { Search } from "lucide-react";
 import { useState } from "react"
 import ProjectComponent from "./projectComponent";
 
+// FILTERS
 type AllProjectsFilterType = "All" | "Active" | "Paused" | "Completed" | "Cancelled";
 
 const filterOptions: AllProjectsFilterType[] = ["All", ...ProjectStatus];
 
 export default function ProjectsList({projects} : {projects: AllProjectsType[]}){
+
+    // SEARCH METHODS
     const [filter, setFilter] = useState<AllProjectsFilterType>("All");
     const [search, setSearch] = useState<string>("");
 
+    // FILTERED METHODS 
     const filteredProjects = projects
         .filter(p => p.name.toLowerCase().includes(search.toLowerCase()) && (filter === "All" || p.status === filter));
 
@@ -49,7 +53,7 @@ export default function ProjectsList({projects} : {projects: AllProjectsType[]})
 
             {/* FILTERED PROJECTS */}
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-                {filteredProjects.length > 0
+                { filteredProjects.length > 0
                     ? filteredProjects
                         .map((project) => (
                             <ProjectComponent project={project} key={project.id} />

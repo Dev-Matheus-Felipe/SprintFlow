@@ -3,7 +3,6 @@
 import { prisma } from "@/lib/prisma";
 import { AllProjectsType } from "@/lib/types";
 
-
 export const getAllProjects = async({id} : {id: string}): Promise<AllProjectsType[]> => {
     const projects = await prisma.project.findMany({
         where: {

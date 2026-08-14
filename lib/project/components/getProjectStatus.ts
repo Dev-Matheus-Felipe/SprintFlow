@@ -1,6 +1,6 @@
 import { Task } from "@prisma/client";
 
-export function getProjectStatus({tasks} : {tasks: Task[]}){
+export function getProjectStatus({tasks} : {tasks: {id: string, status: string}[]}){
     const status = [
         { 
             label: "To Do", 

@@ -1,10 +1,16 @@
 import Tasks from "@/components/projects/tasks/tasks";
-import { auth } from "@/lib/auth";
 import getTaskPage from "@/lib/task/getTaskPage";
 import {ProjectTaskPageType } from "@/lib/types";
-import { notFound } from "next/navigation";
 import { ProjectUrlParamstype } from "../page";
-import getMember from "@/lib/task/getMember";
+import { ProjectIcons } from "@prisma/client";
+import { notFound } from "next/navigation";
+import { auth } from "@/lib/auth";
+
+export type projetInfoType = {
+    name: string,
+    id: string,
+    icon: ProjectIcons
+}
 
 export default async function ProjectTasksPage({params} : ProjectUrlParamstype){
     const { url } =  await params;
@@ -20,16 +26,15 @@ export default async function ProjectTasksPage({params} : ProjectUrlParamstype){
         .replace(/\s+/g, "-");
     
     const project: ProjectTaskPageType | null = await getTaskPage({url: valitedUrl, userId: session.user.id});
-    const user = await getMember({userId: session.user.id, projectId: project?.id ?? ""});
 
-    if(!project ||!user) notFound();
+    if(!project) notFound();
     
     return (
         <Tasks 
-            tasks={project.tasks } 
-            sprints={project.sprints} 
-            projectInfo={{name: project.name, icon: project.icon, id: project.id}} 
-            role={user.role}
+            projectInfo={ {name: project.name, icon: project.icon, id: project.id} } 
+            sprints={ project.sprints }
+            tasks={ project.tasks } 
+            role={ session.user.role }
         />
     )
 }

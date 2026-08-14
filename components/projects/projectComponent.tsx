@@ -4,6 +4,7 @@ import { AllProjectsType } from "@/lib/types";
 import Image from "next/image";
 import Link from "next/link";
 
+// GENERAL STATUS DATA
 export const statusColor = new Map([
     ["Paused", { color: "#F97316", background: "rgba(249, 115, 22, 0.15)" }],
     ["Cancelled", {color: "#DC2626", background: "rgba(220, 38, 38, 0.15)"}],
@@ -13,19 +14,19 @@ export const statusColor = new Map([
 
 export default function ProjectComponent({project} : {project: AllProjectsType}){
 
-    // tasks amount
+    // TASKS
     const projectTasks = project.tasks;
 
-    // completed projects amount
+    // COMPLETED TASKS
     const done = projectTasks.filter((t) => t.status === "Completed").length;
 
-    // progress bar
+    // PROGRESS BAR
     const progress = projectTasks.length > 0 ? Math.round((done / projectTasks.length) * 100) : 0;
 
-    // status background
+    // STATUS BACKGROUND
     const cfg = statusColor.get(project.status)!;
 
-    // project icon
+    // PROJECT ICON
     const ICON = ProjectIcons.get(project.icon)!;
     
     return (
@@ -113,7 +114,7 @@ export default function ProjectComponent({project} : {project: AllProjectsType})
                 </div>
 
                 <div className="flex -space-x-2">
-                    {project.members.slice(0, 3).map((m) => (
+                    { project.members.slice(0, 3).map((m) => (
                         <Image 
                             key={m.user.id} 
                             src={m.user.image ?? ""} 
@@ -124,7 +125,7 @@ export default function ProjectComponent({project} : {project: AllProjectsType})
                         />
                     ))}
 
-                    {project.members.length > 3 && (
+                    { project.members.length > 3 && (
                         <div
                             className={`w-6 h-6 rounded-full ring-2 flex items-center justify-center text-xs font-medium
                             bg-(--muted) text-(--muted-foreground)`}

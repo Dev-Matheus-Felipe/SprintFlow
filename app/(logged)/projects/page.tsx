@@ -13,19 +13,22 @@ export default async function ProjectsPage(){
     return (
         <div className="h-full flex flex-col gap-5">
             <div className="flex items-center justify-between">
+
                 <div className="flex flex-col">
                     <h1 className="font-bold text-lg">Projects</h1>
                     <p className="flex-sm text-(--muted-foreground)">
-                        {projects.length > 0
+                        { projects.length > 0
                             ? projects.length + " project" + (projects.length > 1 ? "s" : "" + " in total")
                             : "No projects added"
                         }
                     </p>
                 </div>
 
+                {/* ADD NEW PROJECT BUTTON */}
                 <NewProjectButton />
             </div>
-            
+
+            {/* PROJECTS LIST */}
             <ProjectsList projects={projects} />
         </div>
     )

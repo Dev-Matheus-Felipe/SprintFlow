@@ -1,8 +1,8 @@
 "use client"
 
 import getAllProjectUsers from "@/lib/project/components/getAllProjectUsers";
-import Image from "next/image";
 import { Dispatch, useEffect, useState } from "react"
+import Image from "next/image";
 
 export type AllProjectUserType = {
     name: string,
@@ -11,13 +11,13 @@ export type AllProjectUserType = {
 }
 
 export default function SetUserTask({
-    projectId,
     setUser,
     setOpenSelector,
+    projectId,
 } : {
-    projectId: string,
     setUser: (id: AllProjectUserType) => void,
-    setOpenSelector: Dispatch<React.SetStateAction<boolean>>
+    setOpenSelector: Dispatch<React.SetStateAction<boolean>>,
+    projectId: string
 }){
     const [users, setUsers] = useState<AllProjectUserType[]>([]);
 
