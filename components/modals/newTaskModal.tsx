@@ -197,7 +197,7 @@ export default function NewTaskModal({
                                 <label
                                     className="block text-xs font-medium mb-1.5 uppercase tracking-wider text-(--muted-foreground)"
                                 >
-                                    Story Points
+                                    Points
                                 </label>
 
                                 <div className="flex gap-1.5">
@@ -247,7 +247,8 @@ export default function NewTaskModal({
 
                             <div className={`bg-(--secondary) outline-none text-sm cursor-pointer text-(--foreground) 
                                 ${filterOpen ? "flex" : "hidden"} whitespace-nowrap gap-5 max-sm:w-full w-45 z-5 rounded
-                                -top-10 left-1/2 -translate-x-1/2 absolute flex-col `}
+                                bottom-full mb-3 left-1/2 -translate-x-1/2 absolute flex-col origin-bottom max-h-50
+                                overflow-auto text-(--muted-foreground)`}
                             >
                                 { data?.sprints.map(f => (
                                     <button 

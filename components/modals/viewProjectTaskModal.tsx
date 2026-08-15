@@ -112,7 +112,7 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
                     <div className="flex items-center gap-1">
                         { role != "Member" &&
                                 <button
-                                    onClick={() => deleteTask()}
+                                    onClick={deleteTask}
                                     className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors 
                                     text-(--muted-foreground) cursor-pointer`}
                                     onMouseEnter={(e) => {
