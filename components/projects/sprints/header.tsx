@@ -1,12 +1,13 @@
 "use client"
 
-import { sprintStatus } from "@/lib/sprint/data"
+import { sprintStatus, sprintStatusBackground } from "@/lib/sprint/data"
 import { ProjectSprints } from "@/lib/types"
 import { ProjectRoles } from "@prisma/client"
 import { Pencil, Play } from "lucide-react"
 
 import { Prisma } from "@prisma/client"
 import useModal from "@/lib/hooks/newProject"
+import useProject from "@/lib/hooks/project"
 
 type TaskWithUser = Prisma.TaskGetPayload<{
   include: {
@@ -27,7 +28,7 @@ export default function ProjectSprintHeader({
 }){
 
     const { setStatus } = useModal();
-
+    const { setData } = useProject();
     // DATE DIFF
     const diffMs = sprint.endAt.getTime() - sprint.startAt.getTime();
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
@@ -44,6 +45,9 @@ export default function ProjectSprintHeader({
     
     const viewSprint = () => {
         if(role == "Member") return;
+
+        setData(prev => ({...prev, sprint: sprint}));
+        setStatus({component: "editSprint", open: true});
     }
 
     return (
@@ -67,8 +71,8 @@ export default function ProjectSprintHeader({
                         <Play size={14} />
 
                         <span 
-                            className="flex items-center gap-1 pl-0 px-2 py-0.5 rounded-full text-xs font-medium"
-                            style={{ color: sprintStatus[sprint.situation] }}
+                            className="flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium text-center"
+                            style={{ color: sprintStatus[sprint.situation], background: sprintStatusBackground[sprint.situation] }}
                         >
                             {sprint.situation}
                         </span>
@@ -96,7 +100,7 @@ export default function ProjectSprintHeader({
                             className="text-xs font-medium mt-0.5 "
                             style={{ color: diffDays < 0 ? "#ef4444" : "var(--muted-foreground)" }}
                         >
-                            {diffDays ? `"${diffDays} days left"` : "Late!"}
+                            {diffDays ? `${diffDays} days left` : "Late!"}
                         </p>
                     )}
                 </div>

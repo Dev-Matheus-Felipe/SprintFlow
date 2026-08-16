@@ -7,7 +7,7 @@ import postNewTassk from "@/lib/task/postNewTask";
 import CloseModal from "../buttons/closeModal";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import useTask from "@/lib/hooks/tasks";
+import useProject from "@/lib/hooks/project";
 
 type PriorityOptionsType = {
     label: "Critical" | "High" | "Medium" | "Low",
@@ -34,7 +34,7 @@ export default function NewTaskModal({
 }){
 
     const [ filterOpen, setFilterOpen ] = useState<boolean>(false);
-    const { data } = useTask();
+    const { data } = useProject();
 
     const {
         register,

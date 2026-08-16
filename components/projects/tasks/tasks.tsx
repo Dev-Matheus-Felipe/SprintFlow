@@ -11,8 +11,8 @@ import useModal from "@/lib/hooks/newProject";
 import sortTasks from "@/lib/task/sortTasks";
 import { ProjectRoles } from "@prisma/client";
 import TaskSprintHeader from "../taskSprintHeader";
-import useTask from "@/lib/hooks/tasks";
 import { projetInfoType } from "@/app/(logged)/projects/[url]/tasks/page";
+import useProject from "@/lib/hooks/project";
 
 export const tableHeaders = ["Tasks", "Status", "Priority", "Responsible", "Deadline", "Points"];
 const filters = ["Most recent", "Deadline", "Priority"];
@@ -40,7 +40,7 @@ export default function Tasks({
 	// HOOKS NEEDED
     const { setTitle } = usePageTitle();
 	const { setStatus } = useModal();
-	const { setData } = useTask();
+	const { setData } = useProject();
 
 	// INICIALIZATE TASK PROVIDER
     useEffect(() => {

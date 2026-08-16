@@ -1,7 +1,7 @@
 "use client"
 
-import useProjectData from "@/lib/hooks/tasks";
-import { ProjectRoles, TaskStatus } from "@prisma/client";
+import useProject from "@/lib/hooks/project";
+import { TaskStatus } from "@prisma/client";
 import { format } from "date-fns";
 import { Calendar, Plus, Trash2, User, X } from "lucide-react";
 import Image from "next/image";
@@ -28,7 +28,7 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
 
     // HOOKS NEEDED
     const { data: session } = useSession();
-    const { data } = useProjectData();
+    const { data } = useProject();
     
     // SELECT PERSON IN CHARGE
     const [openSelector, setOpenSelector] = useState<boolean>(false);
