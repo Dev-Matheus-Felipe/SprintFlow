@@ -12,14 +12,4 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         strategy: "database",
         maxAge: 30 * 24 * 60 * 60,
     },
-
-    callbacks: {
-        async session({ session, user }) {
-            session.user.id = user.id;
-            session.user.role = user.role;
-
-            return session;
-        },
-    },
-
 })

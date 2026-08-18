@@ -11,10 +11,8 @@ const buttonStyle = `flex items-center gap-1 text-xs transition-colors text-(--p
 
 export default function ProjectOverview({
     project,
-    role,
 } : {
     project: ProjectOverviewType,
-    role: ProjectRoles,
 }){
     
     const projectSprints = project.sprints;
@@ -23,7 +21,7 @@ export default function ProjectOverview({
         <div className="flex-1 overflow-y-auto">
 
             {/* MAIN INFO - BANNER */}
-            <Banner project={project} role={role} />
+            <Banner project={project} />
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
@@ -74,7 +72,7 @@ export default function ProjectOverview({
                             Members ({project.members.length})
                         </h3>
 
-                        { role != "Member" &&  <NewMemberButton style={buttonStyle} /> }
+                        <NewMemberButton style={buttonStyle} />
                     </div>
 
                     <div className="rounded-xl overflow-hidden bg-(--card) border border-(--border)">

@@ -1,6 +1,6 @@
 "use client"
 
-import useProject from "@/lib/hooks/project";
+import useProjectApp from "@/lib/hooks/projectApp";
 import addNewUser from "@/lib/project/components/addNewUser";
 import { NewUserSchema, NewUserSchemaType } from "@/lib/zod/newUserSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,9 +9,10 @@ import { useForm } from "react-hook-form";
 
 const roleOptions = ["Member", "Owner", "Admin"];
 
-export default function NewUserModal({setOpen} : {setOpen: (open: boolean) => void}){
-    const { data } = useProject();
-
+export default function NewUserModal({close} : {close: () => void}){
+    const { projectData } = useProjectApp();
+    const { data } = projectData;
+    
     const {
         register,
         handleSubmit,
@@ -38,7 +39,7 @@ export default function NewUserModal({setOpen} : {setOpen: (open: boolean) => vo
                 <div className="flex justify-between items-center w-full pb-3 border-b border-(--border)">
                     <h2 className="text-(--muted-foreground) text-sm">Add New User</h2>
 
-                    <button className="p-1.5 rounded cursor-pointer hover:bg-(--muted)" onClick={()=> setOpen(false)}>
+                    <button className="p-1.5 rounded cursor-pointer hover:bg-(--muted)" onClick={close}>
                         <X size={14}  />
                     </button>
                 </div>

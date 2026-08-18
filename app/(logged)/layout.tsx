@@ -1,11 +1,10 @@
-import ModalsProvider from "@/components/providers/modalsProvider";
+import AppModalsProvider from "@/components/providers/appModalsProvider";
 import SidebarProvider from "@/components/providers/sidebarProvider";
 import { TitlePageProvider } from "@/components/providers/titlePageProvider";
 import Sidebar from "@/components/sidebar/sidebar";
 import SidebarShell from "@/components/sidebar/sidebarShell";
 import Topbar from "@/components/topbar/topbar";
 import React from "react";
-import ProjectProvider from "@/components/providers/projectProvider";
 
 export default function LoggedLayout({
     children,
@@ -14,21 +13,19 @@ export default function LoggedLayout({
 }){
 
     return (
-        <ProjectProvider>
-            <ModalsProvider>
-                <SidebarProvider>
-                    <TitlePageProvider>
-                            <div className="w-full h-full flex relative">
-                                <SidebarShell children={ <Sidebar /> } />
+        <AppModalsProvider>
+            <SidebarProvider>
+                <TitlePageProvider>
+                        <div className="w-full h-full flex relative">
+                            <SidebarShell children={ <Sidebar /> } />
 
-                                <div className="flex-1 flex flex-col min-w-0">
-                                    <Topbar />
-                                    <div className="p-7">{children}</div>
-                                </div>
+                            <div className="flex-1 flex flex-col min-w-0">
+                                <Topbar />
+                                <div className="p-7">{children}</div>
                             </div>
-                    </TitlePageProvider>
-                </SidebarProvider>
-            </ModalsProvider>
-        </ProjectProvider>     
+                        </div>
+                </TitlePageProvider>
+            </SidebarProvider>
+        </AppModalsProvider>
     )
 }

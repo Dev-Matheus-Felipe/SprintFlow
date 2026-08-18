@@ -1,6 +1,6 @@
 "use client"
 
-import useProject from "@/lib/hooks/project";
+import useProjectApp from "@/lib/hooks/projectApp";
 import editSprintServer from "@/lib/sprint/editSprint";
 import { EditSprintSchema, EditSprintSchemaType } from "@/lib/zod/editSprint";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,8 +17,9 @@ const sprintStatusOptions: { value: sprintStatusType; color: string; description
   { value: "Delayed",   color: "#eab308", description: "Sprint delayed" },
 ];
 
-export default function EditSprintModal({setOpen} : {setOpen: (open: boolean) => void}){
-    const { data } = useProject();
+export default function EditSprintModal({close} : {close: () => void}){
+    const { projectData, role } = useProjectApp();
+    const { data } = projectData;
 
     const sprint = data.sprint;
     if(!sprint) return null;
@@ -69,7 +70,7 @@ export default function EditSprintModal({setOpen} : {setOpen: (open: boolean) =>
                     </div>
 
                     <button
-                        onClick={() => setOpen(false)}
+                        onClick={close}
                         className={`w-7 h-7 rounded-md flex items-center justify-center transition-colors text-(--foreground)
                         cursor-pointer`}
                         onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.background = "var(--muted)")}
@@ -231,7 +232,7 @@ export default function EditSprintModal({setOpen} : {setOpen: (open: boolean) =>
                     <div className="flex gap-2">
                         <button
                             type="button"
-                            onClick={() => setOpen(false)}
+                            onClick={close}
                             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-(--secondary)
                             text-(--foreground) border border-(--border) cursor-pointer`}
   

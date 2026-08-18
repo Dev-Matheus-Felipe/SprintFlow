@@ -34,7 +34,6 @@ export default async function ProjectTasksPage({params} : ProjectUrlParamstype){
             projectInfo={ {name: project.name, icon: project.icon, id: project.id} } 
             sprints={ project.sprints }
             tasks={ project.tasks } 
-            role={ session.user.role }
         />
     )
 }

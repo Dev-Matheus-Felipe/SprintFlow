@@ -7,12 +7,10 @@ import { TaskPageDataType } from "@/lib/types";
 import Image from "next/image";
 import { ProjectStatusColors } from "@/lib/project/data";
 import { priorityOptions } from "@/components/modals/newTaskModal";
-import useModal from "@/lib/hooks/newProject";
 import sortTasks from "@/lib/task/sortTasks";
-import { ProjectRoles } from "@prisma/client";
 import TaskSprintHeader from "../taskSprintHeader";
 import { projetInfoType } from "@/app/(logged)/projects/[url]/tasks/page";
-import useProject from "@/lib/hooks/project";
+import useProjectApp from "@/lib/hooks/projectApp";
 
 export const tableHeaders = ["Tasks", "Status", "Priority", "Responsible", "Deadline", "Points"];
 const filters = ["Most recent", "Deadline", "Priority"];
@@ -21,14 +19,16 @@ export default function Tasks({
     tasks,
 	sprints,
     projectInfo,
-	role
 } : { 
     tasks: TaskPageDataType[],
 	sprints: {name: string, id: string}[]
     projectInfo: projetInfoType,
-	role: ProjectRoles
 }){
-   
+	
+	// HOOKS NEEDED
+	const { projectData, modal, role } = useProjectApp();
+	const { setTitle } = usePageTitle();
+	
 	// SEARCH METHODS
     const[filterStatus, setFilterStatus] = useState<{open: boolean, text: string}>({
 		open: false, 
@@ -37,14 +37,9 @@ export default function Tasks({
 
     const[search, setSearch] = useState<string>("");
 
-	// HOOKS NEEDED
-    const { setTitle } = usePageTitle();
-	const { setStatus } = useModal();
-	const { setData } = useProject();
-
 	// INICIALIZATE TASK PROVIDER
     useEffect(() => {
-		setData({sprints: sprints, projectId: projectInfo.id});
+		projectData.setData({sprints: sprints, projectId: projectInfo.id});
         setTitle("Tasks");
     },[]);
 
@@ -61,6 +56,7 @@ export default function Tasks({
 					type="Task" 
 					length={tasks.length} 
 					projectInfo={projectInfo} 
+					modal={modal}
 					role={role}
 				/>
 
@@ -134,10 +130,11 @@ export default function Tasks({
 								<tr
 									key={task.id}
 									onClick={() => {
-										setData(prev => ({...prev, task: task}));
-										setStatus({open: true, component: "taskOverview"});
+										projectData.setData(prev => ({...prev, task: task}));
+										modal.setComponent("viewTask");
 
 									}}
+
 									className="cursor-pointer transition-colors border-b border-(--border)"
 									onMouseEnter={(e) => {
 										(e.currentTarget as HTMLTableRowElement).style.background = "var(--muted)"; }}

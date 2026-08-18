@@ -7,7 +7,7 @@ import postNewTassk from "@/lib/task/postNewTask";
 import CloseModal from "../buttons/closeModal";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import useProject from "@/lib/hooks/project";
+import useProjectApp from "@/lib/hooks/projectApp";
 
 type PriorityOptionsType = {
     label: "Critical" | "High" | "Medium" | "Low",
@@ -28,13 +28,15 @@ export const priorityOptions: PriorityOptionsType[] = [
 
 
 export default function NewTaskModal({
-    setOpen,
+    close,
 } : {
-    setOpen: (open: boolean) => void
+    close: () => void
 }){
 
+    const { projectData } = useProjectApp();
+    const { data } = projectData;
+
     const [ filterOpen, setFilterOpen ] = useState<boolean>(false);
-    const { data } = useProject();
 
     const {
         register,
@@ -67,7 +69,7 @@ export default function NewTaskModal({
 
         const res = await postNewTassk({data: formData, projectId: data.projectId});
         if(res.sucess){
-            setOpen(false);
+            close();
         }
 
         alert(res.message);
@@ -95,7 +97,7 @@ export default function NewTaskModal({
                     </div>
 
                     <CloseModal 
-                        setOpen={setOpen}
+                        close={close}
                         style={`w-7 h-7 rounded-md flex items-center justify-center transition-colors cursor-pointer
                         text-(--muted-foreground) hover:bg-(--muted)`}
                     >
@@ -270,7 +272,7 @@ export default function NewTaskModal({
                         <div className="flex gap-2 max-sm:justify-between max-sm:w-full ">
 
                             <CloseModal 
-                                setOpen={setOpen}
+                                close={close}
                                 style={`px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-(--secondary) 
                                 text-(--foreground) border border-(--border) cursor-pointer`}
                                 children="Cancel"

@@ -9,9 +9,9 @@ import { useParams } from "next/navigation";
 export const standardColors = "bg-(--secondary) border border-(--border) text-(--foreground)";
 
 export default function NewSprintModal({
-    setOpen,
+    close,
 } : {
-    setOpen: (open: boolean) => void
+    close: () => void
 }){
 
     const {
@@ -29,7 +29,7 @@ export default function NewSprintModal({
         const res = await PostNewSprint({data, url});
         alert(res.message);
 
-        if(res.sucess) setOpen(false);
+        if(res.sucess) close();
     }
 
 
@@ -42,7 +42,7 @@ export default function NewSprintModal({
                     </h2>
 
                     <CloseModal 
-                        setOpen={setOpen}
+                        close={close}
                         style={"text-(--muted-foreground) cursor-pointer hover:bg-(--secondary) p-1 rounded"}
                     >
                         <X size={16} />
@@ -117,7 +117,7 @@ export default function NewSprintModal({
 
                     <div className="flex gap-3 pt-2">
                         <CloseModal 
-                            setOpen={setOpen} 
+                            close={close} 
                             children={"Cancel"} 
                             style={`flex-1 py-2.5 rounded-lg text-sm font-medium ${standardColors} cursor-pointer`} />
 

@@ -31,7 +31,7 @@ export default async function ProjectPage({params} : ProjectUrlParamstype){
     return (
         <>
             <SetTitlePage title={project.name} />
-            <ProjectOverview project={project} role={session.user.role} />
+            <ProjectOverview project={project} />
         </>
     )
 }

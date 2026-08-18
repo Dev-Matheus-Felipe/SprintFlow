@@ -1,6 +1,5 @@
 "use client"
 
-import useProject from "@/lib/hooks/project";
 import { TaskStatus } from "@prisma/client";
 import { format } from "date-fns";
 import { Calendar, Plus, Trash2, User, X } from "lucide-react";
@@ -14,6 +13,7 @@ import DeleteTaskFunc from "@/lib/task/deleteTask";
 import { useState } from "react";
 import SetUserTask, { AllProjectUserType } from "../projects/tasks/setUserTask";
 import { useSession } from "next-auth/react";
+import useProjectApp from "@/lib/hooks/projectApp";
 
 
 // TASK GENERAL STATUS
@@ -23,13 +23,16 @@ const statusOptions: { value: TaskStatus; label: string; color: string }[] = [
   { value: "InReview", label: "In Review", color: "#f59e0b" },
   { value: "Completed", label: "Completed", color: "#10b981" },
 ];
+const inputStyle = `w-full px-2.5 py-2 rounded-lg text-xs outline-none appearance-none
+bg-(--secondary) border border-(--border) cursor-pointer`;
 
-export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolean) => void}){
+export default function ViewProjectTaskModal({close} : {close: () => void}){
 
     // HOOKS NEEDED
+    const { projectData, role } = useProjectApp();
     const { data: session } = useSession();
-    const { data } = useProject();
-    
+    const { data } = projectData;
+
     // SELECT PERSON IN CHARGE
     const [openSelector, setOpenSelector] = useState<boolean>(false);
 
@@ -59,7 +62,6 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
     if(!data || !task || !session?.user){
         return null;
     }
-
     
     const editTaskhandler = async(data: EditTaskSchemaType) => {
         const res = await EditTaskFunc({data, id: task.id});
@@ -72,7 +74,7 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
         alert(res.message);
         
         if(res.sucess){
-            setOpen(false);
+            close();
         }
     }
     
@@ -85,8 +87,7 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
     // GENERAL DATA
     const currentPriority = priorityOptions.find((p) => p.label === priority);
     const currentStatus = statusOptions.find((s) => s.value === task.status);
-    const role = session.user.role;
-    
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[rgba(0,0,0,0.6)]">
             <div
@@ -131,7 +132,7 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
                         <button
                             className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors 
                             text-(--muted-foreground) cursor-pointer`}
-                            onClick={() => setOpen(false)}
+                            onClick={close}
 
                             onMouseEnter={(e) => {
                                 (e.currentTarget as HTMLButtonElement).style.background = "var(--muted)";
@@ -165,6 +166,7 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
 
                                     <select
                                         {...register("status")}
+                                        disabled={task.userId != session.user.id && role == "Member" }
                                         className={`w-full px-2.5 py-2 rounded-lg text-xs outline-none appearance-none
                                         text-(--foreground) bg-(--secondary) border border-(--border) cursor-pointer`}
                                     >
@@ -185,8 +187,7 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
 
                                     <select
                                         {...register("priority")}
-                                        className={`w-full px-2.5 py-2 rounded-lg text-xs outline-none appearance-none
-                                        bg-(--secondary) border border-(--border) cursor-pointer`}
+                                        className={inputStyle}
                                         style={{ color: currentPriority?.color }}
                                     >
 
@@ -210,8 +211,7 @@ export default function ViewProjectTaskModal({setOpen} : {setOpen: (open: boolea
 
                                     <select
                                         {...register("sprintId")}
-                                        className={`w-full px-2.5 py-2 rounded-lg text-xs outline-none appearance-none
-                                        bg-(--secondary) border border-(--border) cursor-pointer`}
+                                        className={inputStyle}
                                     >
 
                                         { !task.sprintId &&

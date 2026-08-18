@@ -12,10 +12,8 @@ bg-(--secondary) text-(--foregroubd) border border-(--border) cursor-pointer hov
 
 export default function Banner({
     project,
-    role
 } : {
     project: ProjectOverviewType,
-    role: ProjectRoles
 }){
 
     const projectStatus = getProjectStatus({tasks: project.tasks});    
@@ -63,8 +61,7 @@ export default function Banner({
                     </div>
                 </div>
                 
-                { role != "Member" && <NewMemberButton style={buttonStyle} banner={true} /> }
-
+                <NewMemberButton style={buttonStyle} banner={true} />
             </div>
 
             {/* PROGRESS BAR */}

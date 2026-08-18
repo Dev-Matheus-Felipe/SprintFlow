@@ -88,7 +88,7 @@ export default function ProjectSprintHeader({
                     }
                 </div>
 
-                <div className="text-right sm:ml-4 shrink-0">
+                <div className="text-right sm:ml-4 shrink-0 max-sm:text-start">
                     <p className="text-xs text-(--muted-foreground)">
                         { sprint.startAt.toLocaleDateString("pt-BR") + " - "} 
                         
@@ -96,10 +96,7 @@ export default function ProjectSprintHeader({
                     </p>
 
                     { sprint.situation === "Active" && (
-                        <p
-                            className="text-xs font-medium mt-0.5 "
-                            style={{ color: diffDays < 0 ? "#ef4444" : "var(--muted-foreground)" }}
-                        >
+                        <p className={`text-xs font-medium mt-0.5 ${diffDays < 0 && "text-red-500"}`}>
                             {diffDays ? `${diffDays} days left` : "Late!"}
                         </p>
                     )}

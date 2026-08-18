@@ -1,20 +1,23 @@
+"use client"
+
 import TaskSprintHeader from "../taskSprintHeader";
 import { ProjectSprints } from "@/lib/types";
 import Image from "next/image";
-import { ProjectRoles } from "@prisma/client";
 import { projetInfoType } from "@/app/(logged)/projects/[url]/tasks/page";
 import ProjectSprintHeader from "./header";
+import useRole from "@/lib/hooks/role";
+import useProjectApp from "@/lib/hooks/projectApp";
 
 export default function ProjectSprintComponent({
     sprints,
     projectInfo,
-    role,
 } : { 
     sprints: ProjectSprints[],
     projectInfo: projetInfoType,
-    role: ProjectRoles,
 }){
 
+    const { role, modal } = useProjectApp();
+    
     return (
         <div className="flex-1 overflow-y-auto p-3 flex flex-col">
             <TaskSprintHeader 
@@ -22,6 +25,7 @@ export default function ProjectSprintComponent({
                 length={sprints.length} 
                 projectInfo={projectInfo} 
                 role={role}
+                modal={modal}
             />
       
             {/* SPRINTS LIST */}

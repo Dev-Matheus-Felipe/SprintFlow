@@ -13,9 +13,9 @@ border border-(--border) text-(--foreground)`;
 const ProjectColors = ["Blue", "Green", "Orange", "Red", "Purple", "Cyan"] as const;
 
 export default function NewProjectModal({
-    setOpen,
+    close,
 } : {
-    setOpen: (open: boolean) => void
+    close: () => void
 }){
 
     const {
@@ -32,7 +32,7 @@ export default function NewProjectModal({
         alert(res.message);
 
         if(res.sucess){
-            setOpen(false);
+            close();
         }
         
     }
@@ -53,7 +53,7 @@ export default function NewProjectModal({
 
                     <button 
                         className="text-(--muted-foreground) cursor-pointer hover:text-primary hover:bg-(--secondary) rounded p-1" 
-                        onClick={() => setOpen(false)}
+                        onClick={close}
                     >
                         <X size={16} />
                     </button>
@@ -149,7 +149,7 @@ export default function NewProjectModal({
                     <div className="flex gap-3 pt-2">
                         <button
                             type="button"
-                            onClick={() => setOpen(false)}
+                            onClick={close}
                             className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-colors cursor-pointer
                             bg-(--secondary) text-(foreground) border border-(--border) hover:border-(--primary)`}
                         >

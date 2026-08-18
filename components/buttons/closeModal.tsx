@@ -3,18 +3,18 @@
 import React from "react"
 
 export default function CloseModal({
-    setOpen,
+    close,
     children,
     style,
 } : {
-    setOpen: (open: boolean) => void,
+    close: () => void,
     children: React.ReactNode,
     style: string
 }){
     return (
         <button
             type="button"
-            onClick={() => setOpen(false)}
+            onClick={close}
             className={style}
         >
             {children}
