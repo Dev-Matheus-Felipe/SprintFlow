@@ -13,18 +13,28 @@ export default async function editSprintServer({
     data: EditSprintSchemaType,
     id: string
 }): Promise<FuncResponseType>{
+
     const res = EditSprintSchema.safeParse(data);
     const session = await auth();
 
-    if(res.error || !session?.user.id){
-        return {sucess: false, message: "Invalidated data!"};
+    if(res.error || !session?.user?.id){
+        return {sucess: false, message: "Invalid data!"};
     
-    } else if(session.user.role == "Member"){
-        return {sucess: false, message: "Not authorized!"};
     }
+    
+    const sprint = await prisma.sprint.findUnique({
+        where: {id}, 
+        select: {
+            id: true,
+            projectId: true,
 
-    const sprint = await prisma.sprint.findUnique({where: {id} });
-
+            project: { 
+                select: {
+                    members: true
+                }
+            }
+        } });
+    
     if(!sprint){
         return {sucess: false, message: "Sprint not found!"};
     }
@@ -38,7 +48,7 @@ export default async function editSprintServer({
         }
     });
 
-    if(!projectMember) return {sucess: false, message: "You are not part of this project!"};
+    if(!projectMember || projectMember.role == "Member") return {sucess: false, message: "Not allowed!"};
 
     try {
         const validData = res.data;

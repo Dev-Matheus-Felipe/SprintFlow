@@ -1,11 +1,8 @@
-"use client"
-
 import { getProjectStatus } from "@/lib/project/components/getProjectStatus";
+import DeleteProject from "@/components/buttons/project/deleteProjectButton";
 import NewMemberButton from "@/components/buttons/project/newMemberButton";
 import { ProjectIcons } from "@/lib/project/data";
 import { ProjectOverviewType } from "@/lib/types";
-import { ProjectRoles } from "@prisma/client";
-import { Settings } from "lucide-react";
 
 const buttonStyle = `sm:hidden flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors
 bg-(--secondary) text-(--foregroubd) border border-(--border) cursor-pointer hover:bg-(--primary)`;
@@ -45,13 +42,7 @@ export default function Banner({
                                 {project.name}
                             </h2>
 
-                            <button
-                                className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors 
-                                text-(--muted-foreground) cursor-pointer hover:bg-(--primary) hover:text-(--foreground)`}
-                            >
-
-                                <Settings size={15} />
-                            </button>
+                            <DeleteProject projectId={project.id} />
                         </div>
 
                         <p className="lg:text-sm text-xs mt-2 max-w-lg text-(--muted-foreground)">

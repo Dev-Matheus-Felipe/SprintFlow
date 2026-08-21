@@ -20,8 +20,6 @@ export default async function addNewUser({
     if(!session?.user?.id || res.error){
         return { sucess: false, message: "Invalid informations!" };
     
-    }else if(session.user.role == "Member"){
-        return { sucess: false, message: "Not authorized!" };
     }
 
     const project = await prisma.project.findUnique({
@@ -32,21 +30,26 @@ export default async function addNewUser({
         }
     });
 
+    const user = project?.members.find(m => m.userId == session.user?.id);
+
+    if(!user || user.role == "Member"){
+        return { sucess: false, message: "Not allowed!" };
+    }
+
     const validData = res.data;
-    const user = await prisma.user.findUnique({where: {email: validData.email}});
+    const newUser = await prisma.user.findUnique({where: {email: validData.email}});
 
-
-    if(!project || !user) {
-        return { sucess: false, message: "Data not found!" };
+    if(!project || !newUser) {
+        return { sucess: false, message: "Incompatible data!" };
     
-    } else if(project.members.find(member => member.userId == user.id)){
-        return { sucess: false, message: "User already has been added!" };
+    } else if(project.members.find(member => member.userId == newUser.id)){
+        return { sucess: false, message: "The user already has been added!" };
     }
 
     try {
         await prisma.projectMember.create({
             data: {
-                userId: user.id,
+                userId: newUser.id,
                 projectId: project.id,
                 role: validData.role
             }

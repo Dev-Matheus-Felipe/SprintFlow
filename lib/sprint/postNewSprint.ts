@@ -12,9 +12,7 @@ export default async function PostNewSprint({data, url} : {data: NewSprintSchema
     if(!session?.user || !validatedData){
         return {sucess: false, message: "Invalidated data!"};
     
-    } else if(session.user.role == "Member"){
-        return { sucess: false, message: "Not authorized!" };
-    }
+    } 
 
     const userId = session.user.id;
     const project = await prisma.project.findUnique({
@@ -23,10 +21,20 @@ export default async function PostNewSprint({data, url} : {data: NewSprintSchema
             members: {
                 some: { userId }
             }
+        },
+
+        include: {
+            members: true
         }
     });
 
     if(!project) return {sucess: false, message: "Project not found!"};
+
+    const user = project.members.find(m => m.userId == session.user?.id);
+
+    if(!user || user.role == "Member"){
+        return { sucess: false, message: "Not allowed" };
+    }
 
     try {
         await prisma.sprint.create({

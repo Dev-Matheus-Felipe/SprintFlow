@@ -19,11 +19,22 @@ export default async function postNewTassk({
 
     const validProjectId = await prisma.project.findUnique({where: {id: projectId}, select: {id: true}});
 
-    if(valid.error || !session?.user || !validProjectId){
+    if(valid.error || !session?.user?.id || !validProjectId){
         return {sucess: false, message: "Invalidated information!"};
     
-    } else if(session.user.role == "Member"){
-        return { sucess: false, message: "Not authorized!" };
+    }
+
+    const user = await prisma.projectMember.findUnique({
+        where: {
+            userId_projectId: {
+                userId: session.user.id,
+                projectId: validProjectId.id
+            }
+        }
+    });
+
+    if(!user || user.role == "Member"){
+        return { sucess: false, message: "Not allowed" };
     }
 
     try {

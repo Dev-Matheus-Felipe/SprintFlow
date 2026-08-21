@@ -40,7 +40,7 @@ export default function ProjectsNavegation({projects} : {projects: SidebarProjec
                                 href={`/projects/${url}`} 
                                 key={id} 
                                 className={`group flex items-center justify-between py-2 px-3 rounded 
-                                ${pathname == `/projects/${url}` 
+                                ${pathname.startsWith(`/projects/${url}`)
                                     ? "bg-(--accent) text-(--primary)" 
                                     : "text-(--muted-foreground) hover:bg-(--muted) hover:text-(--foreground)!"}`}
                             >
@@ -52,7 +52,7 @@ export default function ProjectsNavegation({projects} : {projects: SidebarProjec
 
                                 <div 
                                     className={`w-2 h-2 rounded-full opacity-0 group-hover:opacity-100
-                                    ${(title == name && pathname.startsWith("/projects/")) && "opacity-100"}`}
+                                    ${(pathname.startsWith(`/projects/${url}`)) && "opacity-100"}`}
                                     style={{background: statusColor}} 
                                 />
                             </Link>

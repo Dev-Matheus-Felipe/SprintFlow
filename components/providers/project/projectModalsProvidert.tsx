@@ -1,5 +1,6 @@
 "use client"
 
+import EditSprintModal from "@/components/modals/editSprint"
 import NewSprintModal from "@/components/modals/newSprintModal"
 import NewTaskModal from "@/components/modals/newTaskModal"
 import NewUserModal from "@/components/modals/newUser"
@@ -28,6 +29,9 @@ function ManageModals({component, close} : {component: ProjectModalsType, close:
 
         case "addUser":
             return <NewUserModal close={close} />
+
+        case "editSprint":
+            return <EditSprintModal close={close} />
 
         default:
             return null

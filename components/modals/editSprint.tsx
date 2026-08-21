@@ -18,7 +18,7 @@ const sprintStatusOptions: { value: sprintStatusType; color: string; description
 ];
 
 export default function EditSprintModal({close} : {close: () => void}){
-    const { projectData, role } = useProjectApp();
+    const { projectData } = useProjectApp();
     const { data } = projectData;
 
     const sprint = data.sprint;

@@ -7,8 +7,8 @@ import { useContext, useEffect } from "react";
 import { SidebarContext } from "../providers/sidebarProvider";
 
 export default function MainNavegation(){
-    const pathname = usePathname();
     const context = useContext(SidebarContext);
+    const pathname = usePathname();
 
     if(!context) return null;
     
