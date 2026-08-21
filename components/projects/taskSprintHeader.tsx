@@ -45,7 +45,7 @@ export default function TaskSprintHeader({
 
 
             {   // ONLY ADMS CAN ADD NEW TASKS AND SPRINTS
-                (role != "Member") &&
+                (role && role != "Member") &&
                     <button 
                         onClick={() => setComponent(`add${type}`)}
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium 

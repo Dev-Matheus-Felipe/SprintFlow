@@ -39,6 +39,7 @@ export default function Tasks({
 
 	// INICIALIZATE TASK PROVIDER
     useEffect(() => {
+
 		projectData.setData({sprints: sprints, projectId: projectInfo.id});
         setTitle("Tasks");
     },[]);
@@ -201,7 +202,7 @@ export default function Tasks({
 
 									<td className="px-4 py-3">
 										<span className="text-xs font-medium text-(--muted-foreground)">
-											{task.userId || "—"}
+											{task.points || "—"}
 										</span>
 									</td>
 								</tr>

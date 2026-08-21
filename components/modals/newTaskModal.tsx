@@ -248,7 +248,7 @@ export default function NewTaskModal({
                             </div>
 
                             <div className={`bg-(--secondary) outline-none text-sm cursor-pointer text-(--foreground) 
-                                ${filterOpen ? "flex" : "hidden"} whitespace-nowrap gap-5 max-sm:w-full w-45 z-5 rounded
+                                ${filterOpen ? "flex" : "hidden"} whitespace-nowrap gap-2 max-sm:w-full w-45 z-5 rounded
                                 bottom-full mb-3 left-1/2 -translate-x-1/2 absolute flex-col origin-bottom max-h-50
                                 overflow-auto text-(--muted-foreground)`}
                             >

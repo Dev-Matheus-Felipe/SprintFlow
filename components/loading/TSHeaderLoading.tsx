@@ -11,14 +11,7 @@ export default function TSHeaderLoading({
                 <div className="flex flex-1 items-center gap-3 mb-3 flex-wrap max-xs:flex-col max-xs:gap-5 xs:justify-between">
 
                     <div className="w-50 h-10 bg-(--card) rounded-md" />
-                    <div 
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium 
-                        transition-colors bg-(--primary) text-(--primary-foreground) cursor-pointer
-                        w-15`}
-                    >
-                        <Plus size={14} />
-                        ...
-                    </div>
+
                 </div>
 
                 {children}

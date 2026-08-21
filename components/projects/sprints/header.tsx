@@ -6,10 +6,9 @@ import { ProjectRoles } from "@prisma/client"
 import { Pencil, Play } from "lucide-react"
 
 import { Prisma } from "@prisma/client"
-import useModal from "@/lib/hooks/newProject"
-import useProject from "@/lib/hooks/project"
+import useProjectApp from "@/lib/hooks/projectApp"
 
-type TaskWithUser = Prisma.TaskGetPayload<{
+export type TaskWithUser = Prisma.TaskGetPayload<{
   include: {
     user: true
   }
@@ -27,8 +26,8 @@ export default function ProjectSprintHeader({
     done: number
 }){
 
-    const { setStatus } = useModal();
-    const { setData } = useProject();
+    const { modal, projectData } = useProjectApp();
+
     // DATE DIFF
     const diffMs = sprint.endAt.getTime() - sprint.startAt.getTime();
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
@@ -46,8 +45,9 @@ export default function ProjectSprintHeader({
     const viewSprint = () => {
         if(role == "Member") return;
 
-        setData(prev => ({...prev, sprint: sprint}));
-        setStatus({component: "editSprint", open: true});
+
+        projectData.setData(prev => ({...prev, sprint: sprint}));
+        modal.setComponent("editSprint");
     }
 
     return (

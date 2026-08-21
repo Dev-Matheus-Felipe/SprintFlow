@@ -1,7 +1,6 @@
 import ProjectViewButton from "@/components/buttons/project/projectViewButton";
 import NewMemberButton from "@/components/buttons/project/newMemberButton";
 import { ProjectOverviewType } from "@/lib/types";
-import { ProjectRoles } from "@prisma/client";
 import { views } from "@/lib/project/data";
 import MemberComponent from "./member";
 import SprintComponent from "./sprint";

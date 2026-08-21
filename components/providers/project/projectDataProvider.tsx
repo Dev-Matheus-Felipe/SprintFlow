@@ -4,7 +4,7 @@ import { ProjectSprints, TaskPageDataType } from "@/lib/types";
 import { createContext, Dispatch, useState } from "react"
 
 
-type ProjectProviderDataType = {
+export type ProjectProviderDataType = {
     projectId: string,
     
     task?: TaskPageDataType,
@@ -13,7 +13,7 @@ type ProjectProviderDataType = {
     sprints: { name: string, id: string }[]
 }
 
-type ProjectProviderType = {
+export type ProjectProviderType = {
     data: ProjectProviderDataType;
     setData: Dispatch<React.SetStateAction<ProjectProviderDataType>>;
 };

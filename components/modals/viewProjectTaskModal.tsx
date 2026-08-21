@@ -64,13 +64,13 @@ export default function ViewProjectTaskModal({close} : {close: () => void}){
     }
     
     const editTaskhandler = async(data: EditTaskSchemaType) => {
-        const res = await EditTaskFunc({data, id: task.id});
+        const res = await EditTaskFunc({data, id: task.id, projectId: projectData.data.projectId});
         
         alert(res.message);
     }
     
     const deleteTask = async() => {
-        const res = await DeleteTaskFunc({id: task.id});
+        const res = await DeleteTaskFunc({id: task.id, projectId: projectData.data.projectId});
         alert(res.message);
         
         if(res.sucess){
@@ -87,6 +87,8 @@ export default function ViewProjectTaskModal({close} : {close: () => void}){
     // GENERAL DATA
     const currentPriority = priorityOptions.find((p) => p.label === priority);
     const currentStatus = statusOptions.find((s) => s.value === task.status);
+
+    console.log(session.user.id + " " + data.task?.user?.id)
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[rgba(0,0,0,0.6)]">
@@ -188,6 +190,7 @@ export default function ViewProjectTaskModal({close} : {close: () => void}){
                                     <select
                                         {...register("priority")}
                                         className={inputStyle}
+                                        disabled={role == "Member"}
                                         style={{ color: currentPriority?.color }}
                                     >
 
@@ -212,6 +215,8 @@ export default function ViewProjectTaskModal({close} : {close: () => void}){
                                     <select
                                         {...register("sprintId")}
                                         className={inputStyle}
+                                        disabled={role == "Member"}
+
                                     >
 
                                         { !task.sprintId &&
@@ -255,6 +260,7 @@ export default function ViewProjectTaskModal({close} : {close: () => void}){
 
                                     <button
                                         onClick={() => setOpenSelector(prev => !prev)} 
+                                        disabled={role == "Member" }
                                         className="text-(--muted-foreground) p-1 hover:bg-(--muted) rounded cursor-pointer"
                                     >
                                         <Plus size={13} />

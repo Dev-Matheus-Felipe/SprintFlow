@@ -5,7 +5,6 @@ import { ProjectSprints } from "@/lib/types";
 import Image from "next/image";
 import { projetInfoType } from "@/app/(logged)/projects/[url]/tasks/page";
 import ProjectSprintHeader from "./header";
-import useRole from "@/lib/hooks/role";
 import useProjectApp from "@/lib/hooks/projectApp";
 
 export default function ProjectSprintComponent({

@@ -2,6 +2,7 @@
 
 import NewSprintModal from "@/components/modals/newSprintModal"
 import NewTaskModal from "@/components/modals/newTaskModal"
+import NewUserModal from "@/components/modals/newUser"
 import ViewProjectTaskModal from "@/components/modals/viewProjectTaskModal"
 import React, { createContext, Dispatch, useState } from "react"
 
@@ -10,7 +11,7 @@ export type ProjectModalsDataType = {
     setComponent: Dispatch<React.SetStateAction<ProjectModalsType>>
 }
 
-export type ProjectModalsType = "addTask" | "addUser" | "addSprint" | "viewTask" | "viewSprint"  | null
+export type ProjectModalsType = "addTask" | "addUser" | "addSprint" | "viewTask" | "viewSprint"  | "editSprint" | null
 
 export const ProjectModalsContext = createContext<ProjectModalsDataType | null>(null);
 
@@ -24,6 +25,9 @@ function ManageModals({component, close} : {component: ProjectModalsType, close:
 
         case "viewTask":
             return <ViewProjectTaskModal close={close}  />
+
+        case "addUser":
+            return <NewUserModal close={close} />
 
         default:
             return null
