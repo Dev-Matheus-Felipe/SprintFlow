@@ -1,7 +1,6 @@
 "use client"
 
-import { usePageTitle } from "@/lib/hooks/pageTitle";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Calendar, Search } from "lucide-react";
 import { TaskPageDataType } from "@/lib/types";
 import Image from "next/image";
@@ -12,22 +11,20 @@ import TaskSprintHeader from "../taskSprintHeader";
 import { projetInfoType } from "@/app/(logged)/projects/[url]/tasks/page";
 import useProjectApp from "@/lib/hooks/projectApp";
 
-export const tableHeaders = ["Tasks", "Status", "Priority", "Responsible", "Deadline", "Points"];
 const filters = ["Most recent", "Deadline", "Priority"];
 
 export default function Tasks({
     tasks,
-	sprints,
     projectInfo,
+	tableHeaders,
 } : { 
     tasks: TaskPageDataType[],
-	sprints: {name: string, id: string}[]
     projectInfo: projetInfoType,
+	tableHeaders: string[],
 }){
 	
 	// HOOKS NEEDED
 	const { projectData, modal, role } = useProjectApp();
-	const { setTitle } = usePageTitle();
 	
 	// SEARCH METHODS
     const[filterStatus, setFilterStatus] = useState<{open: boolean, text: string}>({
@@ -36,13 +33,6 @@ export default function Tasks({
 	});
 
     const[search, setSearch] = useState<string>("");
-
-	// INICIALIZATE TASK PROVIDER
-    useEffect(() => {
-
-		projectData.setData({sprints: sprints, projectId: projectInfo.id});
-        setTitle("Tasks");
-    },[]);
 
 	// FILTERED TASKS
     const filteredTasks = sortTasks({tasks, type: filterStatus.text})

@@ -74,6 +74,18 @@ export type TaskPageDataType = Prisma.TaskGetPayload<{
     }
 }>
 
+export type AllTasks = Prisma.TaskGetPayload<{
+    include: {
+        project:{ 
+            select: {
+                name: true,
+            }
+        },
+
+        user: true,
+    }
+}>
+
 export type ProjectTaskPageType = Prisma.ProjectGetPayload<{
     include: {
         tasks: {

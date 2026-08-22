@@ -1,22 +1,13 @@
 "use client"
 
+import React, { Dispatch } from "react"
+import { ViewUniqueTasktype } from "./taskPage"
+import { priorityOptions } from "../modals/newTaskModal";
 import { TaskStatus } from "@prisma/client";
-import { format } from "date-fns";
-import { Calendar, Plus, Trash2, User, X } from "lucide-react";
+import { Calendar, User, X } from "lucide-react";
 import Image from "next/image";
-import { priorityOptions } from "./newTaskModal";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { EditTaskSchema, EditTaskSchemaType } from "@/lib/zod/editTask";
-import EditTaskFunc from "@/lib/task/editTask";
-import DeleteTaskFunc from "@/lib/task/deleteTask";
-import { useState } from "react";
-import SetUserTask, { AllProjectUserType } from "../projects/tasks/setUserTask";
-import { useSession } from "next-auth/react";
-import useProjectApp from "@/lib/hooks/projectApp";
+import { format } from "date-fns";
 
-
-// TASK GENERAL STATUS
 const statusOptions: { value: TaskStatus; label: string; color: string }[] = [
   { value: "Todo", label: "To Do", color: "#6b7280" },
   { value: "InProgress", label: "In Progress", color: "#6d6ef7" },
@@ -25,68 +16,21 @@ const statusOptions: { value: TaskStatus; label: string; color: string }[] = [
 ];
 
 const inputStyle = `w-full px-2.5 py-2 rounded-lg text-xs outline-none appearance-none
-bg-(--secondary) border border-(--border) cursor-pointer`;
+bg-(--secondary) border border-(--border)`;
 
-export default function ViewProjectTaskModal({close} : {close: () => void}){
+export default function ViewUniqueTask({
+    viewTask,
+    setViewTask,
+} : {
+    viewTask: ViewUniqueTasktype,
+    setViewTask: Dispatch<React.SetStateAction<ViewUniqueTasktype>>,
+}){
 
-    // HOOKS NEEDED
-    const { projectData, role } = useProjectApp();
-    const { data: session } = useSession();
-    const { data } = projectData;
+    const task = viewTask.task;
+    if(!task) return null;
 
-    // SELECT PERSON IN CHARGE
-    const [openSelector, setOpenSelector] = useState<boolean>(false);
-
-    const task = data?.task;
-
-    const {
-        register,
-        formState: {isDirty},
-        handleSubmit,
-        watch,
-        setValue,
-
-    } = useForm({
-        defaultValues: {
-            status: task?.status ?? "Todo",
-            priority: task?.priority ?? "Low",
-            sprintId: task?.sprintId ?? "",
-            user: task?.user ? {name: task.user.name, id: task.user.id, image: task.user.image ?? ""} : undefined
-        },
-
-        resolver: zodResolver(EditTaskSchema)
-    });
-
-    const priority = watch("priority");
-    const user = watch("user");
-
-    if(!data || !task || !session?.user){
-        return null;
-    }
-    
-    const editTaskhandler = async(data: EditTaskSchemaType) => {
-        const res = await EditTaskFunc({data, id: task.id, projectId: projectData.data.projectId});
-        
-        alert(res.message);
-    }
-    
-    const deleteTask = async() => {
-        const res = await DeleteTaskFunc({id: task.id, projectId: projectData.data.projectId});
-        alert(res.message);
-        
-        if(res.sucess){
-            close();
-        }
-    }
-    
-    const setUser = (id: AllProjectUserType) => {
-        setValue("user", id, {
-            shouldDirty: true,
-        });
-    }
-    
-    // GENERAL DATA
-    const currentPriority = priorityOptions.find((p) => p.label === priority);
+     // GENERAL DATA
+    const currentPriority = priorityOptions.find((p) => p.label === task.priority);
     const currentStatus = statusOptions.find((s) => s.value === task.status);
 
     return (
@@ -112,28 +56,10 @@ export default function ViewProjectTaskModal({close} : {close: () => void}){
                     </div>
                     
                     <div className="flex items-center gap-1">
-                        { role != "Member" &&
-                                <button
-                                    onClick={deleteTask}
-                                    className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors 
-                                    text-(--muted-foreground) cursor-pointer`}
-                                    onMouseEnter={(e) => {
-                                        (e.currentTarget as HTMLButtonElement).style.color = "#ef4444";
-                                        (e.currentTarget as HTMLButtonElement).style.background = "#ef444415";
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        (e.currentTarget as HTMLButtonElement).style.color = "var(--muted-foreground)";
-                                        (e.currentTarget as HTMLButtonElement).style.background = "transparent";
-                                    }}
-                                >
-                                    <Trash2 size={14} />
-                                </button>
-                        }
-
                         <button
                             className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors 
                             text-(--muted-foreground) cursor-pointer`}
-                            onClick={close}
+                            onClick={() => setViewTask({state: false, task: null})}
 
                             onMouseEnter={(e) => {
                                 (e.currentTarget as HTMLButtonElement).style.background = "var(--muted)";
@@ -157,7 +83,7 @@ export default function ViewProjectTaskModal({close} : {close: () => void}){
                                 {task.description}
                             </p>
 
-                            <form onSubmit={handleSubmit(editTaskhandler)}>
+                            <div>
 
                                 {/* STATUS */}
                                 <div>
@@ -165,18 +91,12 @@ export default function ViewProjectTaskModal({close} : {close: () => void}){
                                         Status
                                     </p>
 
-                                    <select
-                                        {...register("status")}
-                                        disabled={task.userId != session.user.id && role == "Member" }
+                                    <p
                                         className={`w-full px-2.5 py-2 rounded-lg text-xs outline-none appearance-none
-                                        text-(--foreground) bg-(--secondary) border border-(--border) cursor-pointer`}
+                                        text-(--foreground) bg-(--secondary) border border-(--border)`}
                                     >
-                                        { statusOptions.map((s) => (
-                                            <option key={s.value} value={s.value}>
-                                                {s.label}
-                                            </option>
-                                        ))}
-                                    </select>
+                                        {task.priority}
+                                    </p>
 
                                 </div>
 
@@ -186,64 +106,29 @@ export default function ViewProjectTaskModal({close} : {close: () => void}){
                                         Priority
                                     </p>
 
-                                    <select
-                                        {...register("priority")}
+                                    <div
                                         className={inputStyle}
-                                        disabled={role == "Member"}
                                         style={{ color: currentPriority?.color }}
                                     >
 
-                                        { priorityOptions.map((p) => (
-                                            <option 
-                                                key={p.label} 
-                                                value={p.label}
-                                                style={{color: p.color}}
-                                            >
-                                                {p.label}
-                                            </option>
-                                        )) }
-                                    </select>
+                                        {task.priority}
+                                    </div>
                                 </div>
 
-                                {/* SPRINT */}
                                 <div>
                                     <p className="text-xs font-medium mt-4 mb-2 text-(--muted-foreground)">
                                         Sprint
                                     </p>
 
-                                    <select
-                                        {...register("sprintId")}
+                                    <div
                                         className={inputStyle}
-                                        disabled={role == "Member"}
 
                                     >
 
-                                        { !task.sprintId &&
-                                            <option value="">
-                                                Undefined
-                                            </option>
-                                        }
-
-                                        { data.sprints.map((p) => (
-                                            <option 
-                                                key={p.id} 
-                                                value={p.id}
-                                            >
-                                                {p.name}
-                                            </option>
-                                        )) }
-                                    </select>
+                                        <p className="truncate">{task.sprintId ? task.sprintId : "Undefined"}</p>
+                                    </div>
                                 </div>
-
-                                { isDirty && 
-                                    <button 
-                                        type="submit"
-                                        className="bg-(--primary)  px-4 py-1 rounded-md mt-4 text-sm cursor-pointer" 
-                                    >
-                                        Confirm
-                                    </button>
-                                }
-                            </form>
+                            </div>
                         </div>
 
                         {/*SIDEBAR METADATA */}
@@ -257,36 +142,21 @@ export default function ViewProjectTaskModal({close} : {close: () => void}){
                                         Person in charge
                                     </p>
 
-                                    <button
-                                        onClick={() => setOpenSelector(prev => !prev)} 
-                                        disabled={role == "Member" }
-                                        className="text-(--muted-foreground) p-1 hover:bg-(--muted) rounded cursor-pointer"
-                                    >
-                                        <Plus size={13} />
-                                    </button> 
-
-                                    { openSelector && 
-                                        <SetUserTask 
-                                            setOpenSelector={setOpenSelector}
-                                            setUser={setUser}
-                                            projectId={data.projectId}
-                                        /> 
-                                    }
                                 </div>
                                 
 
-                                { user ? (
+                                { task.user ? (
                                     <div className="flex items-center gap-2">
                                         <Image 
-                                            src={user.image ?? ""}
+                                            src={task.user.image ?? ""}
                                             width={24}
                                             height={24} 
-                                            alt={user.name} 
+                                            alt={task.user.name} 
                                             className="w-6 h-6 rounded-full" 
                                         />
 
                                         <span className="text-xs text-(--foreground) truncate">
-                                            {user.name}
+                                            {task.user.name}
                                         </span>
                                     </div>
 
